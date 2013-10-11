@@ -45,16 +45,31 @@ start:
     ; Imprimir mensaje de bienvenida
     imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
 
-
     ; habilitar A20
+    call habilitar_A20
 
     ; cargar la GDT
+    lgdt [GDT_DESC]
 
     ; setear el bit PE del registro CR0
+    mov eax, cr0
+    or  eax, 1
+    mov cr0, eax
 
     ; pasar a modo protegido
+    jmp 0000000010010000b:mp        ; seteo cs = { index: 18 | gdt/ldt: 0 | rpl: 00 }_
+
+BITS 32
+mp:
 
     ; acomodar los segmentos
+    xor eax, eax
+    mov ax, 0000000010100000b       ; ds, gs, es = { index: 20 | gdt/ldt: 0 | rpl: 00 }
+    mov ds, ax
+    mov es, ax
+    mov gs, ax
+    mov ax, 0000000010110000b       ; fs = { index: 22 | gdt/ldt: 0 | rpl: 00 }
+    mov fs, ax
 
     ; setear la pila
 
