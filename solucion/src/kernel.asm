@@ -72,6 +72,16 @@ mp:
     mov fs, ax
 
 
+
+;;;;;;;;;;; Limpiar pantalla
+
+	MOV ecx, 80*2*25
+__limpiar_pantalla:
+	MOV byte [fs:ecx], 0 ;
+	LOOP __limpiar_pantalla
+
+
+
 ;;;;;;;;; Setear primera fila en letras blancas y fondo negro:
 
 	MOV ecx, 80 ; Cada fila tiene 80 caracteres. Con esto puedo hacer loop.
