@@ -87,10 +87,10 @@ __setear_primera_fila:
 	MOV ecx, 80;
 	MOV edx, 80*2*24; 80 caracteres, cada uno formado por 2 bytes, deseo saltearme las primeras 24 filas para arrancar por la ultima.
 
-__setar_ultima_fila:
+__setear_ultima_fila:
 		MOV byte [fs:edx+1], 00001111b
 		ADD edx, 2;
-		loop __setear_primera_fila
+		loop __setear_ultima_fila
 
 
     ; setear la pila
@@ -100,15 +100,16 @@ __setar_ultima_fila:
 
     ; pintar pantalla, todos los colores, que bonito! TODO esto no anda aún
 
-	MOV ecx, 80; Quiero pintar todas las filas de cualquier color salvo la primera y la última.
-	XOR edx, edx;
+	MOV ecx, 80*23; Quiero pintar todas las filas de cualquier color salvo la primera y la última.
+	MOV edi, 0xB80000
+	MOV esi, 160;
 	MOV bx, 0000000001110000b ; Máscara que deja como estaban sólo los bits 4, 5 y 6;
 
 __pintarrajear:
-	RDRAND ax
+	RDTSC
 	AND ax, bx;
-	MOV byte [fs:edx+1], "a"
-	ADD edx, 2;
+	MOV byte [edi+esi+1], al
+	ADD esi, 2;
 	loop __pintarrajear
 
 	xchg bx, bx
