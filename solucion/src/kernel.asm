@@ -101,7 +101,7 @@ __setear_ultima_fila:
     ; pintar pantalla, todos los colores, que bonito! TODO esto no anda aún
 
 	MOV ecx, 80*23; Quiero pintar todas las filas de cualquier color salvo la primera y la última.
-	MOV edi, 0xB80000
+	MOV edi, 0xB8000
 	MOV esi, 160;
 	MOV bx, 0000000001110000b ; Máscara que deja como estaban sólo los bits 4, 5 y 6;
 
