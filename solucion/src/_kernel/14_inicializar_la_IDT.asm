@@ -4,5 +4,5 @@
 
 	lidt 		[IDT_DESC]
 
-	xor ecx, ecx
-	idiv ecx
+	;xor ecx, ecx
+	;idiv ecx

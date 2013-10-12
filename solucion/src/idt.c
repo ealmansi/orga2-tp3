@@ -21,7 +21,7 @@ idt_descriptor IDT_DESC = {
 
 #define IDT_ENTRY(numero)                                                                                       \
     idt[numero].offset_0_15 = (unsigned short) ((unsigned int)(&_isr ## numero) & (unsigned int) 0xFFFF);       \
-    idt[numero].segsel = (unsigned short) GDT_IDX_CODIG_0;                                                      \
+    idt[numero].segsel = (unsigned short) GDT_IDX_CODIG_0 << 3;                                                 \
     idt[numero].attr = (unsigned short) idt_entry_attr(1,00,0,1,111,000,00000);                                 \
     idt[numero].offset_16_31 = (unsigned short) ((unsigned int)(&_isr ## numero) >> 16 & (unsigned int) 0xFFFF);
 
