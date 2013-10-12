@@ -71,9 +71,50 @@ mp:
     mov ax, 0000000010110000b       ; fs = { index: 22 | gdt/ldt: 0 | rpl: 00 }
     mov fs, ax
 
+
+;;;;;;;;; Setear primera fila en letras blancas y fondo negro:
+
+	MOV ecx, 80 ; Cada fila tiene 80 caracteres. Con esto puedo hacer loop.
+	XOR edx, edx; Contador de posición.
+
+__setear_primera_fila:
+		MOV byte [fs:edx+1], 00001111b
+		ADD edx, 2;
+		loop __setear_primera_fila
+
+;;;;;;;;; Setear última fila en letras blancas y fondo negro:
+
+	MOV ecx, 80;
+	MOV edx, 80*2*24; 80 caracteres, cada uno formado por 2 bytes, deseo saltearme las primeras 24 filas para arrancar por la ultima.
+
+__setar_ultima_fila:
+		MOV byte [fs:edx+1], 00001111b
+		ADD edx, 2;
+		loop __setear_primera_fila
+
+
     ; setear la pila
 
-    ; pintar pantalla, todos los colores, que bonito!
+	MOV ebp, 0x27000; TODO TODO. Esto parece setear la pila en esa posición... sin embargo a mi me parece que esto debería ser mas segmentoso
+	MOV esp, 0x27000;
+
+    ; pintar pantalla, todos los colores, que bonito! TODO esto no anda aún
+
+	MOV ecx, 80; Quiero pintar todas las filas de cualquier color salvo la primera y la última.
+	XOR edx, edx;
+	MOV bx, 0000000001110000b ; Máscara que deja como estaban sólo los bits 4, 5 y 6;
+
+__pintarrajear:
+	RDRAND ax
+	AND ax, bx;
+	MOV byte [fs:edx+1], "a"
+	ADD edx, 2;
+	loop __pintarrajear
+
+	xchg bx, bx
+
+
+
 
     ; inicializar el manejador de memoria
 
