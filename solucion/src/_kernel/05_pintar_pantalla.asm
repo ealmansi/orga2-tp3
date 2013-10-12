@@ -4,7 +4,7 @@
 	MOV 	ecx, 80*2*25 			; cantidad total de bytes de video
 
 .limpiar_pantalla:
-	MOV 	byte [fs:ecx], 0
+	MOV 	byte [fs:ecx-1], 0
 	LOOP 	.limpiar_pantalla
 
 	; ; Setear primera y ultima filas en formato de letras blancas y fondo negro
