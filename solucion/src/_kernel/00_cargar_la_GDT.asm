@@ -1,2 +1,3 @@
 	; cargar la GDT
-	lgdt [GDT_DESC]
+	
+	lgdt 	[GDT_DESC]
