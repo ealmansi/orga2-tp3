@@ -108,7 +108,7 @@ __setear_ultima_fila:
 	MOV ebp, 0x27000; TODO TODO. Esto parece setear la pila en esa posición... sin embargo a mi me parece que esto debería ser mas segmentoso
 	MOV esp, 0x27000;
 
-    ; pintar pantalla, todos los colores, que bonito! TODO esto no anda aún
+    ; pintar pantalla, todos los colores, que bonito!
 
 	MOV ecx, 80*23; Quiero pintar todas las filas de cualquier color salvo la primera y la última.
 	MOV edi, 0xB8000
