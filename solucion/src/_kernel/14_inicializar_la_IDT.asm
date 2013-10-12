@@ -1,0 +1,1 @@
+	; inicializar la IDT

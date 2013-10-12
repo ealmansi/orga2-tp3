@@ -19,6 +19,10 @@ extern idt_inicializar
 extern resetear_pic
 extern habilitar_pic
 
+;; Macros
+%macro breakpoint 0
+    xchg            bx, bx
+%endmacro
 
 ;; Saltear seccion de datos
 jmp start
@@ -48,108 +52,43 @@ start:
     ; habilitar A20
     call habilitar_A20
 
-    ; cargar la GDT
-    lgdt [GDT_DESC]
+    %include "_kernel/00_cargar_la_GDT.asm"
 
-    ; setear el bit PE del registro CR0
-    mov eax, cr0
-    or  eax, 1
-    mov cr0, eax
+    %include "_kernel/01_setear_el_bit_PE_del_registro_CR0.asm"
+    
+    %include "_kernel/02_pasar_a_modo_protegido.asm"
 
-    ; pasar a modo protegido
-    jmp 0000000010010000b:mp        ; seteo cs = { index: 18 | gdt/ldt: 0 | rpl: 00 }_
+    %include "_kernel/03_acomodar_los_segmentos.asm"
 
-BITS 32
-mp:
+    %include "_kernel/04_setear_la_pila.asm"
 
-    ; acomodar los segmentos
-    xor eax, eax
-    mov ax, 0000000010100000b       ; ds, gs, es = { index: 20 | gdt/ldt: 0 | rpl: 00 }
-    mov ds, ax
-    mov es, ax
-    mov gs, ax
-    mov ax, 0000000010110000b       ; fs = { index: 22 | gdt/ldt: 0 | rpl: 00 }
-    mov fs, ax
+    %include "_kernel/05_pintar_pantalla.asm"
 
+    breakpoint
 
+    %include "_kernel/06_inicializar_el_manejador_de_memoria.asm"
 
-;;;;;;;;;;; Limpiar pantalla
+    %include "_kernel/07_inicializar_el_directorio_de_paginas.asm"
 
-	MOV ecx, 80*2*25
-__limpiar_pantalla:
-	MOV byte [fs:ecx], 0 ;
-	LOOP __limpiar_pantalla
+    %include "_kernel/08_inicializar_memoria_de_tareas.asm"
 
+    %include "_kernel/09_habilitar_paginacion.asm"
 
+    %include "_kernel/10_inicializar_tarea_idle.asm"
 
-;;;;;;;;; Setear primera fila en letras blancas y fondo negro:
+    %include "_kernel/11_inicializar_todas_las_tsss.asm"
 
-	MOV ecx, 80 ; Cada fila tiene 80 caracteres. Con esto puedo hacer loop.
-	XOR edx, edx; Contador de posición.
+    %include "_kernel/12_inicializar_entradas_de_la_gdt_de_las_tsss.asm"
 
-__setear_primera_fila:
-		MOV byte [fs:edx+1], 00001111b
-		ADD edx, 2;
-		loop __setear_primera_fila
+    %include "_kernel/13_inicializar_el_scheduler.asm"
 
-;;;;;;;;; Setear última fila en letras blancas y fondo negro:
+    %include "_kernel/14_inicializar_la_IDT.asm"
 
-	MOV ecx, 80;
-	MOV edx, 80*2*24; 80 caracteres, cada uno formado por 2 bytes, deseo saltearme las primeras 24 filas para arrancar por la ultima.
+    %include "_kernel/15_configurar_controlador_de_interrupciones.asm"
 
-__setear_ultima_fila:
-		MOV byte [fs:edx+1], 00001111b
-		ADD edx, 2;
-		loop __setear_ultima_fila
+    %include "_kernel/16_cargar_la_tarea_inicial.asm"
 
-
-    ; setear la pila
-
-	MOV ebp, 0x27000; TODO TODO. Esto parece setear la pila en esa posición... sin embargo a mi me parece que esto debería ser mas segmentoso
-	MOV esp, 0x27000;
-
-    ; pintar pantalla, todos los colores, que bonito!
-
-	MOV ecx, 80*23; Quiero pintar todas las filas de cualquier color salvo la primera y la última.
-	MOV edi, 0xB8000
-	MOV esi, 160;
-	MOV bx, 0000000001110000b ; Máscara que deja como estaban sólo los bits 4, 5 y 6;
-
-__pintarrajear:
-	RDTSC
-	AND ax, bx;
-	MOV byte [edi+esi+1], al
-	ADD esi, 2;
-	loop __pintarrajear
-
-	xchg bx, bx
-
-
-
-
-    ; inicializar el manejador de memoria
-
-    ; inicializar el directorio de paginas
-
-    ; inicializar memoria de tareas
-
-    ; habilitar paginacion
-
-    ; inicializar tarea idle
-
-    ; inicializar todas las tsss
-
-    ; inicializar entradas de la gdt de las tsss
-
-    ; inicializar el scheduler
-
-    ; inicializar la IDT
-
-    ; configurar controlador de interrupciones
-
-    ; cargar la tarea inicial
-
-    ; saltar a la primer tarea
+    %include "_kernel/17_saltar_a_la_primer_tarea.asm"
 
     ; Ciclar infinitamente (por si algo sale mal...)
     jmp $

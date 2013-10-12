@@ -1,0 +1,1 @@
+	; inicializar el directorio de paginas
