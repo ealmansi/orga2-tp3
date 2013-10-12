@@ -64,8 +64,6 @@ start:
 
     %include "_kernel/05_pintar_pantalla.asm"
 
-    breakpoint
-
     %include "_kernel/06_inicializar_el_manejador_de_memoria.asm"
 
     %include "_kernel/07_inicializar_el_directorio_de_paginas.asm"

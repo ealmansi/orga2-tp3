@@ -8,7 +8,6 @@
 #ifndef __IDT_H__
 #define __IDT_H__
 
-
 /* Struct de descriptor de IDT */
 typedef struct str_idt_descriptor {
     unsigned short  idt_length;
