@@ -23,11 +23,10 @@
 	MOV 	ecx, 80*23				; Quiero pintar todas las filas de cualquier color
 	MOV 	edi, 0xB8000 			; salvo la primera y la última.
 	MOV 	esi, 160
-	MOV 	bx, 0000000001110000b 	; Máscara que deja como estaban sólo los bits 4, 5 y 6;
 
 .pintarrajear:
-	RDTSC
-	AND		ax, bx
-	MOV 	byte [edi+esi+1], al
+	MOV 	byte [edi+esi+1], 01110000b
 	ADD		esi, 2
 	LOOP 	.pintarrajear
+
+	xchg bx, bx
