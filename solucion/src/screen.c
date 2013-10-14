@@ -14,6 +14,15 @@ void plantillaEstado(){
 	insertarFormatoRectangular(0x0F,50,1,28,14);
 
 
+	insertarFormatoRectangular(0x87,2,10,77,1);
+	printSquareText(2,10,10,"aaaaaaaaaa");
+	insertarFormatoRectangular(0x90,2,11,77,1);
+	insertarFormatoRectangular(0xA0,2,12,77,1);
+	insertarFormatoRectangular(0xB0,2,13,77,1);
+	insertarFormatoRectangular(0xC0,2,14,77,1);
+	insertarFormatoRectangular(0xD0,2,15,77,1);
+	insertarFormatoRectangular(0xE0,2,16,77,1);
+	insertarFormatoRectangular(0xF0,2,17,77,1);
 
 	insertarFormatoRectangular(0x00,2,17,77,1);
 	insertarFormatoRectangular(0x10,2,18,77,1);
