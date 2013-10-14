@@ -1,4 +1,5 @@
 	; pintar pantalla, todos los colores, que bonito!
+extern cuadraditos
 
     ; ; Pongo el cursor afuera de la pantalla [http://wiki.osdev.org/Text_Mode_Cursor]
     mov ax, -1
@@ -58,65 +59,14 @@
 	ADD		esi, 2
 	LOOP 	.pintarrajear
 
-	xchg	bx, bx
 
-jmp despues
-
-; ~ void insertarFormatoRectangular(unsigned char format, unsigned int X, unsigned int Y, unsigned int ancho, unsigned int alto)
-%define format [ebp+8]
-%define X [ebp+12]
-%define Y [ebp+16]
-%define ancho [ebp+20]
-%define alto [ebp+24]
+	call cuadraditos
 
 
-__insertarFormatoRectangular:
-	PUSH 	ebp
-	MOV 	ebp, esp
-	PUSH	edi
-	PUSH	esi
-	PUSH	ebx
-
-	MOV		edi, 0xB8000
-	MOV		esi, X
-	SAL		esi, 1
-	ADD 	edi, esi
-	MOV 	eax, 160
-	MOV		ecx, Y
-	IMUL	ecx						; El resultado entra en EAX porque son números chicos.
-	ADD		edi, eax
-	INC		edi						; Se incrementa en uno porque se quiere grabar formato en las posiciones impares.
-	; En este punto ya tengo en EDI la posición inicial a partir de la cuál hay que escribir.
-
-	MOV eax, format;
-	MOV ecx, alto;
+	xchg bx, bx
 
 
-.CicloExternoInsertarFormatoRectangular:
-	MOV edx, ancho;
-	DEC edx;
 
-.CicloInternoinsertarFormatoRectangular:
-
-		MOV 	[edi+2*edx], al
-		DEC 	edx
-		CMP 	edx, 0 
-		JGE 	.CicloInternoinsertarFormatoRectangular
-		; Fin ciclo interno.
-
-	ADD 	edi, 160;
-	LOOP 	.CicloExternoInsertarFormatoRectangular
-	; Fin ciclo externo.
-	
-
-	POP ebx
-	POP esi
-	POP edi
-	POP ebp
-	RET
-
-
-despues:
 
 
 

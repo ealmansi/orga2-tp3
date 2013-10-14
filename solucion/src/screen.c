@@ -6,6 +6,8 @@
 */
 
 #include "screen.h"
+extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
+extern void printSquareText(
 
 
 
