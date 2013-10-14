@@ -1,5 +1,5 @@
 	; pintar pantalla, todos los colores, que bonito!
-extern cuadraditos
+extern plantillaEstado
 
     ; ; Pongo el cursor afuera de la pantalla [http://wiki.osdev.org/Text_Mode_Cursor]
     mov ax, -1
@@ -50,17 +50,7 @@ extern cuadraditos
 
 	; ; Colorear pantalla	
 
-	MOV 	ecx, 80*23				; Quiero pintar todas las filas de cualquier color
-	MOV 	edi, 0xB8000 			; salvo la primera y la última.
-	MOV 	esi, 160
-
-.pintarrajear:
-	MOV 	byte [edi+esi+1], 01110000b
-	ADD		esi, 2
-	LOOP 	.pintarrajear
-
-
-	call cuadraditos
+	call plantillaEstado
 
 
 	xchg bx, bx

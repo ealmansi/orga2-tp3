@@ -7,7 +7,23 @@
 
 #include "screen.h"
 extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
-extern void printSquareText(
+extern void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
+
+void plantillaEstado(){
+	insertarFormatoRectangular(0x70,0,1,80,23);
+	insertarFormatoRectangular(0x0F,50,1,28,14);
+
+
+
+	insertarFormatoRectangular(0x00,2,17,77,1);
+	insertarFormatoRectangular(0x10,2,18,77,1);
+	insertarFormatoRectangular(0x20,2,19,77,1);
+	insertarFormatoRectangular(0x30,2,20,77,1);
+	insertarFormatoRectangular(0x40,2,21,77,1);
+	insertarFormatoRectangular(0x50,2,22,77,1);
+	insertarFormatoRectangular(0x60,2,23,77,1);
+	insertarFormatoRectangular(0x70,2,24,77,1);
+}
 
 
 
