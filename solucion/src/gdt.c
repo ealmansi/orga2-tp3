@@ -31,14 +31,14 @@ gdt_entry gdt[GDT_COUNT] = {
         ___byte(00),                          /* base[31:24]  */
     },
     [GDT_IDX_CODIG_0] = (gdt_entry) {
-        ___word(0000),                         /* limit[0:15]  */
+        ___word(FFFF),                         /* limit[0:15]  */
         ___word(0000),                         /* base[0:15]   */
         ___byte(00),                           /* base[23:16]  */
         ___bits(1010),                         /* type         */
         ___bits(1),                            /* s            */
         ___bits(00),                           /* dpl          */
         ___bits(1),                            /* p            */
-        ___nibb(7),                            /* limit[16:19] */
+        ___nibb(6),                            /* limit[16:19] */
         ___bits(0),                            /* avl          */
         ___bits(0),                            /* l            */
         ___bits(1),                            /* db           */
@@ -46,14 +46,14 @@ gdt_entry gdt[GDT_COUNT] = {
         ___byte(00),                           /* base[31:24]  */
     },
     [GDT_IDX_CODIG_3] = (gdt_entry) {
-        ___word(0000),                         /* limit[0:15]  */
+        ___word(FFFF),                         /* limit[0:15]  */
         ___word(0000),                         /* base[0:15]   */
         ___byte(00),                           /* base[23:16]  */
         ___bits(1010),                         /* type         */
         ___bits(1),                            /* s            */
         ___bits(11),                           /* dpl          */
         ___bits(1),                            /* p            */
-        ___nibb(7),                            /* limit[16:19] */
+        ___nibb(6),                            /* limit[16:19] */
         ___bits(0),                            /* avl          */
         ___bits(0),                            /* l            */
         ___bits(1),                            /* db           */
@@ -61,14 +61,14 @@ gdt_entry gdt[GDT_COUNT] = {
         ___byte(00),                           /* base[31:24]  */
     },
     [GDT_IDX_DATOS_0] = (gdt_entry) {
-        ___word(0000),                         /* limit[0:15]  */
+        ___word(FFFF),                         /* limit[0:15]  */
         ___word(0000),                         /* base[0:15]   */
         ___byte(00),                           /* base[23:16]  */
         ___bits(0010),                         /* type         */
         ___bits(1),                            /* s            */
         ___bits(00),                           /* dpl          */
         ___bits(1),                            /* p            */
-        ___nibb(7),                            /* limit[16:19] */
+        ___nibb(6),                            /* limit[16:19] */
         ___bits(0),                            /* avl          */
         ___bits(0),                            /* l            */
         ___bits(1),                            /* db           */
@@ -76,14 +76,14 @@ gdt_entry gdt[GDT_COUNT] = {
         ___byte(00),                           /* base[31:24]  */
     },
     [GDT_IDX_DATOS_3] = (gdt_entry) {
-        ___word(0000),                         /* limit[0:15]  */
+        ___word(FFFF),                         /* limit[0:15]  */
         ___word(0000),                         /* base[0:15]   */
         ___byte(00),                           /* base[23:16]  */
         ___bits(0010),                         /* type         */
         ___bits(1),                            /* s            */
         ___bits(11),                           /* dpl          */
         ___bits(1),                            /* p            */
-        ___nibb(7),                            /* limit[16:19] */
+        ___nibb(6),                            /* limit[16:19] */
         ___bits(0),                            /* avl          */
         ___bits(0),                            /* l            */
         ___bits(1),                            /* db           */
