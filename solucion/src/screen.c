@@ -35,4 +35,7 @@ void plantillaEstado(){
 }
 
 
+void imprimirNombreEquipo(){
+	printSquareText(3,3,20,"Mate Cocido Con Tres De Azucar");
+}
 
