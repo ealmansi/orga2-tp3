@@ -15,6 +15,10 @@ extern GDT_DESC
 extern IDT_DESC
 extern idt_inicializar
 
+;; MMU
+extern mmu_inicializar
+
+
 ;; PIC
 extern resetear_pic
 extern habilitar_pic
