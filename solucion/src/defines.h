@@ -49,6 +49,45 @@
 #define AREA_MAR_INICIO         0x00100000  /* 1.0 MB     */
 #define AREA_MAR_FIN            0x0077FFFF  /* 7.5 MB - 1 */
 
+/* Direcciones de directorios, tablas de paginas y pilas nivel 0 de tareas */
+
+#define TASK_1_PAGE_DIR 		0x00030000 /* direccion fisica para el directorio de paginas de la tarea 1 */
+#define TASK_2_PAGE_DIR 		0x00031000 /* direccion fisica para el directorio de paginas de la tarea 2 */
+#define TASK_3_PAGE_DIR 		0x00032000 /* direccion fisica para el directorio de paginas de la tarea 3 */
+#define TASK_4_PAGE_DIR 		0x00033000 /* direccion fisica para el directorio de paginas de la tarea 4 */
+#define TASK_5_PAGE_DIR 		0x00034000 /* direccion fisica para el directorio de paginas de la tarea 5 */
+#define TASK_6_PAGE_DIR 		0x00034000 /* direccion fisica para el directorio de paginas de la tarea 6 */
+#define TASK_7_PAGE_DIR 		0x00034000 /* direccion fisica para el directorio de paginas de la tarea 7 */
+#define TASK_8_PAGE_DIR 		0x00034000 /* direccion fisica para el directorio de paginas de la tarea 8 */
+
+#define TASK_1_PAGE_TABLE		0x00035000 /* direccion fisica para la tabla de paginas de la tarea 1 */
+#define TASK_2_PAGE_TABLE		0x00036000 /* direccion fisica para la tabla de paginas de la tarea 2 */
+#define TASK_3_PAGE_TABLE		0x00037000 /* direccion fisica para la tabla de paginas de la tarea 3 */
+#define TASK_4_PAGE_TABLE		0x00038000 /* direccion fisica para la tabla de paginas de la tarea 4 */
+#define TASK_5_PAGE_TABLE		0x00039000 /* direccion fisica para la tabla de paginas de la tarea 5 */
+#define TASK_6_PAGE_TABLE		0x00039000 /* direccion fisica para la tabla de paginas de la tarea 6 */
+#define TASK_7_PAGE_TABLE		0x00039000 /* direccion fisica para la tabla de paginas de la tarea 7 */
+#define TASK_8_PAGE_TABLE		0x00039000 /* direccion fisica para la tabla de paginas de la tarea 8 */
+
+#define TASK_1_STACK_RING_0 	0x0003A000 /* direccion fisica para la pila de nivel 0 de la tarea 1 */
+#define TASK_2_STACK_RING_0 	0x0003B000 /* direccion fisica para la pila de nivel 0 de la tarea 2 */
+#define TASK_3_STACK_RING_0 	0x0003C000 /* direccion fisica para la pila de nivel 0 de la tarea 3 */
+#define TASK_4_STACK_RING_0 	0x0003D000 /* direccion fisica para la pila de nivel 0 de la tarea 4 */
+#define TASK_5_STACK_RING_0 	0x0003E000 /* direccion fisica para la pila de nivel 0 de la tarea 5 */
+#define TASK_6_STACK_RING_0 	0x0003E000 /* direccion fisica para la pila de nivel 0 de la tarea 6 */
+#define TASK_7_STACK_RING_0 	0x0003E000 /* direccion fisica para la pila de nivel 0 de la tarea 7 */
+#define TASK_8_STACK_RING_0 	0x0003E000 /* direccion fisica para la pila de nivel 0 de la tarea 8 */
+
+/* Direcciones fisicas de codigo en el mar */
+#define TASK_1_CODE_ADDR		0X00100000
+#define TASK_2_CODE_ADDR		0X00102000
+#define TASK_3_CODE_ADDR		0X00104000
+#define TASK_4_CODE_ADDR		0X00106000
+#define TASK_5_CODE_ADDR		0X00108000
+#define TASK_6_CODE_ADDR		0X0010A000
+#define TASK_7_CODE_ADDR		0X0010C000
+#define TASK_8_CODE_ADDR		0X0010E000
+
 /* Direcciones fisicas de codigos */
 /* -------------------------------------------------------------------------- */
 /* En estas direcciones estan los códigos de todas las tareas. De aqui se

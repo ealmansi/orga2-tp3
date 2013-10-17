@@ -28,5 +28,10 @@ void mmu_inicializar() {
 	}
 }
 
-void mmu_inicializar_dir_tarea() {
+void mmu_inicializar_dir_tarea(int nro_tarea) {
+	
+	int* dir_fisica = ((nro_tarea -1) * TASK_SIZE) + AREA_MAR_INICIO;
+	
+	
+	
 }
