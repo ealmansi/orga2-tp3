@@ -76,6 +76,7 @@ _isr_msj_len_19         equ $ - _isr_msj_19
 ;;
 ;; Rutina de atención de las EXCEPCIONES
 ;; -------------------------------------------------------------------------- ;;
+
 ISR 0
 ISR 1
 ISR 2
@@ -111,6 +112,7 @@ ISR 19
 
 ;; Funciones Auxiliares
 ;; -------------------------------------------------------------------------- ;;
+
 proximo_reloj:
     pushad
 

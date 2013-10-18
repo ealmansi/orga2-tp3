@@ -1,33 +1,32 @@
 	; pintar pantalla, todos los colores, que bonito!
-extern plantillaEstado
 
     ; ; Pongo el cursor afuera de la pantalla [http://wiki.osdev.org/Text_Mode_Cursor]
-    mov ax, -1
-    and ax,0ffh             ;set AX to 'row'
-    mov cl,80   
-    mul cl                  ;row*80
+    MOV     ax, -1
+    AND     ax,0ffh             ;set AX to 'row'
+    MOV     cl,80   
+    MUL     cl                  ;row*80
 
-    mov cx,bx               
-    shr cx,8                ;set CX to 'col'
-    add ax,cx               ;+ col
-    mov cx,ax               ;store 'position' in CX
+    MOV     cx,bx               
+    SHR     cx,8                ;set CX to 'col'
+    ADD     ax,cx               ;+ col
+    MOV     cx,ax               ;store 'position' in CX
 
-    mov al,0fh              ;cursor LOW port to vga INDEX register
-    mov dx,3d4h             ;VGA port 3D4h
-    out dx,al             
+    MOV     al,0fh              ;cursor LOW port to vga INDEX register
+    MOV     dx,3d4h             ;VGA port 3D4h
+    OUT     dx,al             
 
-    mov ax,cx               ;restore 'postion' back to AX  
-    mov dx,3d5h             ;VGA port 3D5h
-    out dx,al               ;send to VGA hardware
+    MOV     ax,cx               ;restore 'postion' back to AX  
+    MOV     dx,3d5h             ;VGA port 3D5h
+    OUT     dx,al               ;send to VGA hardware
 
-    mov al,0eh 				;cursor HIGH port to vga INDEX register
-    mov dx,3d4h             ;VGA port 3D4h
-    out dx,al
+    MOV     al,0eh 				;cursor HIGH port to vga INDEX register
+    MOV     dx,3d4h             ;VGA port 3D4h
+    OUT     dx,al
 
-    mov ax,cx               ;restore 'position' back to AX
-    shr ax,8                ;get high byte in 'position'
-    mov dx,3d5h             ;VGA port 3D5h
-    out dx,al               ;send to VGA hardware
+    MOV     ax,cx               ;restore 'position' back to AX
+    SHR     ax,8                ;get high byte in 'position'
+    MOV     dx,3d5h             ;VGA port 3D5h
+    OUT     dx,al               ;send to VGA hardware
 
 	; ; Limpiar pantalla
 	MOV 	ecx, 80*2*25 			; cantidad total de bytes de video
@@ -51,12 +50,3 @@ extern plantillaEstado
 	; ; Colorear pantalla	
 
 	call plantillaEstado
-
-
-	xchg bx, bx
-
-
-
-
-
-

@@ -7,6 +7,9 @@
 
 global start
 
+;;
+;; Externas.
+;; -------------------------------------------------------------------------- ;;
 
 ;; GDT
 extern GDT_DESC
@@ -16,24 +19,35 @@ extern IDT_DESC
 extern idt_inicializar
 
 ;; MMU
-extern mmu_inicializar
-
+extern mmu_inicializar_dir_kernel
+extern mmu_inicializar_tablas_kernel
 
 ;; PIC
 extern resetear_pic
 extern habilitar_pic
 
-;; Macros
+;; Funciones gráficas
+extern plantillaEstado
+extern imprimirNombreEquipo
+
+;;
+;; Macros.
+;; -------------------------------------------------------------------------- ;;
+
 %macro breakpoint 0
     xchg            bx, bx
 %endmacro
 
-;; Saltear seccion de datos
+;;
+;; Seccion de código.
+;; -------------------------------------------------------------------------- ;;
+
 jmp start
 
 ;;
 ;; Seccion de datos.
 ;; -------------------------------------------------------------------------- ;;
+
 iniciando_mr_msg db     'Iniciando kernel (Modo Real)...'
 iniciando_mr_len equ    $ - iniciando_mr_msg
 
@@ -48,39 +62,15 @@ iniciando_mp_len equ    $ - iniciando_mp_msg
 BITS 16
 start:
     ; Deshabilitar interrupciones
-    cli
+    CLI
 
     ; Imprimir mensaje de bienvenida
     imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
 
     ; habilitar A20
-    call habilitar_A20
+    CALL habilitar_A20
 
-
-	MOV		DX, 3DAH		;port of input status #1 register - clear the flip flop
-	IN		AX, DX
-
-	MOV		AL, 10H+20H		;move the index of the attribute register into the attribute
-	MOV		DX, 3C0H		; address register and leave PAS bit on
-	OUT		DX, AL
-
-	MOV		DX, 3C1H		;get the data of the attribute mode control register
-	IN		AL, DX
-
-	AND		AL, 0xF7			;turn on the blink bit
-	MOV		DX, 3C0H		;we have to input data in the register through the address register port
-	OUT		DX, AL
-
-	MOV	AH, 09H			;routine for displaying the character
-	MOV	AL, 01H
-	MOV	BH, 0
-	MOV	BL, 10100100B		;background: blinking blue - foreground: red
-	MOV	CX, 0001H
-	INT	10H
-
-	MOV	AX, 4C00H		;End processing
-	INT	21H
-
+    %include "habilitar_16colores.asm"
 
     %include "_kernel/00_cargar_la_GDT.asm"
 

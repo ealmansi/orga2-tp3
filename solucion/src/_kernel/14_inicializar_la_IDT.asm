@@ -1,8 +1,5 @@
 	; inicializar la IDT
 
-	call idt_inicializar
+	CALL idt_inicializar
 
-	lidt 		[IDT_DESC]
-
-	;xor ecx, ecx
-	;idiv ecx
+	LIDT 		[IDT_DESC]
