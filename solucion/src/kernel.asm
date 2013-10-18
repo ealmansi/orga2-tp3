@@ -29,6 +29,10 @@ extern habilitar_pic
 ;; Funciones gráficas
 extern plantillaEstado
 extern imprimirNombreEquipo
+extern inicializar_buffer_modo_estado
+extern inicializar_buffer_modo_mapa
+extern pintar_pantalla_modo_estado
+extern pintar_pantalla_modo_mapa
 
 ;;
 ;; Macros.

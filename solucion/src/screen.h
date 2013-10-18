@@ -15,5 +15,9 @@
 
 void screen_pintar_pantalla();
 
+void inicializar_buffer_modo_estado();
+void inicializar_buffer_modo_mapa();
+void pintar_pantalla_modo_estado();
+void pintar_pantalla_modo_mapa();
 
 #endif  /* !__SCREEN_H__ */
