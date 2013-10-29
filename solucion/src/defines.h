@@ -60,22 +60,8 @@
 #define TASK_7_PAGE_DIR 		0x00036000 /* direccion fisica para el directorio de paginas de la tarea 7 */
 #define TASK_8_PAGE_DIR 		0x00037000 /* direccion fisica para el directorio de paginas de la tarea 8 */
 
-#define TASK_1_PAGE_TABLE_1		0x00038000 /* direccion fisica para la tabla de paginas de la tarea 1 */
-#define TASK_1_PAGE_TABLE_2		0x00039000 /* direccion fisica para la tabla de paginas de la tarea 1 */
-#define TASK_2_PAGE_TABLE_1		0x0003A000 /* direccion fisica para la tabla de paginas de la tarea 2 */
-#define TASK_2_PAGE_TABLE_2		0x0003B000 /* direccion fisica para la tabla de paginas de la tarea 2 */
-#define TASK_3_PAGE_TABLE_1		0x0003C000 /* direccion fisica para la tabla de paginas de la tarea 3 */
-#define TASK_3_PAGE_TABLE_2		0x0003D000 /* direccion fisica para la tabla de paginas de la tarea 3 */
-#define TASK_4_PAGE_TABLE_1		0x0003E000 /* direccion fisica para la tabla de paginas de la tarea 4 */
-#define TASK_4_PAGE_TABLE_2		0x0003F000 /* direccion fisica para la tabla de paginas de la tarea 4 */
-#define TASK_5_PAGE_TABLE_1		0x00040000 /* direccion fisica para la tabla de paginas de la tarea 5 */
-#define TASK_5_PAGE_TABLE_2		0x00041000 /* direccion fisica para la tabla de paginas de la tarea 5 */
-#define TASK_6_PAGE_TABLE_1		0x00042000 /* direccion fisica para la tabla de paginas de la tarea 6 */
-#define TASK_6_PAGE_TABLE_2		0x00043000 /* direccion fisica para la tabla de paginas de la tarea 6 */
-#define TASK_7_PAGE_TABLE_1		0x00044000 /* direccion fisica para la tabla de paginas de la tarea 7 */
-#define TASK_7_PAGE_TABLE_2		0x00045000 /* direccion fisica para la tabla de paginas de la tarea 7 */
-#define TASK_8_PAGE_TABLE_1		0x00046000 /* direccion fisica para la tabla de paginas de la tarea 8 */
-#define TASK_8_PAGE_TABLE_2		0x00047000 /* direccion fisica para la tabla de paginas de la tarea 8 */
+#define TASK_1_PAGE_TABLE		0x00038000 /* direccion fisica para la tabla de paginas de la tarea 1 */
+
 
 #define TASK_1_STACK_RING_0 	0x00040000 /* direccion fisica para la pila de nivel 0 de la tarea 1 */
 #define TASK_2_STACK_RING_0 	0x00041000 /* direccion fisica para la pila de nivel 0 de la tarea 2 */
