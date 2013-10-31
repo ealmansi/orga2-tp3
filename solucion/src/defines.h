@@ -166,4 +166,6 @@
 
 #define ADDR_MEM_VIDEO                 	0x000B8000
 
+#define ADD_VIRTUAL_TASK_CODE           0x40000000
+
 #endif  /* !__DEFINES_H__ */

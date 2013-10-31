@@ -88,7 +88,8 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 		page_directory[i] = 0;
 	}
 	
-	page_directory[0x40000000 >> 22] = (ui) page_table; //Este número es un giga shifteado para obtener el index de la page_directory
+	int dir_index = ADD_VIRTUAL_TASK_CODE >> 22;
+	page_directory[dir_index] = (ui) page_table;
 	
 	for(i = 0; i < 1024; i++) {
 		page_table[i] = 0;
