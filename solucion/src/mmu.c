@@ -104,8 +104,8 @@ void mmu_mapear_pagina (ui virtual, ui cr3, ui fisica, ui attr) {
  	int dir_index = virtual >> 22;
 	int table_index = ((virtual << 10) >> 22) ;
 
-	ui* dir = (ui*) (cr3 & ~0xFFF);
-	ui* table = (ui*) (dir[dir_index] & ~0xFFF);
+	ui* page_directory = (ui*) (cr3 & ~0xFFF);
+	ui* page_table = (ui*) (page_directory[dir_index] & ~0xFFF);
 	
 	table[table_index] = fisica + attr; //Hacemos esto así porque interpretamos que física está alineada a 4kb.
 }
