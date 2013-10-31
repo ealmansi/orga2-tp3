@@ -62,21 +62,32 @@ void mmu_unmapear_pagina (ui virtual, ui cr3) {
 
 /* directorios y tablas de las tareas */
 
+void mmu_inicializar_tarea(int nro_tarea);
+void mmu_copiar_codigo_tarea(int nro_tarea);
 void mmu_inicializar_dir_tarea(int nro_tarea);
 
 void mmu_inicializar_tareas() {
 
 	int i;
 	for(i = 0; i < 8; i++) {
-		mmu_inicializar_dir_tarea(i);
+		mmu_inicializar_tarea(i);
 	}
 }
 
-void mmu_inicializar_dir_tarea(int nro_tarea) {
+void mmu_inicializar_tarea(int nro_tarea) {
+
+	mmu_copiar_codigo_tarea(nro_tarea);
+	mmu_inicializar_dir_tarea(nro_tarea);
+}
+
+void mmu_copiar_codigo_tarea(int nro_tarea) {
 
 	ui* src_tierra = (ui*) (TASK_1_CODE_SRC_ADDR + nro_tarea * TAMANO_PAGINA);
 	ui* dst_mar = (ui*) (TASK_1_CODE_ADDR + nro_tarea * TAMANO_PAGINA);
 	memcpy(src_tierra, dst_mar, TASK_SIZE);
+}
+
+void mmu_inicializar_dir_tarea(int nro_tarea) {
 	
 	ui* page_directory = (ui*) (TASK_1_PAGE_DIR + nro_tarea * TAMANO_PAGINA);
 	ui* page_table = (ui*) (TASK_1_PAGE_TABLE + nro_tarea * TAMANO_PAGINA);
@@ -95,16 +106,12 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 		page_table[i] = 0;
 	}
 	
-	ui cr3 = (ui) page_directory, attr = 7;
-
-	ui virtual, fisica;
-	virtual = ADDR_VIRTUAL_TASK_CODE;
-	fisica = (ui) dst_mar;
+	ui virtual = ADDR_VIRTUAL_TASK_CODE;
+	ui cr3 = (ui) page_directory;
+	ui fisica = TASK_1_CODE_ADDR + nro_tarea * TAMANO_PAGINA;
+	ui attr = 7;
 	mmu_mapear_pagina(virtual, cr3, fisica, attr);
-
-	virtual = ADDR_VIRTUAL_TASK_CODE + TAMANO_PAGINA;
-	fisica = (ui) (dst_mar + TAMANO_PAGINA);
-	mmu_mapear_pagina(virtual, cr3, fisica, attr);
+	mmu_mapear_pagina(virtual + TAMANO_PAGINA, cr3, fisica + TAMANO_PAGINA, attr);
 }
 
 /* auxiliares */
