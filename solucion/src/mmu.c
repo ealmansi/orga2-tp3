@@ -10,6 +10,11 @@
 
 typedef unsigned int ui;
 
+void mmu_inicializar_tarea(int nro_tarea);
+void mmu_copiar_codigo_tarea(int nro_tarea);
+void mmu_inicializar_dir_tarea(int nro_tarea);
+void mmu_mapear_pagina (ui virtual, ui cr3, ui fisica, ui attr);
+void mmu_unmapear_pagina (ui virtual, ui cr3);
 void memcpy(void* src, void* dst, int size);
 
 /* directorio y tablas del kernel */
@@ -42,29 +47,7 @@ void mmu_inicializar_tablas_kernel() {
 	}
 }
 
-/* mapear y unmapear paginas */
-
-void mmu_mapear_pagina (ui virtual, ui cr3, ui fisica, ui attr) {
- 	
- 	int dir_index = virtual >> 22;
-	int table_index = ((virtual << 10) >> 22) ;
-
-	ui* dir = (ui*) (cr3 & ~0xFFF);
-	ui* table = (ui*) (dir[dir_index] & ~0xFFF);
-	
-	table[table_index] = fisica + attr; //Hacemos esto así porque interpretamos que física está alineada a 4kb.
-}
-
-void mmu_unmapear_pagina (ui virtual, ui cr3) {
-	
-	mmu_mapear_pagina(virtual, cr3, 0x0, 0x0);
-}
-
 /* directorios y tablas de las tareas */
-
-void mmu_inicializar_tarea(int nro_tarea);
-void mmu_copiar_codigo_tarea(int nro_tarea);
-void mmu_inicializar_dir_tarea(int nro_tarea);
 
 void mmu_inicializar_tareas() {
 
@@ -112,6 +95,24 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	ui attr = 7;
 	mmu_mapear_pagina(virtual, cr3, fisica, attr);
 	mmu_mapear_pagina(virtual + TAMANO_PAGINA, cr3, fisica + TAMANO_PAGINA, attr);
+}
+
+/* mapear y unmapear paginas */
+
+void mmu_mapear_pagina (ui virtual, ui cr3, ui fisica, ui attr) {
+ 	
+ 	int dir_index = virtual >> 22;
+	int table_index = ((virtual << 10) >> 22) ;
+
+	ui* dir = (ui*) (cr3 & ~0xFFF);
+	ui* table = (ui*) (dir[dir_index] & ~0xFFF);
+	
+	table[table_index] = fisica + attr; //Hacemos esto así porque interpretamos que física está alineada a 4kb.
+}
+
+void mmu_unmapear_pagina (ui virtual, ui cr3) {
+	
+	mmu_mapear_pagina(virtual, cr3, 0x0, 0x0);
 }
 
 /* auxiliares */
