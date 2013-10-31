@@ -88,7 +88,7 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 		page_directory[i] = 0;
 	}
 
-	int dir_index = ADD_VIRTUAL_TASK_CODE >> 22;
+	int dir_index = ADDR_VIRTUAL_TASK_CODE >> 22;
 	page_directory[dir_index] = (ui) page_table;
 	
 	for(i = 0; i < 1024; i++) {
@@ -98,11 +98,11 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	ui cr3 = (ui) page_directory, attr = 7;
 
 	ui virtual, fisica;
-	virtual = ADD_VIRTUAL_TASK_CODE;
+	virtual = ADDR_VIRTUAL_TASK_CODE;
 	fisica = (ui) dst_mar;
 	mmu_mapear_pagina(virtual, cr3, fisica, attr);
 
-	virtual = ADD_VIRTUAL_TASK_CODE + TAMANO_PAGINA;
+	virtual = ADDR_VIRTUAL_TASK_CODE + TAMANO_PAGINA;
 	fisica = (ui) (dst_mar + TAMANO_PAGINA);
 	mmu_mapear_pagina(virtual, cr3, fisica, attr);
 }
