@@ -21,7 +21,7 @@
 
 #define TAMANO_PAGINA           0x00001000
 
-#define TASK_SIZE               2 * 4096
+#define TASK_SIZE               (2 * TAMANO_PAGINA)
 
 
 /* Indices en la gdt */

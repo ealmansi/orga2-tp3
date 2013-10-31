@@ -74,13 +74,13 @@ void mmu_inicializar_tareas() {
 
 void mmu_inicializar_dir_tarea(int nro_tarea) {
 
-	ui* src = ((ui*)TASK_1_CODE_SRC_ADDR) + nro_tarea * 0x1000;
-	ui* mar_dir = ((ui*)TASK_1_CODE_ADDR) + nro_tarea * 0x1000;
-	int size = 2 << 12;
-	ui* page_directory = ((ui*)TASK_1_PAGE_DIR) + nro_tarea * 0x1000;
-	ui* page_table = ((ui*)TASK_1_PAGE_TABLE) + nro_tarea * 0x1000;
-	memcpy(src, mar_dir, size);
+	ui* src_tierra = (ui*) (TASK_1_CODE_SRC_ADDR + nro_tarea * TAMANO_PAGINA);
+	ui* dst_mar = (ui*) (TASK_1_CODE_ADDR + nro_tarea * TAMANO_PAGINA);
+	memcpy(src_tierra, dst_mar, TASK_SIZE);
 	
+	ui* page_directory = (ui*) (TASK_1_PAGE_DIR + nro_tarea * TAMANO_PAGINA);
+	ui* page_table = (ui*) (TASK_1_PAGE_TABLE + nro_tarea * TAMANO_PAGINA);
+
 	int i = 0;
 	page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_1 + 3;
 	page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_2 + 3;
@@ -94,8 +94,8 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 		page_table[i] = 0;
 	}
 	
-	mmu_mapear_pagina(0x1 << 30, (ui) page_directory, (ui) mar_dir, 7);
-	mmu_mapear_pagina((0x1 << 30) + (0x1 << 12), (ui) page_directory, (ui) (mar_dir + (1 << 12)), 7);
+	mmu_mapear_pagina(0x1 << 30, (ui) page_directory, (ui) dst_mar, 7);
+	mmu_mapear_pagina((0x1 << 30) + (0x1 << 12), (ui) page_directory, (ui) (dst_mar + (1 << 12)), 7);
 }
 
 /* auxiliares */
