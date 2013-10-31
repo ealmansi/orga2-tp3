@@ -10,6 +10,8 @@
 
 typedef unsigned int ui;
 
+void memcpy(void* src, void* dst, int size);
+
 /* directorio y tablas del kernel */
 
 void mmu_inicializar_dir_kernel() {
@@ -19,8 +21,9 @@ void mmu_inicializar_dir_kernel() {
 	int i = 0;
 	kernel_page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_1 + 3;
 	kernel_page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_2 + 3;
-	for (i = 2; i < 1024; ++i)
+	for (i = 2; i < 1024; ++i) {
 		kernel_page_directory[i] = 0;
+	}
 
 }
 
@@ -30,11 +33,13 @@ void mmu_inicializar_tablas_kernel() {
 	ui* kernel_page_table_2 = (ui*) ADDR_KERNEL_PAGE_TABLE_2;
 
 	int i;
-	for (i = 0; i < 1024; ++i)
+	for (i = 0; i < 1024; ++i){
 		kernel_page_table_1[i] = ((i << 12) + 3);
+	}
 
-	for (i = 0; i < 896; ++i)
+	for (i = 0; i < 896; ++i){
 		kernel_page_table_2[i] = ((i << 12) + 3);
+	}
 }
 
 /* mapear y unmapear paginas */
@@ -55,14 +60,15 @@ void mmu_unmapear_pagina (ui virtual, ui cr3) {
 	mmu_mapear_pagina(virtual, cr3, 0x0, 0x0);
 }
 
+/* directorios y tablas de las tareas */
 
-void memcpy (void* src, void* dst, int size) {
-	
+void mmu_inicializar_dir_tarea(int nro_tarea);
+
+void mmu_inicializar_tareas() {
+
 	int i;
-	char* src_char = (char*)(src);
-	char* dst_char = (char*)(dst);
-	for(i = 0; i<size ; i++) {
-		dst_char[i]=src_char[i];
+	for(i = 0; i < 8; i++) {
+		mmu_inicializar_dir_tarea(i);
 	}
 }
 
@@ -82,7 +88,7 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 		page_directory[i] = 0;
 	}
 	
-	page_directory [0x40000000 >> 22] = (ui) page_table; //Este número es un giga shifteado para obtener el index de la page_directory
+	page_directory[0x40000000 >> 22] = (ui) page_table; //Este número es un giga shifteado para obtener el index de la page_directory
 	
 	for(i = 0; i < 1024; i++) {
 		page_table[i] = 0;
@@ -92,10 +98,15 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	mmu_mapear_pagina((0x1 << 30) + (0x1 << 12), (ui) page_directory, (ui) (mar_dir + (1 << 12)), 7);
 }
 
-void mmu_inicializar_tareas() {
+/* auxiliares */
+
+void memcpy(void* src, void* dst, int size) {
+	
+	char* src_char = (char*) src;
+	char* dst_char = (char*) dst;
 
 	int i;
-	for(i = 0; i < 8; i++) {
-		mmu_inicializar_dir_tarea(i);
+	for(i = 0; i < size ; i++) {
+		dst_char[i] = src_char[i];
 	}
 }

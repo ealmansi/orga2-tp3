@@ -12,4 +12,6 @@
 void mmu_inicializar_dir_kernel();
 void mmu_inicializar_tablas_kernel();
 
+void mmu_inicializar_tareas();
+
 #endif	/* !__MMU_H__ */
