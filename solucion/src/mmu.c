@@ -107,7 +107,7 @@ void mmu_mapear_pagina (ui virtual, ui cr3, ui fisica, ui attr) {
 	ui* page_directory = (ui*) (cr3 & ~0xFFF);
 	ui* page_table = (ui*) (page_directory[dir_index] & ~0xFFF);
 	
-	table[table_index] = fisica + attr; //Hacemos esto así porque interpretamos que física está alineada a 4kb.
+	page_table[table_index] = fisica + attr; //Hacemos esto así porque interpretamos que física está alineada a 4kb.
 }
 
 void mmu_unmapear_pagina (ui virtual, ui cr3) {
