@@ -11,17 +11,6 @@ global start
 ;; Externas.
 ;; -------------------------------------------------------------------------- ;;
 
-;; GDT
-extern GDT_DESC
-
-;; IDT
-extern IDT_DESC
-extern idt_inicializar
-
-;; MMU
-extern mmu_inicializar_dir_kernel
-extern mmu_inicializar_tablas_kernel
-
 ;; PIC
 extern resetear_pic
 extern habilitar_pic

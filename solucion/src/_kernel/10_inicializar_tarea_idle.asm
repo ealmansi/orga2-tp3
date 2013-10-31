@@ -1,1 +1,3 @@
+
+
 	; inicializar tarea idle

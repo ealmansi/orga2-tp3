@@ -1,3 +1,5 @@
+
+
 	; setear la pila
 	
 	MOV		ebp, 0x27000

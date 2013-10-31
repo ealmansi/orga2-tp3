@@ -1,1 +1,3 @@
+
+
 	; inicializar todas las tsss

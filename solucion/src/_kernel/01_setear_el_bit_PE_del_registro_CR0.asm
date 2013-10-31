@@ -1,5 +1,7 @@
+
+
 	; setear el bit PE del registro CR0
 	
-	mov 	eax, cr0
-	or  	eax, 1
-	mov 	cr0, eax
+	MOV 	eax, cr0
+	OR  	eax, 1
+	MOV 	cr0, eax

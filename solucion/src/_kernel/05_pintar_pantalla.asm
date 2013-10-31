@@ -1,3 +1,5 @@
+
+
 	; pintar pantalla, todos los colores, que bonito!
 
     ; ; Pongo el cursor afuera de la pantalla [http://wiki.osdev.org/Text_Mode_Cursor]

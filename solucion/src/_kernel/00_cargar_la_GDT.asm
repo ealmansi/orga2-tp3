@@ -1,3 +1,5 @@
+extern GDT_DESC
+
 	; cargar la GDT
 	
-	lgdt 	[GDT_DESC]
+	LGDT 	[GDT_DESC]
