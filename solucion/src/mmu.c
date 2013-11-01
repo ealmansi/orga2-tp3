@@ -90,7 +90,7 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	ui virtual = ADDR_VIRTUAL_TASK_CODE;
 	ui cr3 = (ui) page_directory;
 	ui fisica = TASK_1_CODE_ADDR + nro_tarea * TAMANO_PAGINA;
-	ui attr_pagina_codigo = 7, attr_pagina_ancla = ????;
+	ui attr_pagina_codigo = 7, attr_pagina_ancla = 0x5;
 	
 	mmu_mapear_pagina(virtual, cr3, fisica, attr_pagina_codigo);
 	mmu_mapear_pagina(virtual + TAMANO_PAGINA, cr3, fisica + TAMANO_PAGINA, attr_pagina_codigo);
