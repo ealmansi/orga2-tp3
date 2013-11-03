@@ -101,14 +101,43 @@ ISR 19
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
-
+global _isr32
+_isr32:
+	cli
+	pushad
+	pushfd
+	
+	call proximo_reloj
+	
+	popfd
+	popad
+	sti
+	iret
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
-
+global _isr33
+_isr33:
+	
+	jmp $
+	
+	iret
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
+global _isr80
+_isr80:
+	
+	jmp $
+	
+	iret
+
+global _isr102
+_isr102:
+	
+	jmp $
+	
+	iret
 
 ;; Funciones Auxiliares
 ;; -------------------------------------------------------------------------- ;;
@@ -117,7 +146,7 @@ proximo_reloj:
     pushad
 
     inc DWORD [reloj_numero]
-    mov ebx, [reloj]
+    mov ebx, [reloj_numero]
     cmp ebx, 0x4
     jl .ok
         mov DWORD [reloj_numero], 0x0

@@ -12,6 +12,7 @@ global start
 ;; -------------------------------------------------------------------------- ;;
 
 ;; PIC
+extern deshabilitar_pic
 extern resetear_pic
 extern habilitar_pic
 
