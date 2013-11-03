@@ -1,4 +1,4 @@
-
+	extern cuadradoColor;
 
 	; configurar controlador de interrupciones
 

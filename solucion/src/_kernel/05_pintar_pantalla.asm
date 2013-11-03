@@ -42,7 +42,7 @@
 	XOR 	ebx, ebx				; Contador de posición primera fila
 	MOV 	edx, 80*2*24			; Contador de posición ultima fila
 
-.setearFormatoFilas
+.setearFormatoFilas:
 	MOV 	byte [fs:ebx+1], 00001111b
 	MOV 	byte [fs:edx+1], 00001111b
 	ADD		edx, 2

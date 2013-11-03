@@ -101,18 +101,42 @@ ISR 19
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
+;~~~global _isr32
+;~~~_isr32:
+;~~~	cli
+;~~~	pushad
+;~~~	pushfd
+;~~~	
+;~~~	call proximo_reloj
+;~~~	
+;~~~	popfd
+;~~~	popad
+;~~~	sti
+;~~~	iret
+
+
 global _isr32
+extern cuadradoColor;
+
 _isr32:
-	cli
-	pushad
-	pushfd
-	
-	call proximo_reloj
-	
-	popfd
-	popad
-	sti
-	iret
+	PUSHAD
+	PUSHFD
+
+	CALL	 fin_intr_pic1
+
+	CALL cuadradoColor;
+
+	ADD esp, 20;
+
+	POPAD
+	POPFD
+	STI
+	IRET
+
+
+
+
+
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;

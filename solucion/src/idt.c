@@ -9,7 +9,7 @@
 #include "isr.h"
 #include "gdt.h"
 
-idt_entry idt[20] = { };
+idt_entry idt[256] = { };
 
 idt_descriptor IDT_DESC = {
     sizeof(idt) - 1,
@@ -47,7 +47,7 @@ void idt_inicializar() {
     IDT_ENTRY(18);
     IDT_ENTRY(19);
     IDT_ENTRY(32);
-    IDT_ENTRY(33);
-    IDT_ENTRY(80);
-    IDT_ENTRY(102);
+//    IDT_ENTRY(33);
+//    IDT_ENTRY(80);
+//    IDT_ENTRY(102);
 }
