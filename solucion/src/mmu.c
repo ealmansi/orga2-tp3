@@ -7,6 +7,7 @@
 
 #include "mmu.h"
 #include "defines.h"
+#include "utils.h"
 
 typedef unsigned int ui;
 
@@ -15,7 +16,6 @@ void mmu_copiar_codigo_tarea(int nro_tarea);
 void mmu_inicializar_dir_tarea(int nro_tarea);
 void mmu_mapear_pagina (ui virtual, ui cr3, ui fisica, ui attr);
 void mmu_unmapear_pagina (ui virtual, ui cr3);
-void memcpy(void* src, void* dst, int size);
 
 /* directorio y tablas del kernel */
 
@@ -117,13 +117,3 @@ void mmu_unmapear_pagina (ui virtual, ui cr3) {
 
 /* auxiliares */
 
-void memcpy(void* src, void* dst, int size) {
-	
-	char* src_char = (char*) src;
-	char* dst_char = (char*) dst;
-
-	int i;
-	for(i = 0; i < size ; i++) {
-		dst_char[i] = src_char[i];
-	}
-}

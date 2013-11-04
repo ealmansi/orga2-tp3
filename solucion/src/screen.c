@@ -7,6 +7,7 @@
 
 #include "defines.h"
 #include "screen.h"
+#include "utils.h"
 
 extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
 extern void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
@@ -17,18 +18,14 @@ void inicializar_buffer_modo_estado() {
 
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
 
-	int i;
-	for (i = 0; i < MEM_VIDEO_CANT_BYTES; ++i)
-		buffer[i] = 0;
+	memclear(buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void inicializar_buffer_modo_mapa() {
 
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
 
-	int i;
-	for (i = 0; i < MEM_VIDEO_CANT_BYTES; ++i)
-		buffer[i] = 0;
+	memclear(buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void pintar_pantalla_modo_estado() {
@@ -36,9 +33,8 @@ void pintar_pantalla_modo_estado() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
 
-	int i;
-	for (i = 0; i < MEM_VIDEO_CANT_BYTES; ++i)
-		mem_video[i] = buffer[i];
+	memcpy(buffer, mem_video, MEM_VIDEO_CANT_BYTES);
+
 }
 
 void pintar_pantalla_modo_mapa() {
@@ -46,9 +42,8 @@ void pintar_pantalla_modo_mapa() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
 
-	int i;
-	for (i = 0; i < MEM_VIDEO_CANT_BYTES; ++i)
-		mem_video[i] = buffer[i];
+	memcpy(buffer,mem_video, MEM_VIDEO_CANT_BYTES);
+
 }
 
 void plantillaEstado(){

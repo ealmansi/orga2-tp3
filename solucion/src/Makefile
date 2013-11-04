@@ -34,7 +34,7 @@ DEPEND = Makefile \
 	sched.c sched.h screen.c screen.h \
 	game.c game.h syscall.h
 
-OBJ=$(KERNEL_OBJ) gdt.o pic.o idt.o isr.o mmu.o sched.o tss.o screen.o game.o plantillas.o screenFunctions.o
+OBJ=$(KERNEL_OBJ) gdt.o pic.o idt.o isr.o mmu.o sched.o tss.o screen.o game.o plantillas.o screenFunctions.o utils.o
 DISK_IMG=diskette.img
 DISK_IMG_BZ=diskette.img.bz2
 
