@@ -126,7 +126,6 @@ _isr32:
 
 	CALL cuadradoColor;
 
-	ADD esp, 20;
 
 	POPAD
 	POPFD

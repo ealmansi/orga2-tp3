@@ -103,6 +103,7 @@ start:
     %include "_kernel/17_saltar_a_la_primer_tarea.asm"
 
     ; Ciclar infinitamente (por si algo sale mal...)
+	xchg bx, bx;
     jmp $
 
 ;; -------------------------------------------------------------------------- ;;

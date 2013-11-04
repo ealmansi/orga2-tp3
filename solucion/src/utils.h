@@ -6,6 +6,7 @@
 
 void memcpy(void* src, void* dst, int size);
 void memclear(void* dst, int size);
+char* intToStr(int num, char* buf);
 
 
 

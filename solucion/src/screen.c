@@ -8,6 +8,7 @@
 #include "defines.h"
 #include "screen.h"
 #include "utils.h"
+#include "colors.h"
 
 extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
 extern void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
@@ -47,28 +48,45 @@ void pintar_pantalla_modo_mapa() {
 }
 
 void plantillaEstado(){
-	insertarFormatoRectangular(0x70,0,1,80,23);
+	int i;
+	char num[2];
+	num[1] = 0;
+	printSquareText(0,0,80,"Mate Cocido Con Tres De Azucar / Jauja");
+	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,1,80,23);
 	insertarFormatoRectangular(0x0F,50,1,28,14);
 
 
-	insertarFormatoRectangular(0x87,2,10,77,1);
-	printSquareText(2,10,10,"aaaaaaaaaa");
-	insertarFormatoRectangular(0x90,2,11,77,1);
-	insertarFormatoRectangular(0xA0,2,12,77,1);
-	insertarFormatoRectangular(0xB0,2,13,77,1);
-	insertarFormatoRectangular(0xC0,2,14,77,1);
-	insertarFormatoRectangular(0xD0,2,15,77,1);
-	insertarFormatoRectangular(0xE0,2,16,77,1);
-	insertarFormatoRectangular(0xF0,2,17,77,1);
 
-	insertarFormatoRectangular(0x00,2,17,77,1);
-	insertarFormatoRectangular(0x10,2,18,77,1);
-	insertarFormatoRectangular(0x20,2,19,77,1);
-	insertarFormatoRectangular(0x30,2,20,77,1);
-	insertarFormatoRectangular(0x40,2,21,77,1);
-	insertarFormatoRectangular(0x50,2,22,77,1);
-	insertarFormatoRectangular(0x60,2,23,77,1);
-	insertarFormatoRectangular(0x70,2,24,77,1);
+	insertarFormatoRectangular(C_BG_RED LIGHTER,2,16,77,8);
+	insertarFormatoRectangular(C_BG_BLACK,0,16,1,8);
+	insertarFormatoRectangular(C_BG_BLACK,79,16,1,8);
+
+	printSquareText(1,16,1,"12345678");
+	
+	for (i = 2; i < 50; i+=12) {
+		num[0] = 0x31 +(i-2)/12;
+		printSquareText(i,2,5,"NAVIO");
+		printSquareText(i+6,2,1,num);
+
+		insertarFormatoRectangular(C_BG_RED,i, 3, 10, 5);
+	}
+	for (i = 2; i < 50; i+=12) {
+		num[0] = 0x35 +(i-2)/12;
+		printSquareText(i,8,5,"NAVIO");
+		printSquareText(i+6,8,1,num);
+		insertarFormatoRectangular(C_BG_RED,i, 9, 10, 5);
+	}
+	
+	for (i = 0; i < 8; i++) {
+		num[0] = i+0x31;
+		printSquareText(5+3*i,24,1,"*");
+		printSquareText(4+3*i,24,1,num);
+		insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,4+3*i,24,2,1);
+	}
+
+
+
+
 }
 
 
@@ -78,6 +96,6 @@ void imprimirNombreEquipo(){
 
 
 void cuadradoColor(){
-	insertarFormatoRectangular(0xA0,5,5,7,7);
+	insertarFormatoRectangular(0xA0,5,5,7,2);
 
 }
