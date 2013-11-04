@@ -6,8 +6,7 @@
 
 void memcpy(void* src, void* dst, int size);
 void memclear(void* dst, int size);
-char* intToStr(int num, char* buf);
-
+void printNumberToScreen(int X, int Y, int num);
 
 
 #endif /* !__UTILS_H__ */

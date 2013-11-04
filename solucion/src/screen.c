@@ -49,40 +49,36 @@ void pintar_pantalla_modo_mapa() {
 
 void plantillaEstado(){
 	int i;
-	char num[2];
-	num[1] = 0;
 	printSquareText(0,0,80,"Mate Cocido Con Tres De Azucar / Jauja");
 	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,1,80,23);
 	insertarFormatoRectangular(0x0F,50,1,28,14);
 
 
 
-	insertarFormatoRectangular(C_BG_RED LIGHTER,2,16,77,8);
+	insertarFormatoRectangular(C_BG_BLUE LIGHTER,2,16,77,8);
 	insertarFormatoRectangular(C_BG_BLACK,0,16,1,8);
 	insertarFormatoRectangular(C_BG_BLACK,79,16,1,8);
 
 	printSquareText(1,16,1,"12345678");
 	
 	for (i = 2; i < 50; i+=12) {
-		num[0] = 0x31 +(i-2)/12;
 		printSquareText(i,2,5,"NAVIO");
-		printSquareText(i+6,2,1,num);
+		printNumberToScreen(i+6,2,(i-2)/12+1);
 
 		insertarFormatoRectangular(C_BG_RED,i, 3, 10, 5);
 	}
 	for (i = 2; i < 50; i+=12) {
-		num[0] = 0x35 +(i-2)/12;
 		printSquareText(i,8,5,"NAVIO");
-		printSquareText(i+6,8,1,num);
+		printNumberToScreen(i+6,8,(i-2)/12+5);
 		insertarFormatoRectangular(C_BG_RED,i, 9, 10, 5);
 	}
 	
 	for (i = 0; i < 8; i++) {
-		num[0] = i+0x31;
 		printSquareText(5+3*i,24,1,"*");
-		printSquareText(4+3*i,24,1,num);
+		printNumberToScreen(4+3*i,24,i+1);
 		insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,4+3*i,24,2,1);
 	}
+
 
 
 

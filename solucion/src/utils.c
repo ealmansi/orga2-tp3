@@ -3,9 +3,7 @@
 #include "defines.h"
 
 
-void str_reverse(char* str);
-int str_len(char* str);
-
+int int_size(int num);
 
 void memcpy(void* src, void* dst, int size) {
 	
@@ -29,38 +27,27 @@ void memclear(void* dst, int size){
 	}
 }
 
-char* intToStr(int dec, char* buf){
-	char res[100];
-	int i =0;
-
-	while (dec){
-		buf[i] = 30 + dec % 10;
-		dec = dec/10;
-		i++;
-	}
-	res[i] = 0;
-
-	str_reverse(res);
-	memcpy(res,buf,str_len(res)+1);
-	return buf;
-}
-
-void str_reverse(char* str){
-	int len = str_len(str);
-	char res[len+1];
-
+void printNumberToScreen(int X, int Y, int num){
+	char* start = ((char*) VIDEO + 2*(80*Y+X));
+	int size = int_size(num);
 	int i;
-	for (i = 0; i > len; i++) {
-		res[i] = str[len-i];
+
+	for (i = size-1; i >= 0; i--) {
+		start[2*i] = 0x30 + num % 10;
+		num = num / 10;
 	}
-	memcpy(res,str,len+1);
 }
 
 
-int str_len(char* str){
+int int_size(int num){
+
+	if (num == 0) return 1;
+
 	int i=0;
-	while (str[i]){
+	while (num){
+		num= num/10;
 		i++;
 	}
 	return i;
 }
+
