@@ -14,12 +14,36 @@
 	MOV 		DX, 3C0H		;we have to input data in the register through the address register port
 	OUT 		DX, AL
 
-	MOV 		AH, 09H			;routine for displaying the character
-	MOV 		AL, 01H
-	MOV 		BH, 0
-	MOV 		BL, 10100100B	;background: blinking blue - foreground: red
-	MOV 		CX, 0001H
-	INT 		10H
-
 	MOV 		AX, 4C00H		;End processing
 	INT 		21H
+
+    ; Pongo el cursor afuera de la pantalla [http://wiki.osdev.org/Text_Mode_Cursor]
+    
+    MOV     ax, -1
+    AND     ax,0ffh             ;set AX to 'row'
+    MOV     cl,80   
+    MUL     cl                  ;row*80
+
+    MOV     cx,bx               
+    SHR     cx,8                ;set CX to 'col'
+    ADD     ax,cx               ;+ col
+    MOV     cx,ax               ;store 'position' in CX
+
+    MOV     al,0fh              ;cursor LOW port to vga INDEX register
+    MOV     dx,3d4h             ;VGA port 3D4h
+    OUT     dx,al             
+
+    MOV     ax,cx               ;restore 'postion' back to AX  
+    MOV     dx,3d5h             ;VGA port 3D5h
+    OUT     dx,al               ;send to VGA hardware
+
+    MOV     al,0eh              ;cursor HIGH port to vga INDEX register
+    MOV     dx,3d4h             ;VGA port 3D4h
+    OUT     dx,al
+
+    MOV     ax,cx               ;restore 'position' back to AX
+    SHR     ax,8                ;get high byte in 'position'
+    MOV     dx,3d5h             ;VGA port 3D5h
+    OUT     dx,al               ;send to VGA hardware
+
+    

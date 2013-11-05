@@ -1,0 +1,73 @@
+# Ejercicios
+
+
+## Ejercicio 3
+
+* Escribir una rutina que se encargue de limpiar el buffer de vídeo y pintarlo como indican las figuras 9 y 10. Tener en cuenta que deben ser escritos de forma genérica para posteriormente ser completados con información del sistema. Además considerar estas imágenes como sugerencias, ya que pueden ser modificadas a gusto según cada grupo mostrando siempre la misma información.
+
+* Escribir una rutina que imprima el nombre del grupo en pantalla. Debe estar ubicado en la primer linea de la pantalla a partir del segundo caracter.
+
+
+## Ejercicio 4
+
+* Construir un mapa de memoria para tareas e intercambiarlo con el del kernel, luego cambiar el color del fondo del primer caracter de la pantalla y volver a la normalidad.
+
+Nota: cuando se modifica el directorio o tabla de páginas, hay que llamar a la función tlbflush
+
+
+## Ejercicio 5
+
+* Completar las entradas necesarias en la IDT para asociar una rutina a la interrupción del reloj, otra a la interrupción de teclado y por último a dos interrupciones de software 0x50 y 0x66.
+
+* Escribir la rutina asociada a la interrupción del reloj, para que por cada tick llame a la función screen proximo reloj. La misma se encarga de mostrar cada vez que se llame, la animación de un cursor rotando en la esquina inferior derecha de la pantalla. La función proximo reloj está definida en isr.asm.
+
+* Escribir la rutina asociada a la interrupción de teclado de forma que si se presiona cualquier número, se presente el mismo en la esquina superior derecha de la pantalla. El número debe ser escrito en color blanco con fondo de color aleatorio por cada tecla que sea presionada 2 . Además se deben mostrar los buffers de vídeo según indica el enunciado al presionar las teclas “m” y “e”. 2 http://wiki.osdev.org/Text UI 13d) Escribir la rutina asociada a la interrupción 0x50 y 0x66 para que modifique el valor de eax por 0x42. Posteriormente este comportamiento va a ser modificado para atender los servicios del sistema.
+
+
+## Ejercicio 6
+
+* Definir 18 entradas en la GDT. Una reservada para la tarea inicial, otra para la tarea Idle y las 16 restantes, dos para cada tarea que van a ejecutar el sistema.
+
+* Completar la entrada de la TSS correspondiente a la tarea Idle. Esta información se encuentra en el archivo TSS.C. La tarea Idle se encuentra en la dirección 0x00020000. La pila se alojará en la página 0x0002A000 y será mapeada con identity mapping. Esta tarea ocupa 2 paginas de 4KB y está compilada para ser ejecutada desde la dirección 0x40000000. Además la misma debe compartir el mismo CR3 que el kernel.
+
+* Completar el resto de las entradas del arreglo de las TSS definidas con los valores co- rrespondientes a las tareas que correrá el sistema. A cada tarea le corresponden dos TSS, una para el código de la tarea y otra para la ejecución de la función “bandera”. Para ambas TSS el contexto de ejecución será el mismo, dependerá de la tarea que nada explote en pedazos. El código de las tareas se encuentra a partir de la dirección 0x00010000 ocupando dos páginas de 4kb cada una. El mismo debe ser mapeado a partir de la dirección 0x40000000. Para la dirección de la pila se debe utilizar el mismo espacio de la tarea según indica la figura 5, al igual que para la dirección de la pila en la función “bandera”. Para el mapa de memoria se debe construir uno nuevo para cada tarea utilizando la función mmu inicializar dir usuario; tanto la función “bandera” como el código de la tarea deben compartir el mismo mapa de memoria. Tener en cuenta que ambas van a utilizar distinto espacio de pila de nivel 0. Para este propósito se recomienda utilizar una sola pagina en nivel de kernel.
+
+* Completar la entrada de la GDT correspondiente a la tarea inicial.
+
+* Completar la entrada de la GDT correspondiente a la tarea Idle.
+
+* Completar el resto de las entradas de la GDT para cada una de las entradas del arreglo de TSSs de las 8 tareas que se ejecutarán en el sistema.
+
+* Escribir el código necesario para ejecutar la tarea Idle, es decir, saltar intercambiando las TSS, entre la tarea inicial y la tarea Idle.
+
+Nota: En tss.c está definido un arreglo llamado tss que contiene las estructuras TSS. Trabajar en tss.c y kernel.asm .
+
+
+## Ejercicio 7
+
+* Construir una función para inicializar las estructuras de datos del scheduler (arreglo de tareas y arreglo de funciones “bandera”).
+
+* Crear la función sched proximo indice() que devuelve el índice en la GDT de la próxima
+ ́ tarea a ser ejecutada. Esta debe tener en cuenta lo descripto en la sección 3.2. 14c) Crear la función sched proxima bandera() que devuelve el índice en la GDT de la próxima
+ ́ bandera a ser ejecutada. Esta debe tener en cuenta lo descripto en la sección 3.2.
+
+* Modificar la rutina de la interrupción 0x50, para que implemente los tres servicios del sistema según se indica en la sección 3.1.1.
+
+* Modificar el código necesario para que se realice el intercambio de tareas por cada ciclo de reloj. El intercambio se realizará según indique la función sched proximo indice().
+
+* Cuando la cantidad de intercambios entre tareas llegue a 3, se deberá llamar a todas las funciones bandera. Escribir el código necesario para que se respete este comportamiento.
+
+* Modificar las rutinas de excepciones del procesador para que impriman el problema que se produjo en pantalla, desalojen a la tarea que estaba corriendo y corran la próxima, indicando en pantalla porque razón fue desalojada la tarea en cuestión. Tener en cuenta que las “banderas” también pueden generar problemas.
+
+Nota: Se recomienda construir funciones en C que ayuden a resolver problemas como convertir direcciones a posiciones de la arena.
+
+
+## Ejercicio 8 (optativo)
+
+* Crear un navío (tarea) propio que navegue a muerte contra los navíos creados por los docentes. Para esto pueden editar el código de la tarea 1 a gusto. La tarea debe tener las siguientes características No ocupar más de 8 kb (tener en cuenta la pila, figura 5). Tener como punto de entrada la dirección cero. Contener en la última posición de memoria el puntero a la función “bandera”. Estar compilada para correr desde la dirección 0x400000000000. Utilizar solo los servicios presentados en el trabajo práctico.
+
+* Explicar en pocas palabras qué estrategia utilizaron en su navío mortal en términos de “defensa” y “ataque”.
+
+* Si consideran que su navío mortal es capaz de enfrentarse contra los navíos del resto de sus compa ̃ neros, pueden enviar el binario a la lista de docentes indicando los siguientes datos, Nombre del navío, ej: “El Perla Morada” Características letales, ej: Se mueve rápidamente Sistema de defensa, ej: Es prácticamente un rompehielos Se realizará una competencia a fin de cuatrimestre con premios en/de chocolate para los primeros puestos.
+
+* (Optativo) Mencionar en que intersección de calles y barrio de la Capital Federal de Buenos Aires, se encuentra el ancla de la figura 2.

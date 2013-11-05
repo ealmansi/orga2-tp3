@@ -25,7 +25,8 @@ KERNEL_PIECES = ./_kernel/00_cargar_la_GDT.asm 						\
 	./_kernel/14_inicializar_la_IDT.asm 							\
 	./_kernel/15_configurar_controlador_de_interrupciones.asm 		\
 	./_kernel/16_cargar_la_tarea_inicial.asm 						\
-	./_kernel/17_saltar_a_la_primer_tarea.asm
+	./_kernel/17_saltar_a_la_primer_tarea.asm 						\
+	habilitar_16colores.asm
 
 DEPEND = Makefile \
 	kernel.asm isr.asm \
