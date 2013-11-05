@@ -11,6 +11,10 @@ BITS 32
 ;; PIC
 extern fin_intr_pic1
 
+;; Funciones de pantalla
+extern pintar_pantalla_modo_mapa
+extern pintar_pantalla_modo_estado
+
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -19,7 +23,7 @@ extern fin_intr_pic1
 global _isr%1
 _isr%1:
     imprimir_texto_mp _isr_msj_%1, _isr_msj_len_%1, 0x07, 0, 0
-    jmp $
+    JMP $
 %endmacro
 
 ;;
@@ -72,6 +76,18 @@ _isr_msj_len_18         equ $ - _isr_msj_18
 _isr_msj_19:            db 'Rutina de interrupcion nro 19'
 _isr_msj_len_19         equ $ - _isr_msj_19
 
+; strings a imprimir cuando se presiona un digito
+_digito_0_str:			db '0'
+_digito_1_str:			db '1'
+_digito_2_str:			db '2'
+_digito_3_str:			db '3'
+_digito_4_str:			db '4'
+_digito_5_str:			db '5'
+_digito_6_str:			db '6'
+_digito_7_str:			db '7'
+_digito_8_str:			db '8'
+_digito_9_str:			db '9'
+
 ;;
 ;; Rutinas de atención de las EXCEPCIONES
 ;; -------------------------------------------------------------------------- ;;
@@ -123,29 +139,139 @@ _isr32:
 global _isr33
 extern cuadradoColor;
 _isr33:
-	
-	CALL cuadradoColor;
-	jmp $;
-	
-	iret
+	CLI
+	PUSHAD
+	PUSHFD
+
+	CALL       		fin_intr_pic1
+
+    IN 				AL, 0x60
+
+.switch:
+.letra_m:
+    CMP 			AL, 0x32			; M
+    JNE 			.letra_s
+
+    call 			pintar_pantalla_modo_mapa
+
+    JMP 			.end_switch
+.letra_s:
+    CMP 			AL, 0x1F			; S
+    JNE 			.digito_0
+
+    call 			pintar_pantalla_modo_estado
+
+	JMP 			.end_switch
+.digito_0:
+	cmp 			AL, 0x0B			; 0
+	JNE 			.digito_1
+
+	imprimir_texto_mp 		_digito_0_str, 1, 0x0F, 0, 79
+
+	JMP 			.end_switch
+.digito_1:
+	cmp 			AL, 0x02			; 1
+	JNE 			.digito_2
+
+	imprimir_texto_mp 		_digito_1_str, 1, 0x1F, 0, 79
+
+	JMP 			.end_switch
+.digito_2:
+	cmp 			AL, 0x03			; 2
+	JNE 			.digito_3
+
+	imprimir_texto_mp 		_digito_2_str, 1, 0x2F, 0, 79
+
+	JMP 			.end_switch
+.digito_3:
+	cmp 			AL, 0x04			; 3
+	JNE 			.digito_4
+
+	imprimir_texto_mp 		_digito_3_str, 1, 0x3F, 0, 79
+
+	JMP 			.end_switch
+.digito_4:
+	cmp 			AL, 0x05			; 4
+	JNE 			.digito_5
+
+	imprimir_texto_mp 		_digito_4_str, 1, 0x4F, 0, 79
+
+	JMP 			.end_switch
+.digito_5:
+	cmp 			AL, 0x06			; 5
+	JNE 			.digito_6
+
+	imprimir_texto_mp 		_digito_5_str, 1, 0x5F, 0, 79
+
+	JMP 			.end_switch
+.digito_6:
+	cmp 			AL, 0x07			; 6
+	JNE 			.digito_7
+
+	imprimir_texto_mp 		_digito_6_str, 1, 0x6F, 0, 79
+
+	JMP 			.end_switch
+.digito_7:
+	cmp 			AL, 0x08			; 7
+	JNE 			.digito_8
+
+	imprimir_texto_mp 		_digito_7_str, 1, 0x7F, 0, 79
+
+	JMP 			.end_switch
+.digito_8:
+	cmp 			AL, 0x09			; 8
+	JNE 			.digito_9
+
+	imprimir_texto_mp 		_digito_8_str, 1, 0x8F, 0, 79
+
+	JMP 			.end_switch
+.digito_9:
+	cmp 			AL, 0x0A			; 9
+	JNE 			.end_switch
+
+	imprimir_texto_mp 		_digito_9_str, 1, 0x9F, 0, 79
+
+	JMP 			.end_switch
+.end_switch:
+
+	POPFD
+	POPAD
+	STI
+	IRET
 
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
 
 global _isr0x50
-_isr0x50:
-	
-	jmp $
-	
-	iret
+_isr0x50:	
+	CLI
+	PUSHAD
+	PUSHFD
+
+	CALL 			fin_intr_pic1
+
+    MOV 			EAX, 0x42
+
+	POPFD
+	POPAD
+	STI
+	IRET
 
 global _isr0x66
-_isr0x66:
-	
-	jmp $
-	
-	iret
+_isr0x66:	
+	CLI
+	PUSHAD
+	PUSHFD
+
+	CALL 			fin_intr_pic1
+
+    MOV 			EAX, 0x42
+
+	POPFD
+	POPAD
+	STI
+	IRET
 
 
 ;; Funciones Auxiliares

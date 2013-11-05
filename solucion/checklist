@@ -17,10 +17,6 @@ Nota: cuando se modifica el directorio o tabla de páginas, hay que llamar a la 
 
 ## Ejercicio 5
 
-* Completar las entradas necesarias en la IDT para asociar una rutina a la interrupción del reloj, otra a la interrupción de teclado y por último a dos interrupciones de software 0x50 y 0x66.
-
-* Escribir la rutina asociada a la interrupción del reloj, para que por cada tick llame a la función screen proximo reloj. La misma se encarga de mostrar cada vez que se llame, la animación de un cursor rotando en la esquina inferior derecha de la pantalla. La función proximo reloj está definida en isr.asm.
-
 * Escribir la rutina asociada a la interrupción de teclado de forma que si se presiona cualquier número, se presente el mismo en la esquina superior derecha de la pantalla. El número debe ser escrito en color blanco con fondo de color aleatorio por cada tecla que sea presionada 2 . Además se deben mostrar los buffers de vídeo según indica el enunciado al presionar las teclas “m” y “e”. 2 http://wiki.osdev.org/Text UI 13d) Escribir la rutina asociada a la interrupción 0x50 y 0x66 para que modifique el valor de eax por 0x42. Posteriormente este comportamiento va a ser modificado para atender los servicios del sistema.
 
 
