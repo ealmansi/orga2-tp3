@@ -119,14 +119,15 @@ global _isr32
 extern cuadradoColor;
 
 _isr32:
+	CLI
 	PUSHAD
 	PUSHFD
 
+
+	XCHG bx,bx;
+
+
 	CALL	 fin_intr_pic1
-
-	CALL cuadradoColor;
-
-
 	POPAD
 	POPFD
 	STI
@@ -142,7 +143,8 @@ _isr32:
 global _isr33
 _isr33:
 	
-	jmp $
+	CALL cuadradoColor;
+	jmp $;
 	
 	iret
 ;;
