@@ -117,6 +117,9 @@ ISR 19
 
 global _isr32
 extern cuadradoColor;
+extern deshabilitar_pic;
+extern habilitar_pic;
+extern resetear_pic;
 
 _isr32:
 	CLI
@@ -124,12 +127,11 @@ _isr32:
 	PUSHFD
 
 
-	XCHG bx,bx;
 
+	CALL fin_intr_pic1;
 
-	CALL	 fin_intr_pic1
-	POPAD
 	POPFD
+	POPAD
 	STI
 	IRET
 
