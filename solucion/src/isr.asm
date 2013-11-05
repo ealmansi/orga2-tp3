@@ -101,19 +101,6 @@ ISR 19
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
-;~~~global _isr32
-;~~~_isr32:
-;~~~	cli
-;~~~	pushad
-;~~~	pushfd
-;~~~	
-;~~~	call proximo_reloj
-;~~~	
-;~~~	popfd
-;~~~	popad
-;~~~	sti
-;~~~	iret
-
 
 global _isr32
 extern cuadradoColor;
@@ -126,9 +113,9 @@ _isr32:
 	PUSHAD
 	PUSHFD
 
+	CALL           fin_intr_pic1
 
-
-	CALL fin_intr_pic1;
+    CALL           proximo_reloj
 
 	POPFD
 	POPAD
@@ -169,19 +156,21 @@ _isr33:
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
-global _isr80
-_isr80:
+
+global _isr0x50
+_isr0x50:
 	
 	jmp $
 	
 	iret
 
-global _isr102
-_isr102:
+global _isr0x66
+_isr0x66:
 	
 	jmp $
 	
 	iret
+
 
 ;; Funciones Auxiliares
 ;; -------------------------------------------------------------------------- ;;
