@@ -22,8 +22,8 @@
 	LOOP 	.setearFormatoFilas
 
 	; Colorear pantalla	
-
-	; call plantillaEstado
+	extern plantillaMapa
+	 call plantillaMapa
 
     ; Pongo el cursor afuera de la pantalla [http://wiki.osdev.org/Text_Mode_Cursor]
     

@@ -49,6 +49,7 @@ void pintar_pantalla_modo_mapa() {
 
 void plantillaEstado(){
 	int i;
+	insertarFormatoRectangular(C_BG_BLACK + C_FG_WHITE, 0,0,80,1);
 	printSquareText(0,0,80,"Mate Cocido Con Tres De Azucar / Jauja");
 	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,1,80,23);
 	insertarFormatoRectangular(0x0F,50,1,28,14);
@@ -79,11 +80,21 @@ void plantillaEstado(){
 		insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,4+3*i,24,2,1);
 	}
 
-
-
-
+	printSquareText(79,24,1,"*");
+	printSquareText(0,24,1,"*");
+	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,24,1,1);
 
 }
+
+
+void plantillaMapa(){
+	insertarFormatoRectangular(C_BG_GREEN, 0,0,80,3);
+	insertarFormatoRectangular(C_BG_GREEN, 0,3,16,1);
+	insertarFormatoRectangular(C_BG_BLUE LIGHTER, 16, 3, 80 - 16, 1);
+	insertarFormatoRectangular(C_BG_BLUE LIGHTER, 0, 4, 80, 20);
+
+}
+
 
 
 void imprimirNombreEquipo(){
@@ -95,3 +106,5 @@ void cuadradoColor(){
 	insertarFormatoRectangular(0xA0,5,5,7,2);
 
 }
+
+
