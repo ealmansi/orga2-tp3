@@ -5,7 +5,7 @@
 
 int int_size(int num);
 
-void memcpy(void* src, void* dst, int size) {
+void memcpy(void* dst, void* src, int size) {
 	
 	char* src_char = (char*) src;
 	char* dst_char = (char*) dst;

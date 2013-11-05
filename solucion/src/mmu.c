@@ -69,7 +69,7 @@ void mmu_copiar_codigo_tarea(int nro_tarea) {
 
 	dword_t* src_tierra = (dword_t*) (TASK_1_CODE_SRC_ADDR + nro_tarea * TASK_SIZE);
 	dword_t* dst_mar = (dword_t*) (TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE);
-	memcpy(src_tierra, dst_mar, TASK_SIZE);
+	memcpy(dst_mar, src_tierra, TASK_SIZE);
 }
 
 void mmu_inicializar_dir_tarea(int nro_tarea) {

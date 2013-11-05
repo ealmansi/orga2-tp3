@@ -34,8 +34,7 @@ void pintar_pantalla_modo_estado() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
 
-	memcpy(buffer, mem_video, MEM_VIDEO_CANT_BYTES);
-
+	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void pintar_pantalla_modo_mapa() {
@@ -43,8 +42,7 @@ void pintar_pantalla_modo_mapa() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
 
-	memcpy(buffer,mem_video, MEM_VIDEO_CANT_BYTES);
-
+	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void plantillaEstado(){

@@ -4,7 +4,7 @@
 #define __UTILS_H__
 
 
-void memcpy(void* src, void* dst, int size);
+void memcpy(void* dst, void* src, int size);
 void memclear(void* dst, int size);
 void printNumberToScreen(int X, int Y, int num);
 
