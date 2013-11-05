@@ -168,16 +168,15 @@
 
 #define ADDR_VIRTUAL_TASK_CODE          0x40000000
 
-/* macro para extraer bits
-	BITS(hasta, desde, num): bits desde 'desde' inclusive hasta 'hasta' NO inclusive
-	BITS(4, 1, 0b10101011101) == 0b110
-*/
-
 typedef unsigned int dword_t;
 typedef unsigned short word_t;
 typedef unsigned char byte_t;
 typedef unsigned long long int bits_t;
 
+/* macro para extraer bits
+	BITS(hasta, desde, num): bits desde 'desde' inclusive hasta 'hasta' NO inclusive
+	BITS(4, 1, 0b10101011101) == 0b110
+*/
 
 #define BITS(h, d, num) ((bits_t)(((num) & ((1ull << (h)) - 1ull)) >> (d)))
 
