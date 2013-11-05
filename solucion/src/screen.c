@@ -34,7 +34,8 @@ void pintar_pantalla_modo_estado() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
 
-	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
+	memcpy(buffer, mem_video, MEM_VIDEO_CANT_BYTES);
+
 }
 
 void pintar_pantalla_modo_mapa() {
@@ -42,7 +43,8 @@ void pintar_pantalla_modo_mapa() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
 
-	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
+	memcpy(buffer,mem_video, MEM_VIDEO_CANT_BYTES);
+
 }
 
 void plantillaEstado(){
@@ -50,8 +52,8 @@ void plantillaEstado(){
 	insertarFormatoRectangular(C_BG_BLACK + C_FG_WHITE, 0,0,80,1);
 	printSquareText(0,0,80,"Mate Cocido Con Tres De Azucar / Jauja");
 	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,1,80,23);
-	insertarFormatoRectangular(0x0F,50,1,28,14);
-
+	insertarFormatoRectangular(C_BG_BLACK + C_FG_WHITE,50,1,28,14);
+	insertarFormatoRectangular(C_BG_BLUE + LIGHTER,50,1,28,1);
 
 
 	insertarFormatoRectangular(C_BG_BLUE LIGHTER,2,16,77,8);

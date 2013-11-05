@@ -20,4 +20,9 @@ void inicializar_buffer_modo_mapa();
 void pintar_pantalla_modo_estado();
 void pintar_pantalla_modo_mapa();
 
+extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
+extern void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
+
+void plantillaMapa();
+void plantillaEstado();
 #endif  /* !__SCREEN_H__ */
