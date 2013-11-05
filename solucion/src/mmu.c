@@ -67,8 +67,8 @@ void mmu_inicializar_tarea(int nro_tarea) {
 
 void mmu_copiar_codigo_tarea(int nro_tarea) {
 
-	dword_t* src_tierra = (dword_t*) (TASK_1_CODE_SRC_ADDR + nro_tarea * TAMANO_PAGINA);
-	dword_t* dst_mar = (dword_t*) (TASK_1_CODE_ADDR + nro_tarea * TAMANO_PAGINA);
+	dword_t* src_tierra = (dword_t*) (TASK_1_CODE_SRC_ADDR + nro_tarea * TASK_SIZE);
+	dword_t* dst_mar = (dword_t*) (TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE);
 	memcpy(src_tierra, dst_mar, TASK_SIZE);
 }
 
@@ -83,7 +83,9 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	for(i = 2; i < PAGE_DIR_LENGTH; i++) {
 		page_directory[i] = 0;
 	}
-	page_directory[BITS(32, 22, ADDR_VIRTUAL_TASK_CODE)] = (dword_t) page_table;
+
+	int dir_index = BITS(32, 22, ADDR_VIRTUAL_TASK_CODE);
+	page_directory[dir_index] = (dword_t) page_table;
 	
 	for(i = 0; i < PAGE_TABLE_LENGTH; i++) {
 		page_table[i] = 0;
