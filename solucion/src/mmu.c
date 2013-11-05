@@ -16,8 +16,8 @@
 void mmu_inicializar_tarea(int nro_tarea);
 void mmu_copiar_codigo_tarea(int nro_tarea);
 void mmu_inicializar_dir_tarea(int nro_tarea);
-void mmu_mapear_pagina (dword_t virtual, dword_t cr3, dword_t fisica, int attr);
-void mmu_unmapear_pagina (dword_t virtual, dword_t cr3);
+void mmu_mapear_pagina (unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attr);
+void mmu_unmapear_pagina (unsigned int virtual, unsigned int cr3);
 
 /* directorio y tablas del kernel */
 
@@ -91,24 +91,24 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 		page_table[i] = 0;
 	}
 	mmu_mapear_pagina(	ADDR_VIRTUAL_TASK_CODE, 						/* virtual */
-						(dword_t) page_directory, 						/* cr3 */
+						(unsigned int) page_directory, 					/* cr3 */
 						TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE, 		/* fisica */
 						PAGE_DESC_ATTR_USR_RW_P);						/* attr */
 
 	mmu_mapear_pagina(	ADDR_VIRTUAL_TASK_CODE + TAMANO_PAGINA, 
-						(dword_t) page_directory, 
+						(unsigned int) page_directory, 
 						TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE  + TAMANO_PAGINA, 
 						PAGE_DESC_ATTR_USR_RW_P);
 
 	mmu_mapear_pagina(	ADDR_VIRTUAL_TASK_CODE + 2 * TAMANO_PAGINA, 
-						(dword_t) page_directory, 
-						(dword_t) 0, 
+						(unsigned int) page_directory, 
+						0, 
 						PAGE_DESC_ATTR_USR_RO_P);
 }
 
 /* mapear y unmapear paginas */
 
-void mmu_mapear_pagina (dword_t virtual, dword_t cr3, dword_t fisica, int attr) {
+void mmu_mapear_pagina (unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attr) {
  	
  	int dir_index = BITS(32, 22, virtual);
 	int table_index = BITS(22, 12, virtual);
@@ -119,7 +119,7 @@ void mmu_mapear_pagina (dword_t virtual, dword_t cr3, dword_t fisica, int attr) 
 	page_table[table_index] = fisica + attr;
 }
 
-void mmu_unmapear_pagina (dword_t virtual, dword_t cr3) {
+void mmu_unmapear_pagina (unsigned int virtual, unsigned int cr3) {
 	
 	mmu_mapear_pagina(virtual, cr3, 0x0, 0x0);
 }
