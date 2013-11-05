@@ -8,10 +8,8 @@
 
 BITS 32
 
-
 ;; PIC
 extern fin_intr_pic1
-
 
 ;;
 ;; Definición de MACROS
@@ -27,6 +25,7 @@ _isr%1:
 ;;
 ;; Datos
 ;; -------------------------------------------------------------------------- ;;
+
 ; Scheduler
 reloj_numero:           dd 0x00000000
 reloj:                  db '|/-\'
@@ -74,7 +73,7 @@ _isr_msj_19:            db 'Rutina de interrupcion nro 19'
 _isr_msj_len_19         equ $ - _isr_msj_19
 
 ;;
-;; Rutina de atención de las EXCEPCIONES
+;; Rutinas de atención de las EXCEPCIONES
 ;; -------------------------------------------------------------------------- ;;
 
 ISR 0
@@ -101,33 +100,15 @@ ISR 19
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
-;~~~global _isr32
-;~~~_isr32:
-;~~~	cli
-;~~~	pushad
-;~~~	pushfd
-;~~~	
-;~~~	call proximo_reloj
-;~~~	
-;~~~	popfd
-;~~~	popad
-;~~~	sti
-;~~~	iret
-
 
 global _isr32
-extern cuadradoColor;
-extern deshabilitar_pic;
-extern habilitar_pic;
-extern resetear_pic;
-
 _isr32:
 	CLI
 	PUSHAD
 	PUSHFD
 
 	CALL           fin_intr_pic1
-    
+
     CALL           proximo_reloj
 
 	POPFD
@@ -135,23 +116,23 @@ _isr32:
 	STI
 	IRET
 
-
-
-
-
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
+
 global _isr33
+extern cuadradoColor;
 _isr33:
 	
 	CALL cuadradoColor;
 	jmp $;
 	
 	iret
+
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
+
 global _isr80
 _isr80:
 	
@@ -165,6 +146,7 @@ _isr102:
 	jmp $
 	
 	iret
+
 
 ;; Funciones Auxiliares
 ;; -------------------------------------------------------------------------- ;;
