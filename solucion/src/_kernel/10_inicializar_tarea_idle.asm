@@ -1,17 +1,21 @@
 extern tss_inicializar_idle
 extern tss_inicializar_inicial
 extern nueva_tss
+global offset_idle
 
-
+offset_idle: DW 0x0;
 	; inicializar tarea inicial
-	
+		
 	
 	; inicializar tarea idle
 	
-	call tss_inicializar_idle
+	CALL 		tss_inicializar_idle
 
-	push eax
+	PUSH 		eax
 	
-	call nueva_tss
+	CALL		nueva_tss
+	;breakpoint
+	MOV		 	[offset_idle], ax
+	ADD 		esp, 4
+
 	
-	add esp, 4

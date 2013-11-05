@@ -34,7 +34,7 @@ void mmu_inicializar_dir_kernel() {
 	
 	//Tabla extra para Idle
 	int dir_index = BITS(32, 22, ADDR_VIRTUAL_TASK_CODE);
-	kernel_page_directory[dir_index] = ADDR_IDLE_PAGE_TABLE;
+	kernel_page_directory[dir_index] = ADDR_IDLE_PAGE_TABLE+3;
 
 }
 

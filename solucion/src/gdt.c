@@ -106,6 +106,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (byte_t) 0b0,                               /* g            */
         (byte_t) BITS(32, 24, VIDEO_SEG_LIMIT),     /* base[31:24]  */
     },
+
 };
 
 gdt_descriptor GDT_DESC = {
@@ -130,31 +131,44 @@ word_t nueva_tss(tss* ptss){
 	descriptor_tss->base_0_15 = (unsigned int) (ptss) & 0xFFFF;
 	descriptor_tss->base_23_16 = ((unsigned int) (ptss) >> 16) & 0xFF;
 	
-	if(ptss == &tarea_inicial || ptss == &tarea_idle) {
-		descriptor_tss->type = 0x09;
-	} else {
-		descriptor_tss->type = 0xA;
-	}
+	
+	descriptor_tss->type = 0x09;
+
+
 	
 	descriptor_tss->s = 0x00;
 	
-	if(ptss == &tarea_inicial || ptss == &tarea_idle) {
+	//~ if(ptss == &tarea_inicial || ptss == &tarea_idle) {
 		descriptor_tss->dpl = 0x00;
-	} else {
-		descriptor_tss->dpl = 0x03;
-	}
+	//~ } else {
+		//~ descriptor_tss->dpl = 0x03;
+	//~ }
 	
 	descriptor_tss->p = 0x01;
 	descriptor_tss->limit_16_19 = 0x00;
 	descriptor_tss->avl = 0x00;
 	descriptor_tss->l = 0x00;
-	descriptor_tss->db = 0x01;
-	descriptor_tss->g = 0x01;
+	descriptor_tss->db = 0x00;
+	descriptor_tss->g = 0x00;
 	descriptor_tss->base_31_24 = (unsigned int) (ptss) >> 24;
 	
-	return gdt_next_index;
+	return (gdt_next_index << 3);
 }
 
-
-
-
+    //~ [0x17] = (gdt_entry) {
+        //~ (word_t) BITS(16, 0, 0x67), 			     /* limit[0:15]  */
+        //~ (word_t) BITS(16, 0, (dword_t)&tarea_inicial),       /* base[0:15]   */
+        //~ (byte_t) BITS(24, 16, (dword_t)&tarea_inicial),      /* base[23:16]  */
+        //~ (byte_t) 0b1001,                            /* type         */
+        //~ (byte_t) 0b0,                               /* s            */
+        //~ (byte_t) 0b00,                              /* dpl          */
+        //~ (byte_t) 0b1,                               /* p            */
+        //~ (byte_t) BITS(20, 16, 0x67),			     /* limit[16:19] */
+        //~ (byte_t) 0b0,                               /* avl          */
+        //~ (byte_t) 0b0,                               /* l            */
+        //~ (byte_t) 0b0,                               /* db           */
+        //~ (byte_t) 0b0,                               /* g            */
+        //~ (byte_t) BITS(32, 24, (dword_t)&tarea_inicial),     /* base[31:24]  */
+    //~ },
+//~ 
+//~ 

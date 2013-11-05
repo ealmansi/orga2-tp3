@@ -9,6 +9,5 @@ call tss_inicializar_inicial
 	call nueva_tss
 	
 	add esp, 4
-	mov ax, 0x17
 	ltr ax
-	breakpoint
+
