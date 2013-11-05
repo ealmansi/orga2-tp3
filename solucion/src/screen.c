@@ -89,7 +89,6 @@ void plantillaEstado(){
 	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,24,1,1);
 }
 
-
 void plantillaMapa(){
 	insertarFormatoRectangular(C_BG_GREEN, 0,0,80,3);
 	insertarFormatoRectangular(C_BG_GREEN, 0,3,16,1);
@@ -111,34 +110,20 @@ void plantillaMapa(){
 	printSquareText(79,24,1,"*");
 	printSquareText(0,24,1,"*");
 	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,24,1,1);
-
-
 }
-
-
 
 void imprimirNombreEquipo(){
 	printSquareText(3,3,20,"Mate Cocido Con Tres De Azucar");
 }
 
-
 void cuadradoColor(){
 	insertarFormatoRectangular(0xA0,5,5,7,2);
-}
-
-int str_len(char* str){
-	int i=0;
-	while (*str !=0){
-		str++;
-		i++;
-	}
-	return i;
 }
 
 void imprimirTextoAca(void* buffer, int X, int Y, char* texto){
 	char* buf = (char*) buffer;
 	buf = buf + 2*(Y*80+X);
-	memcpy(buf, texto, str_len(texto));
+	memcpy(buf, texto, strlen(texto));
 }
 
 void insertarFormatoRectangularAca(void* buffer, char format, int X, int Y, int ancho, int alto){
@@ -151,6 +136,17 @@ void insertarFormatoRectangularAca(void* buffer, char format, int X, int Y, int 
 		}
 		buf = buf + 160;
 
+	}
+}
+
+void printNumberToScreen(int X, int Y, int num){
+	char* start = ((char*) VIDEO + 2*(80*Y+X));
+	int size = int_size(num);
+	int i;
+
+	for (i = size-1; i >= 0; i--) {
+		start[2*i] = 0x30 + num % 10;
+		num = num / 10;
 	}
 }
 

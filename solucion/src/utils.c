@@ -17,7 +17,6 @@ void memcpy(void* dst, void* src, int size) {
 
 }
 
-
 void memclear(void* dst, int size){
 	char* dst_char = (char*) dst;
 
@@ -27,17 +26,14 @@ void memclear(void* dst, int size){
 	}
 }
 
-void printNumberToScreen(int X, int Y, int num){
-	char* start = ((char*) VIDEO + 2*(80*Y+X));
-	int size = int_size(num);
-	int i;
-
-	for (i = size-1; i >= 0; i--) {
-		start[2*i] = 0x30 + num % 10;
-		num = num / 10;
+int strlen(char* str){
+	int i=0;
+	while (*str !=0){
+		str++;
+		i++;
 	}
+	return i;
 }
-
 
 int int_size(int num){
 
