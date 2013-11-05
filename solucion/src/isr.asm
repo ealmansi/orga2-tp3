@@ -133,15 +133,15 @@ _isr33:
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
 
-global _isr80
-_isr80:
+global _isr0x50
+_isr0x50:
 	
 	jmp $
 	
 	iret
 
-global _isr102
-_isr102:
+global _isr0x66
+_isr0x66:
 	
 	jmp $
 	
