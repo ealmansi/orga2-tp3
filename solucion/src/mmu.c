@@ -57,6 +57,10 @@ void mmu_inicializar_tablas_kernel() {
 		idle_page_table[i] = 0;
 	}
 	
+	mmu_mapear_pagina(ADDR_VIRTUAL_TASK_CODE,ADDR_KERNEL_PAGE_DIREC,ADDR_TASK_IDLE_CODE,0x3);
+	mmu_mapear_pagina(ADDR_VIRTUAL_TASK_CODE + TAMANO_PAGINA,ADDR_KERNEL_PAGE_DIREC,ADDR_TASK_IDLE_CODE + TAMANO_PAGINA,0x3);
+	mmu_mapear_pagina(TASK_ANCLA,ADDR_KERNEL_PAGE_DIREC,TASK_ANCLA_FIS,0x3);
+	
 }
 
 /* directorios y tablas de las tareas */

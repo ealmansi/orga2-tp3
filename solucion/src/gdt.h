@@ -8,7 +8,7 @@
 #ifndef __GDT_H__
 #define __GDT_H__
 
-#include "defines.h"
+#include "tss.h"
 
 #define GDT_COUNT 41
 
@@ -43,7 +43,7 @@ typedef struct str_gdt_entry {
 extern gdt_entry gdt[];
 extern gdt_descriptor GDT_DESC;
 
-void nueva_tss();
+word_t nueva_tss(tss* ptss);
 
 
 #endif  /* !__GDT_H__ */
