@@ -10,23 +10,29 @@
 #include "utils.h"
 #include "colors.h"
 
-extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
-extern void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
+void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
+void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
 
 #define 	MEM_VIDEO_CANT_BYTES 	(2 * VIDEO_FILS * VIDEO_COLS)
 
 void inicializar_buffer_modo_estado() {
 
+	plantillaEstado();
+
+	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
 
-	memclear(buffer, MEM_VIDEO_CANT_BYTES);
+	memcpy(buffer, mem_video, MEM_VIDEO_CANT_BYTES);
 }
 
 void inicializar_buffer_modo_mapa() {
 
+	plantillaMapa();
+
+	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
 
-	memclear(buffer, MEM_VIDEO_CANT_BYTES);
+	memcpy(buffer, mem_video, MEM_VIDEO_CANT_BYTES);
 }
 
 void pintar_pantalla_modo_estado() {
@@ -34,8 +40,7 @@ void pintar_pantalla_modo_estado() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
 
-	memcpy(buffer, mem_video, MEM_VIDEO_CANT_BYTES);
-
+	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void pintar_pantalla_modo_mapa() {
@@ -43,8 +48,7 @@ void pintar_pantalla_modo_mapa() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
 
-	memcpy(buffer,mem_video, MEM_VIDEO_CANT_BYTES);
-
+	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void plantillaEstado(){
@@ -83,7 +87,6 @@ void plantillaEstado(){
 	printSquareText(79,24,1,"*");
 	printSquareText(0,24,1,"*");
 	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,24,1,1);
-
 }
 
 
@@ -92,7 +95,6 @@ void plantillaMapa(){
 	insertarFormatoRectangular(C_BG_GREEN, 0,3,16,1);
 	insertarFormatoRectangular(C_BG_BLUE LIGHTER, 16, 3, 80 - 16, 1);
 	insertarFormatoRectangular(C_BG_BLUE LIGHTER, 0, 4, 80, 20);
-
 }
 
 
@@ -104,7 +106,4 @@ void imprimirNombreEquipo(){
 
 void cuadradoColor(){
 	insertarFormatoRectangular(0xA0,5,5,7,2);
-
 }
-
-
