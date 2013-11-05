@@ -28,7 +28,7 @@ void mmu_inicializar_dir_kernel() {
 	int i = 0;
 	kernel_page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_1 + PAGE_DESC_ATTR_SUP_RW_P;
 	kernel_page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_2 + PAGE_DESC_ATTR_SUP_RW_P;
-	for (i = 2; i < 1024; ++i) {
+	for (i = 2; i < PAGE_DIR_LENGTH; ++i) {
 		kernel_page_directory[i] = 0;
 	}
 
@@ -40,11 +40,11 @@ void mmu_inicializar_tablas_kernel() {
 	dword_t* kernel_page_table_2 = (dword_t*) ADDR_KERNEL_PAGE_TABLE_2;
 
 	int i;
-	for (i = 0; i < 1024; ++i){
+	for (i = 0; i < PAGE_TABLE_LENGTH; ++i) {
 		kernel_page_table_1[i] = ((i << 12) + PAGE_DESC_ATTR_SUP_RW_P);
 	}
 
-	for (i = 0; i < 896; ++i){
+	for (i = 0; i < ((PAGE_TABLE_LENGTH / 8) * 7); ++i) {
 		kernel_page_table_2[i] = ((i << 12) + PAGE_DESC_ATTR_SUP_RW_P);
 	}
 }
@@ -80,15 +80,14 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	int i = 0;
 	page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_1 + PAGE_DESC_ATTR_SUP_RW_P;
 	page_directory[i++] = ADDR_KERNEL_PAGE_TABLE_2 + PAGE_DESC_ATTR_SUP_RW_P;
-	for(; i < 1024; i++) {
+	for(i = 2; i < PAGE_DIR_LENGTH; i++) {
 		page_directory[i] = 0;
 	}
 	page_directory[BITS(32, 22, ADDR_VIRTUAL_TASK_CODE)] = (dword_t) page_table;
 	
-	for(i = 0; i < 1024; i++) {
+	for(i = 0; i < PAGE_TABLE_LENGTH; i++) {
 		page_table[i] = 0;
 	}
-	
 	mmu_mapear_pagina(	ADDR_VIRTUAL_TASK_CODE, 						/* virtual */
 						(dword_t) page_directory, 						/* cr3 */
 						TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE, 		/* fisica */

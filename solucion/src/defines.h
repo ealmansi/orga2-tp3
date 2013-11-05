@@ -23,6 +23,9 @@
 
 #define TASK_SIZE               (2 * TAMANO_PAGINA)
 
+#define PAGE_DIR_LENGTH			1024
+#define PAGE_TABLE_LENGTH		1024
+
 
 /* Indices en la gdt */
 /* -------------------------------------------------------------------------- */
