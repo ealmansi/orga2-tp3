@@ -142,13 +142,30 @@ _isr32:
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
+extern pintar_pantalla_modo_mapa;
+extern pintar_pantalla_modo_estado;
 global _isr33
 _isr33:
-	
-	CALL cuadradoColor;
-	jmp $;
-	
-	iret
+	CLI
+	PUSHAD
+	PUSHFD
+	CALL fin_intr_pic1;
+
+	IN al, 0x60;
+
+	CMP al, 0x32;
+	JNE .revisarEstado;
+	CALL pintar_pantalla_modo_mapa
+.revisarEstado:
+	CMP al, 0x12;
+	JNE .salida
+	CALL pintar_pantalla_modo_estado;
+
+.salida:
+	POPFD
+	POPAD
+	STI
+	IRET
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;

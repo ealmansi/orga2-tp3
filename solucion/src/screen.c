@@ -10,23 +10,21 @@
 #include "utils.h"
 #include "colors.h"
 
-extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
-extern void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
 
 #define 	MEM_VIDEO_CANT_BYTES 	(2 * VIDEO_FILS * VIDEO_COLS)
 
 void inicializar_buffer_modo_estado() {
-
-	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
-
-	memclear(buffer, MEM_VIDEO_CANT_BYTES);
+	plantillaEstado();
+	char* video = (char*) VIDEO;
+	char* buffer = (char*) ADDR_BUFFER_VIDEO_ESTADO;
+	memcpy(video, buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void inicializar_buffer_modo_mapa() {
-
-	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
-
-	memclear(buffer, MEM_VIDEO_CANT_BYTES);
+	plantillaMapa();
+	char* video = (char*) VIDEO;
+	char* buffer = (char*) ADDR_BUFFER_VIDEO_MAPA;
+	memcpy(video, buffer, MEM_VIDEO_CANT_BYTES);
 }
 
 void pintar_pantalla_modo_estado() {
@@ -52,8 +50,8 @@ void plantillaEstado(){
 	insertarFormatoRectangular(C_BG_BLACK + C_FG_WHITE, 0,0,80,1);
 	printSquareText(0,0,80,"Mate Cocido Con Tres De Azucar / Jauja");
 	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,1,80,23);
-	insertarFormatoRectangular(0x0F,50,1,28,14);
-
+	insertarFormatoRectangular(C_BG_BLACK + C_FG_WHITE,50,1,28,14);
+	insertarFormatoRectangular(C_BG_BLUE + LIGHTER,50,1,28,1);
 
 
 	insertarFormatoRectangular(C_BG_BLUE LIGHTER,2,16,77,8);

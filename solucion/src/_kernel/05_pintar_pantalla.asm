@@ -1,4 +1,5 @@
-extern plantillaMapa
+extern inicializar_buffer_modo_mapa;
+extern inicializar_buffer_modo_estado;
 
     ; Limpiar pantalla
 
@@ -23,4 +24,5 @@ extern plantillaMapa
 
     ; Colorear pantalla    
     
-    CALL    plantillaMapa
+	CALL inicializar_buffer_modo_mapa
+	CALL inicializar_buffer_modo_estado
