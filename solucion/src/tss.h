@@ -55,6 +55,9 @@ extern tss tarea_inicial;
 extern tss tarea_idle;
 extern tss tarea_dibujar;
 
-void tss_inicializar();
+tss* tss_inicializar_navios();
+tss* tss_inicializar_banderas();
+tss* tss_inicializar_idle();
+tss* tss_inicializar_inicial();
 
 #endif  /* !__TSS_H__ */

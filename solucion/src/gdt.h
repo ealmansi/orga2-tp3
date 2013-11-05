@@ -43,5 +43,7 @@ typedef struct str_gdt_entry {
 extern gdt_entry gdt[];
 extern gdt_descriptor GDT_DESC;
 
+void nueva_tss();
+
 
 #endif  /* !__GDT_H__ */

@@ -31,6 +31,10 @@ void mmu_inicializar_dir_kernel() {
 	for (i = 2; i < PAGE_DIR_LENGTH; ++i) {
 		kernel_page_directory[i] = 0;
 	}
+	
+	//Tabla extra para Idle
+	int dir_index = BITS(32, 22, ADDR_VIRTUAL_TASK_CODE);
+	kernel_page_directory[dir_index] = ADDR_IDLE_PAGE_TABLE;
 
 }
 
@@ -38,6 +42,7 @@ void mmu_inicializar_tablas_kernel() {
 
 	dword_t* kernel_page_table_1 = (dword_t*) ADDR_KERNEL_PAGE_TABLE_1;
 	dword_t* kernel_page_table_2 = (dword_t*) ADDR_KERNEL_PAGE_TABLE_2;
+	dword_t* idle_page_table = (dword_t*) ADDR_IDLE_PAGE_TABLE;
 
 	int i;
 	for (i = 0; i < PAGE_TABLE_LENGTH; ++i) {
@@ -47,6 +52,11 @@ void mmu_inicializar_tablas_kernel() {
 	for (i = 0; i < ((PAGE_TABLE_LENGTH / 8) * 7); ++i) {
 		kernel_page_table_2[i] = ((i << 12) + PAGE_DESC_ATTR_SUP_RW_P);
 	}
+	
+	for(i = 0; i < PAGE_TABLE_LENGTH; ++i) {
+		idle_page_table[i] = 0;
+	}
+	
 }
 
 /* directorios y tablas de las tareas */
