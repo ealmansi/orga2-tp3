@@ -126,9 +126,9 @@ _isr32:
 	PUSHAD
 	PUSHFD
 
-
-
-	CALL fin_intr_pic1;
+	CALL           fin_intr_pic1
+    
+    CALL           proximo_reloj
 
 	POPFD
 	POPAD
