@@ -8,6 +8,14 @@
 #include "tss.h"
 #include "mmu.h"
 
+#define GDT_SEL_CODIG_0 18<<3
+#define GDT_SEL_CODIG_3 ((19<<3)+3)
+#define GDT_SEL_DATOS_0 20<<3
+#define GDT_SEL_DATOS_3 ((21<<3)+3)
+#define GDT_SEL_VIDEO_0 22<<3
+
+
+
 tss tarea_inicial;
 tss tarea_idle;
 
@@ -19,7 +27,7 @@ void tss_inicializar_navio(unsigned int tarea){
 	tss_navios[tarea].ptl = 0;
 	tss_navios[tarea].unused0 = 0;
 	tss_navios[tarea].esp0 = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
-	tss_navios[tarea].ss0 = 21;
+	tss_navios[tarea].ss0 = GDT_SEL_DATOS_3; /* aca tal vez va 0*/
 	tss_navios[tarea].unused1 = 0;
 	tss_navios[tarea].esp1 = 0;
 	tss_navios[tarea].ss1 = 0;
@@ -38,17 +46,17 @@ void tss_inicializar_navio(unsigned int tarea){
 	tss_navios[tarea].ebp = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
 	tss_navios[tarea].esi = 0;
 	tss_navios[tarea].edi = 0;
-	tss_navios[tarea].es = 21;
+	tss_navios[tarea].es = GDT_SEL_DATOS_3;
 	tss_navios[tarea].unused4 = 0;
-	tss_navios[tarea].cs = 19;
+	tss_navios[tarea].cs = GDT_SEL_CODIG_3;
 	tss_navios[tarea].unused5 = 0;
-	tss_navios[tarea].ss = 21;
+	tss_navios[tarea].ss = GDT_SEL_DATOS_3;
 	tss_navios[tarea].unused6 = 0;
-	tss_navios[tarea].ds = 21;
+	tss_navios[tarea].ds = GDT_SEL_DATOS_3;
 	tss_navios[tarea].unused7 = 0;
-	tss_navios[tarea].fs = 22;
+	tss_navios[tarea].fs = GDT_SEL_VIDEO_0;
 	tss_navios[tarea].unused8 = 0;
-	tss_navios[tarea].gs = 21;
+	tss_navios[tarea].gs = GDT_SEL_DATOS_3;
 	tss_navios[tarea].unused9 = 0;
 	tss_navios[tarea].ldt = 0;
 	tss_navios[tarea].unused10 = 0;
@@ -76,7 +84,7 @@ void tss_inicializar_bandera(unsigned int tarea){
 	tss_banderas[tarea].ptl = 0;
 	tss_banderas[tarea].unused0 = 0;
 	tss_banderas[tarea].esp0 = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
-	tss_banderas[tarea].ss0 = 21;
+	tss_banderas[tarea].ss0 = GDT_SEL_DATOS_0;
 	tss_banderas[tarea].unused1 = 0;
 	tss_banderas[tarea].esp1 = 0;
 	tss_banderas[tarea].ss1 = 0;
@@ -95,17 +103,17 @@ void tss_inicializar_bandera(unsigned int tarea){
 	tss_banderas[tarea].ebp = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
 	tss_banderas[tarea].esi = 0;
 	tss_banderas[tarea].edi = 0;
-	tss_banderas[tarea].es = 21;
+	tss_banderas[tarea].es = GDT_SEL_DATOS_3;
 	tss_banderas[tarea].unused4 = 0;
-	tss_banderas[tarea].cs = 19;
+	tss_banderas[tarea].cs = GDT_SEL_CODIG_3;
 	tss_banderas[tarea].unused5 = 0;
-	tss_banderas[tarea].ss = 21;
+	tss_banderas[tarea].ss = GDT_SEL_DATOS_3;
 	tss_banderas[tarea].unused6 = 0;
-	tss_banderas[tarea].ds = 21;
+	tss_banderas[tarea].ds = GDT_SEL_DATOS_3;
 	tss_banderas[tarea].unused7 = 0;
-	tss_banderas[tarea].fs = 22;
+	tss_banderas[tarea].fs = GDT_SEL_VIDEO_0;
 	tss_banderas[tarea].unused8 = 0;
-	tss_banderas[tarea].gs = 21;
+	tss_banderas[tarea].gs = GDT_SEL_DATOS_3;
 	tss_banderas[tarea].unused9 = 0;
 	tss_banderas[tarea].ldt = 0;
 	tss_banderas[tarea].unused10 = 0;
@@ -133,7 +141,7 @@ tss* tss_inicializar_idle(){
 	tarea_idle.ptl = 0;
 	tarea_idle.unused0 = 0;
 	tarea_idle.esp0 = ADDR_TASK_IDLE_STACK_PL_0;
-	tarea_idle.ss0 = 20<<3;
+	tarea_idle.ss0 = GDT_SEL_DATOS_0;
 	tarea_idle.unused1 = 0;
 	tarea_idle.esp1 = 0;
 	tarea_idle.ss1 = 0;
@@ -152,17 +160,17 @@ tss* tss_inicializar_idle(){
 	tarea_idle.ebp = ADDR_TASK_IDLE_STACK_PL_0;
 	tarea_idle.esi = 0;
 	tarea_idle.edi = 0;
-	tarea_idle.es = 20<<3;
+	tarea_idle.es = GDT_SEL_DATOS_0;
 	tarea_idle.unused4 = 0;
-	tarea_idle.cs = 18<<3;
+	tarea_idle.cs = GDT_SEL_CODIG_0;
 	tarea_idle.unused5 = 0;
-	tarea_idle.ss = 20<<3;
+	tarea_idle.ss = GDT_SEL_DATOS_0;
 	tarea_idle.unused6 = 0;
-	tarea_idle.ds = 20<<3;
+	tarea_idle.ds = GDT_SEL_DATOS_0;
 	tarea_idle.unused7 = 0;
-	tarea_idle.fs = 22<<3;
+	tarea_idle.fs = GDT_SEL_VIDEO_0;
 	tarea_idle.unused8 = 0;
-	tarea_idle.gs = 20<<3;
+	tarea_idle.gs = GDT_SEL_DATOS_0;
 	tarea_idle.unused9 = 0;
 	tarea_idle.ldt = 0;
 	tarea_idle.unused10 = 0;
