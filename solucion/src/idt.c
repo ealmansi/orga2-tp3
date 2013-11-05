@@ -5,6 +5,7 @@
   definicion de las rutinas de atencion de interrupciones
 */
 
+#include "defines.h"
 #include "idt.h"
 #include "isr.h"
 #include "gdt.h"
@@ -16,14 +17,20 @@ idt_descriptor IDT_DESC = {
     (unsigned int) &idt
 };
 
-#define idt_entry_attr(p,dpl,s,d,tipo,ceros,reservado)               \
+#define idt_entry_attr(p, dpl, s, d, tipo, ceros, reservado)               \
     (0b ## p ## dpl ## s ## d ## tipo ## ceros ## reservado)
 
-#define IDT_ENTRY(numero)                                                                                       \
-    idt[numero].offset_0_15 = (unsigned short) ((unsigned int)(&_isr ## numero) & (unsigned int) 0xFFFF);       \
-    idt[numero].segsel = (unsigned short) GDT_IDX_CODIG_0 << 3;                                                 \
-    idt[numero].attr = (unsigned short) idt_entry_attr(1,00,0,1,111,000,00000);                                 \
-    idt[numero].offset_16_31 = (unsigned short) ((unsigned int)(&_isr ## numero) >> 16 & (unsigned int) 0xFFFF);
+#define IDT_ENTRY(numero)                                                                               \
+    idt[numero].offset_0_15          = (word_t) BITS(16, 0, (dword_t) &_isr ## numero);                 \
+    idt[numero].offset_16_31         = (word_t) BITS(32, 16, (dword_t) &_isr ## numero);                \
+    idt[numero].segsel               = (word_t) GDT_IDX_CODIG_0 << 3;                                   \
+    idt[numero].attr                 = (word_t) idt_entry_attr( 1,            /* p */                   \
+                                                                00,           /* dpl */                 \
+                                                                0,            /* s */                   \
+                                                                1,            /* d */                   \
+                                                                111,          /* tipo */                \
+                                                                000,          /* ceros */               \
+                                                                00000);       /* reservado */
 
 void idt_inicializar() {
     IDT_ENTRY(0);
