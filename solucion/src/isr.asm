@@ -150,13 +150,13 @@ _isr33:
 .switch:
 .letra_m:
     CMP 			AL, 0x32			; M
-    JNE 			.letra_s
+    JNE 			.letra_e
 
     call 			pintar_pantalla_modo_mapa
 
     JMP 			.end_switch
-.letra_s:
-    CMP 			AL, 0x1F			; S
+.letra_e:
+    CMP 			AL, 0x12			; E
     JNE 			.digito_0
 
     call 			pintar_pantalla_modo_estado

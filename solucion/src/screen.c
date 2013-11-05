@@ -40,7 +40,7 @@ void pintar_pantalla_modo_estado() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_ESTADO;
 
-	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
+	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES - 160);
 }
 
 void pintar_pantalla_modo_mapa() {
@@ -48,7 +48,7 @@ void pintar_pantalla_modo_mapa() {
 	unsigned char* mem_video = (unsigned char*) ADDR_MEM_VIDEO;
 	unsigned char* buffer = (unsigned char*) ADDR_BUFFER_VIDEO_MAPA;
 
-	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
+	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES - 160);
 }
 
 void plantillaEstado(){
@@ -95,6 +95,24 @@ void plantillaMapa(){
 	insertarFormatoRectangular(C_BG_GREEN, 0,3,16,1);
 	insertarFormatoRectangular(C_BG_BLUE LIGHTER, 16, 3, 80 - 16, 1);
 	insertarFormatoRectangular(C_BG_BLUE LIGHTER, 0, 4, 80, 20);
+	int i;
+
+	for(i=0; i<79; i++){
+		printSquareText(0,i,80,"                                                                                ");
+	}
+	
+
+	for (i = 0; i < 8; i++) {
+		printSquareText(5+3*i,24,1,"*");
+		printNumberToScreen(4+3*i,24,i+1);
+		insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,4+3*i,24,2,1);
+	}
+
+	printSquareText(79,24,1,"*");
+	printSquareText(0,24,1,"*");
+	insertarFormatoRectangular(C_BG_LIGHT_GREY LIGHTER,0,24,1,1);
+
+
 }
 
 
@@ -107,3 +125,33 @@ void imprimirNombreEquipo(){
 void cuadradoColor(){
 	insertarFormatoRectangular(0xA0,5,5,7,2);
 }
+
+int str_len(char* str){
+	int i=0;
+	while (*str !=0){
+		str++;
+		i++;
+	}
+	return i;
+}
+
+void imprimirTextoAca(void* buffer, int X, int Y, char* texto){
+	char* buf = (char*) buffer;
+	buf = buf + 2*(Y*80+X);
+	memcpy(buf, texto, str_len(texto));
+}
+
+void insertarFormatoRectangularAca(void* buffer, char format, int X, int Y, int ancho, int alto){
+	char* buf = (char*) buffer;
+	buf++;
+	int i,j;
+	for (i = 0; i < alto; i++) {
+		for (j = 0; j < ancho; j++) {
+			buf[2*(80*Y+X)+2*j] = format;
+		}
+		buf = buf + 160;
+
+	}
+}
+
+	
