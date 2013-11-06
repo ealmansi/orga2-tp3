@@ -118,14 +118,34 @@ ISR 19
 ;; -------------------------------------------------------------------------- ;;
 
 global _isr32
+extern sched_proximo_indice;
+extern imprimir_numero_buffer;
+offset: DW 0 ;
 _isr32:
 	CLI
 	PUSHAD
 	PUSHFD
 
-	CALL           fin_intr_pic1
+    CALL		proximo_reloj
 
-    CALL           proximo_reloj
+	CALL		sched_proximo_indice
+
+	CMP ax, 0
+	JE .nojump
+
+		MOV [offset], ax
+		CALL fin_intr_pic1
+		STI
+	;	JMP FAR [offset]
+
+		
+		JMP .end
+
+
+.nojump:
+	CALL    fin_intr_pic1
+
+.end:
 
 	POPFD
 	POPAD
@@ -249,9 +269,9 @@ _isr0x50:
 	PUSHAD
 	PUSHFD
 
-	CALL 			fin_intr_pic1
 
     MOV 			EAX, 0x42
+	JMP $
 
 	POPFD
 	POPAD
@@ -264,8 +284,7 @@ _isr0x66:
 	PUSHAD
 	PUSHFD
 
-	CALL 			fin_intr_pic1
-
+	JMP $
     MOV 			EAX, 0x42
 
 	POPFD
