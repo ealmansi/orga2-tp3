@@ -3,9 +3,10 @@ extern tss_inicializar_inicial
 extern nueva_tss
 global offset_idle
 
+	JMP empezarAca
 offset_idle: DW 0x0;
 	; inicializar tarea inicial
-		
+empezarAca:
 	
 	; inicializar tarea idle
 	
@@ -14,7 +15,6 @@ offset_idle: DW 0x0;
 	PUSH 		eax
 	
 	CALL		nueva_tss
-	;breakpoint
 	MOV		 	[offset_idle], ax
 	ADD 		esp, 4
 
