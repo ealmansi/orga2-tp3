@@ -119,7 +119,6 @@ ISR 19
 
 global _isr32
 extern sched_proximo_indice;
-extern imprimir_numero_buffer;
 offset: DW 0 ;
 _isr32:
 	CLI
@@ -132,11 +131,10 @@ _isr32:
 
 	CMP ax, 0
 	JE .nojump
-
 		MOV [offset], ax
 		CALL fin_intr_pic1
-		STI
-	;	JMP FAR [offset]
+		XCHG bx, bx
+		JMP FAR [offset]
 
 		
 		JMP .end

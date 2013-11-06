@@ -29,8 +29,8 @@ void sched_inicializar() {
 		sel_navios[i] = (0x19+i) << 3;
 		sel_banderas[i] = (0x21+i) << 3 ;
 	}
-	navio_actual = 1;
-	bandera_actual = 1;
+	navio_actual = 0;
+	bandera_actual = 0;
 
 }
 
