@@ -51,13 +51,7 @@ typedef struct str_tss {
     unsigned short  iomap;
 } __attribute__((__packed__, aligned (8))) tss;
 
-extern tss tarea_inicial;
-extern tss tarea_idle;
-//~ extern tss tarea_dibujar;
-
-tss* tss_inicializar_navios();
-tss* tss_inicializar_banderas();
-tss* tss_inicializar_idle();
-tss* tss_inicializar_inicial();
+void tss_inicializar();
+void tss_inicializar_entradas_gdt();
 
 #endif  /* !__TSS_H__ */

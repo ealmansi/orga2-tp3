@@ -10,13 +10,17 @@
 
 #include "tss.h"
 
-#define GDT_COUNT 41
 
-#define GDT_IDX_CODIG_0 18
-#define GDT_IDX_CODIG_3 19
-#define GDT_IDX_DATOS_0 20
-#define GDT_IDX_DATOS_3 21
-#define GDT_IDX_VIDEO_0 22
+#define GDT_IDX_CODIG_0                 18
+#define GDT_IDX_CODIG_3                 19
+#define GDT_IDX_DATOS_0                 20
+#define GDT_IDX_DATOS_3                 21
+#define GDT_IDX_VIDEO_0                 22
+#define GDT_IDX_TASK_INICIAL            23
+#define GDT_IDX_TASK_IDLE               24
+#define GDT_IDX_TASK_OFFSET             25
+#define GDT_IDX_TASK_BANDERA_OFFSET     (GDT_IDX_TASK_OFFSET + 8)
+#define GDT_COUNT                       (GDT_IDX_TASK_BANDERA_OFFSET + 8)
 
 typedef struct str_gdt_descriptor {
     unsigned short  gdt_length;

@@ -5,6 +5,6 @@
 	call resetear_pic
 	call habilitar_pic
 
-	;habilitar interrupciones
+	; habilitar interrupciones
 	
 	sti

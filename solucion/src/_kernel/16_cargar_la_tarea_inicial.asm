@@ -2,12 +2,9 @@
 
 	; cargar la tarea inicial
 
-call tss_inicializar_inicial
+	mov dword 	ax, [GDT_DESC + 2] 		; ax <- &gdt
+	add 		ax, 0xB8 				; ax += 8 * GDT_IDX_TASK_INICIAL
 	
-	push eax
-	
-	call nueva_tss
-	
-	add esp, 4
-	ltr ax
+	breakpoint
+	ltr ax 					; <-- ACA TIRA EXCEPCIONGP
 

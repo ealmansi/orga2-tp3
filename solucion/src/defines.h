@@ -171,6 +171,10 @@
 #define ADDR_MEM_VIDEO                 	0x000B8000
 
 #define ADDR_VIRTUAL_TASK_CODE          0x40000000
+#define ADDR_VIRTUAL_TASK_AREA_BANDERA	0x40001000
+#define ADDR_VIRTUAL_TASK_PILA_TAREA 	0x40001C00
+#define ADDR_VIRTUAL_TASK_PILA_BANDERA 	0X40001FFC
+#define ADDR_VIRTUAL_TASK_DIR_F_BANDERA 0X40001FFC 
 
 typedef unsigned int dword_t;
 typedef unsigned short word_t;
@@ -185,5 +189,6 @@ typedef unsigned long long int bits_t;
 #define BITS(h, d, num) ((bits_t)(((num) & ((1ull << (h)) - 1ull)) >> (d)))
 
 #define NOMBRE_GRUPO_STR "Mate Cocido Con Tres De Azucar / Jauja"
+
 
 #endif  /* !__DEFINES_H__ */

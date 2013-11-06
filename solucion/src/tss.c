@@ -22,7 +22,29 @@ tss tarea_idle = {0};
 tss tss_navios[CANT_TAREAS] = {{0}};
 tss tss_banderas[CANT_TAREAS] = {{0}};
 
-tss* tss_inicializar_inicial() {
+void tss_inicializar_inicial();
+void tss_inicializar_idle();
+void tss_inicializar_navios();
+void tss_inicializar_navio(unsigned int tarea);
+void tss_inicializar_banderas();
+void tss_inicializar_bandera(unsigned int tarea);
+
+void tss_inicializar_entrada_gdt_tarea_inicial();
+void tss_inicializar_entrada_gdt_tarea_idle();
+void tss_inicializar_entrada_gdt_navio(unsigned int tarea);
+void tss_inicializar_entrada_gdt_bandera(unsigned int tarea);
+
+/* implementaciones */
+
+void tss_inicializar() {
+	
+	tss_inicializar_inicial();
+	tss_inicializar_idle();
+	tss_inicializar_navios();
+	tss_inicializar_banderas();
+}
+
+void tss_inicializar_inicial() {
 	
 	tarea_inicial.ptl		= 0;
 	tarea_inicial.esp0		= 0;
@@ -51,12 +73,9 @@ tss* tss_inicializar_inicial() {
 	tarea_inicial.ldt		= 0;
 	tarea_inicial.dtrap		= 0;
 	tarea_inicial.iomap		= 0;
-	
-	return &tarea_inicial;
-	
 }
 
-tss* tss_inicializar_idle(){
+void tss_inicializar_idle() {
 	
 	tarea_idle.ptl			= 0;
 	tarea_idle.esp0			= ADDR_TASK_IDLE_STACK_PL_0;
@@ -85,12 +104,19 @@ tss* tss_inicializar_idle(){
 	tarea_idle.ldt			= 0;
 	tarea_idle.dtrap		= 0;
 	tarea_idle.iomap		= 0xFFFF;
-	
-	return &tarea_idle;
-	
 }
 
-void tss_inicializar_navio(unsigned int tarea){
+void tss_inicializar_navios(){
+	
+	unsigned int i ;
+	
+	for(i = 0; i < CANT_TAREAS; i++) {
+		
+		tss_inicializar_navio(i);
+	}
+}
+
+void tss_inicializar_navio(unsigned int tarea) {
 	
 	tss_navios[tarea].ptl		= 0;
 	tss_navios[tarea].esp0		= ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
@@ -119,10 +145,19 @@ void tss_inicializar_navio(unsigned int tarea){
 	tss_navios[tarea].ldt		= 0;
 	tss_navios[tarea].dtrap		= 0;
 	tss_navios[tarea].iomap		= 0xFFFF;
-	
 }
 
-void tss_inicializar_bandera(unsigned int tarea){
+void tss_inicializar_banderas() {
+	
+	unsigned int i;
+	
+	for(i = 0; i < CANT_TAREAS; i++) {
+
+		tss_inicializar_bandera(i);
+	}
+}
+
+void tss_inicializar_bandera(unsigned int tarea) {
 	
 	tss_banderas[tarea].ptl			= 0;
 	tss_banderas[tarea].esp0		= ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea - 0x800 /*mitad de pagina para la pila de la bandera*/;
@@ -151,36 +186,94 @@ void tss_inicializar_bandera(unsigned int tarea){
 	tss_banderas[tarea].ldt			= 0;
 	tss_banderas[tarea].dtrap		= 0;
 	tss_banderas[tarea].iomap		= 0xFFFF;
-	
 }
 
-tss* tss_inicializar_navios(){
-	
-	unsigned int i ;
-	
-	for(i = 0; i < CANT_TAREAS; i++){
-		
-		tss_inicializar_navio(i);
+void tss_inicializar_entradas_gdt() {
+
+	tss_inicializar_entrada_gdt_tarea_inicial();
+	tss_inicializar_entrada_gdt_tarea_idle();
+
+	unsigned int i;
+	for (i = 0; i < CANT_TAREAS; ++i) {
+		tss_inicializar_entrada_gdt_navio(i);
 	}
-	
-	return tss_navios;
-}
-
-tss* tss_inicializar_banderas(){
-	
-	unsigned int i ;
-	
-	for(i = 0; i < CANT_TAREAS; i++){
-		
-		tss_inicializar_bandera(i);
+	for (i = 0; i < CANT_TAREAS; ++i) {
+		tss_inicializar_entrada_gdt_bandera(i);
 	}
-	
-	return tss_banderas;
 }
 
-void tss_inicializar() {
-	
-	//TODO
-	
+void tss_inicializar_entrada_gdt_tarea_inicial() {
+
+	gdt[GDT_IDX_TASK_INICIAL] = (gdt_entry) {
+        (word_t) 0x67,                                 		/* limit[0:15]  */
+        (word_t) BITS(16, 0, (dword_t) &tarea_inicial),		/* base[0:15]   */
+        (byte_t) BITS(24, 16, (dword_t) &tarea_inicial),	/* base[23:16]  */
+        (byte_t) 0x09,                                 		/* type         */
+        (byte_t) 0,											/* s            */
+        (byte_t) 0,											/* dpl          */
+        (byte_t) 0x01,                                 		/* p            */
+        (byte_t) 0x00,                                 		/* limit[16:19] */
+        (byte_t) 0x00,                                 		/* avl          */
+        (byte_t) 0x00,                                 		/* l            */
+        (byte_t) 0x00,                                 		/* db           */
+        (byte_t) 0x00,                                 		/* g            */
+        (byte_t) BITS(32, 24, (dword_t) &tarea_inicial),	/* base[31:24]  */
+    };
 }
 
+void tss_inicializar_entrada_gdt_tarea_idle() {
+
+	gdt[GDT_IDX_TASK_IDLE] = (gdt_entry) {
+        (word_t) 0x67,                                 		/* limit[0:15]  */
+        (word_t) BITS(16, 0, (dword_t) &tarea_idle),		/* base[0:15]   */
+        (byte_t) BITS(24, 16, (dword_t) &tarea_idle),		/* base[23:16]  */
+        (byte_t) 0x09,                                 		/* type         */
+        (byte_t) 0,											/* s            */
+        (byte_t) 0,											/* dpl          */
+        (byte_t) 0x01,                                 		/* p            */
+        (byte_t) 0x00,                                 		/* limit[16:19] */
+        (byte_t) 0x00,                                 		/* avl          */
+        (byte_t) 0x00,                                 		/* l            */
+        (byte_t) 0x00,                                 		/* db           */
+        (byte_t) 0x00,                                 		/* g            */
+        (byte_t) BITS(32, 24, (dword_t) &tarea_idle),		/* base[31:24]  */
+    };
+}
+
+void tss_inicializar_entrada_gdt_navio(unsigned int nro_tarea) {
+
+	gdt[GDT_IDX_TASK_OFFSET + nro_tarea] = (gdt_entry) {
+        (word_t) 0x67,                                 				/* limit[0:15]  */
+        (word_t) BITS(16, 0, (dword_t) &(tss_navios[nro_tarea])),	/* base[0:15]   */
+        (byte_t) BITS(24, 16, (dword_t) &(tss_navios[nro_tarea])),	/* base[23:16]  */
+        (byte_t) 0x09,                                 				/* type         */
+        (byte_t) 0,													/* s            */
+        (byte_t) 0x3,												/* dpl          */
+        (byte_t) 0x01,                                 				/* p            */
+        (byte_t) 0x00,                                 				/* limit[16:19] */
+        (byte_t) 0x00,                                 				/* avl          */
+        (byte_t) 0x00,                                 				/* l            */
+        (byte_t) 0x00,                                 				/* db           */
+        (byte_t) 0x00,                                 				/* g            */
+        (byte_t) BITS(32, 24, (dword_t) &(tss_navios[nro_tarea])),	/* base[31:24]  */
+    };
+}
+
+void tss_inicializar_entrada_gdt_bandera(unsigned int nro_tarea) {
+
+	gdt[GDT_IDX_TASK_BANDERA_OFFSET + nro_tarea] = (gdt_entry) {
+        (word_t) 0x67,                                 					/* limit[0:15]  */
+        (word_t) BITS(16, 0, (dword_t) &(tss_banderas[nro_tarea])),		/* base[0:15]   */
+        (byte_t) BITS(24, 16, (dword_t) &(tss_banderas[nro_tarea])),	/* base[23:16]  */
+        (byte_t) 0x09,                                 					/* type         */
+        (byte_t) 0,														/* s            */
+        (byte_t) 0x3,													/* dpl          */
+        (byte_t) 0x01,                                 					/* p            */
+        (byte_t) 0x00,                                 					/* limit[16:19] */
+        (byte_t) 0x00,                                 					/* avl          */
+        (byte_t) 0x00,                                 					/* l            */
+        (byte_t) 0x00,                                 					/* db           */
+        (byte_t) 0x00,                                 					/* g            */
+        (byte_t) BITS(32, 24, (dword_t) &(tss_banderas[nro_tarea])),	/* base[31:24]  */
+    };
+}
