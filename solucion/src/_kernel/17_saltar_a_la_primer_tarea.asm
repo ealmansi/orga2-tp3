@@ -2,5 +2,5 @@
 
 	; saltar a la primer tarea
 	
-	JMP  0xB8:0
+	JMP  	0xB8:0
 	
