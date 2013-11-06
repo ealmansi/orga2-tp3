@@ -133,8 +133,8 @@ _isr32:
 	JE .nojump
 		MOV [offset], ax
 		CALL fin_intr_pic1
-		;XCHG bx, bx
-	;	JMP 0xC8:0
+		XCHG bx, bx
+		JMP 0xc8:0
 
 		
 		JMP .end
