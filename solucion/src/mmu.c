@@ -50,7 +50,7 @@ void mmu_inicializar_tablas_kernel() {
 	}
 
 	for (i = 0; i < ((PAGE_TABLE_LENGTH / 8) * 7); ++i) {
-		kernel_page_table_2[i] = ((i << 12) + PAGE_DESC_ATTR_SUP_RW_P);
+		kernel_page_table_2[i] = (((i+0x400) << 12) + PAGE_DESC_ATTR_SUP_RW_P);
 	}
 	
 	for(i = 0; i < PAGE_TABLE_LENGTH; ++i) {
@@ -99,7 +99,7 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	}
 
 	int dir_index = BITS(32, 22, ADDR_VIRTUAL_TASK_CODE);
-	page_directory[dir_index] = (dword_t) page_table;
+	page_directory[dir_index] = (dword_t) page_table + PAGE_DESC_ATTR_USR_RW_P;
 	
 	for(i = 0; i < PAGE_TABLE_LENGTH; i++) {
 		page_table[i] = 0;
