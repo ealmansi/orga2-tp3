@@ -1,5 +1,4 @@
-extern inicializar_buffer_modo_mapa;
-extern inicializar_buffer_modo_estado;
+extern inicializar_manejo_video;
 
     ; Limpiar pantalla
 
@@ -25,7 +24,6 @@ extern inicializar_buffer_modo_estado;
     ; Colorear pantalla    
     
 
-	CALL inicializar_buffer_modo_mapa
-	CALL inicializar_buffer_modo_estado
+	CALL inicializar_manejo_video
 
-    CALL pintar_pantalla_modo_mapa
+    CALL pintar_pantalla_modo_estado

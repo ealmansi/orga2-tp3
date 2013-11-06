@@ -8,6 +8,3 @@
 	MOV 	eax, cr0
 	OR		eax, 0x80000000
 	MOV		cr0, eax
-
-	CALL 	imprimirNombreEquipo
-

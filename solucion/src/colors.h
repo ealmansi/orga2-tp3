@@ -30,5 +30,27 @@
 #define C_BG_LIGHT_GREY         (0x70)
 #define LIGHTER					+ 0x80
 
+#define C_BLACK              (0x0)
+#define C_BLUE               (0x1)
+#define C_GREEN              (0x2)
+#define C_CYAN               (0x3)
+#define C_RED                (0x4)
+#define C_MAGENTA            (0x5)
+#define C_BROWN              (0x6)
+#define C_LIGHT_GREY         (0x7)
+#define C_DARK_GREY          (0x8)
+#define C_LIGHT_BLUE         (0x9)
+#define C_LIGHT_GREEN        (0xA)
+#define C_LIGHT_CYAN         (0xB)
+#define C_LIGHT_RED          (0xC)
+#define C_LIGHT_MAGENTA      (0xD)
+#define C_LIGHT_BROWN        (0xE)
+#define C_WHITE              (0xF)
+
+
+
+
+
+
 
 #endif /* !__COLORS_H__ */

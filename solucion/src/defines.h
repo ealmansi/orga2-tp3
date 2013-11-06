@@ -184,5 +184,6 @@ typedef unsigned long long int bits_t;
 
 #define BITS(h, d, num) ((bits_t)(((num) & ((1ull << (h)) - 1ull)) >> (d)))
 
+#define NOMBRE_GRUPO_STR "Mate Cocido Con Tres De Azucar / Jauja"
 
 #endif  /* !__DEFINES_H__ */

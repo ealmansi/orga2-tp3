@@ -8,24 +8,17 @@
 #ifndef __SCREEN_H__
 #define __SCREEN_H__
 
+#include "defines.h"
 
-/* Definicion de la pantalla */
-#define VIDEO_FILS 25
-#define VIDEO_COLS 80
+void inicializar_manejo_video();
 
-void screen_pintar_pantalla();
+void actualizar_canonear(dword_t dir_misil);
+void actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p2);
+void actualizar_fondear(int nro_tarea, dword_t dir_pag_anclada);
+void actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo);
+void actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
 
-void inicializar_buffer_modo_estado();
-void inicializar_buffer_modo_mapa();
 void pintar_pantalla_modo_estado();
 void pintar_pantalla_modo_mapa();
-
-extern void insertarFormatoRectangular(unsigned char format, unsigned int X,unsigned int Y,unsigned int ancho, unsigned int alto);
-extern void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* text);
-
-void printNumberToScreen(int X, int Y, int num);
-
-void plantillaMapa();
-void plantillaEstado();
 
 #endif  /* !__SCREEN_H__ */
