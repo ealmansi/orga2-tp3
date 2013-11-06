@@ -138,11 +138,11 @@ word_t nueva_tss(tss* ptss){
 	
 	descriptor_tss->s = 0x00;
 	
-	//~ if(ptss == &tarea_inicial || ptss == &tarea_idle) {
+	if(ptss == &tarea_inicial || ptss == &tarea_idle) {
 		descriptor_tss->dpl = 0x00;
-	//~ } else {
-		//~ descriptor_tss->dpl = 0x03;
-	//~ }
+	} else {
+		descriptor_tss->dpl = 0x03;
+	}
 	
 	descriptor_tss->p = 0x01;
 	descriptor_tss->limit_16_19 = 0x00;
@@ -155,20 +155,14 @@ word_t nueva_tss(tss* ptss){
 	return (gdt_next_index << 3);
 }
 
-    //~ [0x17] = (gdt_entry) {
-        //~ (word_t) BITS(16, 0, 0x67), 			     /* limit[0:15]  */
-        //~ (word_t) BITS(16, 0, (dword_t)&tarea_inicial),       /* base[0:15]   */
-        //~ (byte_t) BITS(24, 16, (dword_t)&tarea_inicial),      /* base[23:16]  */
-        //~ (byte_t) 0b1001,                            /* type         */
-        //~ (byte_t) 0b0,                               /* s            */
-        //~ (byte_t) 0b00,                              /* dpl          */
-        //~ (byte_t) 0b1,                               /* p            */
-        //~ (byte_t) BITS(20, 16, 0x67),			     /* limit[16:19] */
-        //~ (byte_t) 0b0,                               /* avl          */
-        //~ (byte_t) 0b0,                               /* l            */
-        //~ (byte_t) 0b0,                               /* db           */
-        //~ (byte_t) 0b0,                               /* g            */
-        //~ (byte_t) BITS(32, 24, (dword_t)&tarea_inicial),     /* base[31:24]  */
-    //~ },
-//~ 
-//~ 
+void init_tss(tss* arreglo_tss){
+	
+	int i;
+	
+	for(i = 0; i < CANT_TAREAS; i++){
+		
+		nueva_tss(&(arreglo_tss[i]));
+		
+	}
+	
+}

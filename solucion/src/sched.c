@@ -7,6 +7,8 @@
 
 #include "sched.h"
 
+unsigned short int sel_navios[CANT_TAREAS];
+unsigned short int sel_banderas[CANT_TAREAS];
 
 void sched_inicializar() {
 }

@@ -44,6 +44,7 @@ extern gdt_entry gdt[];
 extern gdt_descriptor GDT_DESC;
 
 word_t nueva_tss(tss* ptss);
+void init_tss(tss* arreglo_tss);
 
 
 #endif  /* !__GDT_H__ */
