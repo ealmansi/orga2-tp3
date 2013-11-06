@@ -79,11 +79,16 @@ void inicializar_manejo_video() {
 	inicializar_buffer_modo_estado();
 	inicializar_buffer_modo_mapa();
 
-	actualizar_canonear(0x1B000);
-	actualizar_fondear(0, 0x12000);
-	actualizar_fondear(1, 0x64000);
-	actualizar_fondear(5, 0x64000);
-	actualizar_navegar(3, 0x19000, 0xFF000);
+	actualizar_fondear(0, 0x0007F000);
+	actualizar_fondear(2, 0x0017F000);
+	actualizar_fondear(4, 0x0027F000);
+	actualizar_fondear(6, 0x0037F000);
+	actualizar_navegar(0, 0x0047F000, 0x0011F000);
+	actualizar_navegar(1, 0x0057F000, 0x0022F000);
+	actualizar_navegar(3, 0x0067F000, 0x0033F000);
+	actualizar_navegar(5, 0x0077A000, 0x0027F000);
+	actualizar_navegar(7, 0x0000F000, 0x0057F000);
+	actualizar_canonear(0x0077F000);
 }
 
 /* modo_estado */
@@ -364,3 +369,4 @@ void dibujar_pagina(dword_t dir_pag, char caracter, byte_t color_fg, byte_t colo
 	int i = nro_pag / VIDEO_COLS, j = nro_pag % VIDEO_COLS;
 	dibujar_casillero(caracter, punto(i, j), color_fg, color_bg, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
 }
+

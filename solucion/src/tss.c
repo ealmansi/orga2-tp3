@@ -42,8 +42,8 @@ void tss_inicializar_navio(unsigned int tarea){
 	tss_navios[tarea].ecx = 0;
 	tss_navios[tarea].edx = 0;
 	tss_navios[tarea].ebx = 0;
-	tss_navios[tarea].esp = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
-	tss_navios[tarea].ebp = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
+	tss_navios[tarea].esp = ADDR_VIRTUAL_TASK_CODE + 0x1C00 + TAMANO_PAGINA * tarea;
+	tss_navios[tarea].ebp = ADDR_VIRTUAL_TASK_CODE + 0x1C00 + TAMANO_PAGINA * tarea;
 	tss_navios[tarea].esi = 0;
 	tss_navios[tarea].edi = 0;
 	tss_navios[tarea].es = GDT_SEL_DATOS_3;
@@ -83,7 +83,7 @@ void tss_inicializar_bandera(unsigned int tarea){
 	
 	tss_banderas[tarea].ptl = 0;
 	tss_banderas[tarea].unused0 = 0;
-	tss_banderas[tarea].esp0 = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
+	tss_banderas[tarea].esp0 = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea - 0x800/*mitad de pagina para la pila de la bandera*/;
 	tss_banderas[tarea].ss0 = GDT_SEL_DATOS_0;
 	tss_banderas[tarea].unused1 = 0;
 	tss_banderas[tarea].esp1 = 0;
@@ -99,8 +99,8 @@ void tss_inicializar_bandera(unsigned int tarea){
 	tss_banderas[tarea].ecx = 0;
 	tss_banderas[tarea].edx = 0;
 	tss_banderas[tarea].ebx = 0;
-	tss_banderas[tarea].esp = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
-	tss_banderas[tarea].ebp = ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
+	tss_banderas[tarea].esp = ADDR_VIRTUAL_TASK_CODE + 0x1FFC + TAMANO_PAGINA * tarea;
+	tss_banderas[tarea].ebp = ADDR_VIRTUAL_TASK_CODE + 0x1FFC + TAMANO_PAGINA * tarea;
 	tss_banderas[tarea].esi = 0;
 	tss_banderas[tarea].edi = 0;
 	tss_banderas[tarea].es = GDT_SEL_DATOS_3;
@@ -156,8 +156,8 @@ tss* tss_inicializar_idle(){
 	tarea_idle.ecx = 0;
 	tarea_idle.edx = 0;
 	tarea_idle.ebx = 0;
-	tarea_idle.esp = ADDR_TASK_IDLE_STACK_PL_0;
-	tarea_idle.ebp = ADDR_TASK_IDLE_STACK_PL_0;
+	tarea_idle.esp = ADDR_VIRTUAL_TASK_CODE + 0x1C00;
+	tarea_idle.ebp = ADDR_VIRTUAL_TASK_CODE + 0x1C00;
 	tarea_idle.esi = 0;
 	tarea_idle.edi = 0;
 	tarea_idle.es = GDT_SEL_DATOS_0;
