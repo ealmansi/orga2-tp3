@@ -21,6 +21,9 @@ byte_t banderas_seguidas = 0;
 
 byte_t buscar_proximo();
 
+void sched_resetear_tick(){
+	
+}
 
 void sched_inicializar() {
 	int i = 0;

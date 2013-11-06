@@ -15,6 +15,15 @@ extern fin_intr_pic1
 extern pintar_pantalla_modo_mapa
 extern pintar_pantalla_modo_estado
 
+;; Funciones de juego
+extern game_fondear
+extern game_canonear
+extern game_navegar
+
+;; Funciones del Scheduler
+extern sched_resetear_tick
+extern sched_proximo_indice
+
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -119,7 +128,10 @@ ISR 19
 
 global _isr32
 extern sched_proximo_indice;
-offset: DW 0 , 0 ,0 ;
+
+offset: DD 0
+selector: DW 0
+
 _isr32:
 	CLI
 	PUSHAD
@@ -261,15 +273,64 @@ _isr33:
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
 
+;~ Habria que checkear quien la llama? (talvez alguna tarea no tiene permiso para llamarla)
 global _isr0x50
 _isr0x50:	
 	CLI
 	PUSHAD
 	PUSHFD
 
+	cmp eax, 0x923
+	jne .no_fondear
+	
+.fondear:
 
-    MOV 			EAX, 0x42
-	JMP $
+	push ebx
+	call game_fondear
+	add esp, 4
+	;~ Deberia checkear que eax sea TRUE?
+	jmp .terminar
+	
+.no_fondear:
+
+	cmp eax, 0x83A
+	jne .no_canonear
+	
+.canonear:
+
+	push ecx
+	push ebx
+	call game_canonear
+	add esp, 8
+	;~ Deberia checkear que eax sea TRUE?
+	jmp .terminar
+	
+.no_canonear:
+
+	cmp eax, 0xAEF
+	jne .sin_cambios
+	
+.navegar:
+
+	push ecx
+	push ebx
+	call game_navegar
+	add esp, 8
+	;~ Deberia checkear que eax sea TRUE?
+
+.terminar:
+
+	call sched_resetear_tick
+	call sched_proximo_indice
+	
+	cmp ax, [selector]
+	je .sin_cambios
+	
+.siguiente_tarea:
+	mov [selector], ax
+	jmp far [offset]
+
+.sin_cambios:
 
 	POPFD
 	POPAD
