@@ -1,6 +1,6 @@
 
 
 	; saltar a la primer tarea
-	
-	JMP  	0xC0:0
+	xchg bx, bx
+	JMP  	0xC8:0
 	

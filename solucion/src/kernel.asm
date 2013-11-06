@@ -100,7 +100,7 @@ start:
 
     %include "_kernel/16_cargar_la_tarea_inicial.asm"
 
-    ;%include "_kernel/17_saltar_a_la_primer_tarea.asm"
+    %include "_kernel/17_saltar_a_la_primer_tarea.asm"
 
     ; Ciclar infinitamente (por si algo sale mal...)
     jmp $

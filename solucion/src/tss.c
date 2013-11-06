@@ -120,7 +120,7 @@ void tss_inicializar_navio(unsigned int tarea) {
 	
 	tss_navios[tarea].ptl		= 0;
 	tss_navios[tarea].esp0		= ADDR_TASK_1_STACK_PL_0 + TAMANO_PAGINA * tarea;
-	tss_navios[tarea].ss0		= GDT_SEL_DATOS_3; /* aca tal vez va 0*/
+	tss_navios[tarea].ss0		= GDT_SEL_DATOS_0; 
 	tss_navios[tarea].esp1		= 0;
 	tss_navios[tarea].ss1		= 0;
 	tss_navios[tarea].esp2		= 0;
@@ -140,7 +140,7 @@ void tss_inicializar_navio(unsigned int tarea) {
 	tss_navios[tarea].cs		= GDT_SEL_CODIG_3;
 	tss_navios[tarea].ss		= GDT_SEL_DATOS_3;
 	tss_navios[tarea].ds		= GDT_SEL_DATOS_3;
-	tss_navios[tarea].fs		= GDT_SEL_VIDEO_0;
+	tss_navios[tarea].fs		= GDT_SEL_DATOS_3;
 	tss_navios[tarea].gs		= GDT_SEL_DATOS_3;
 	tss_navios[tarea].ldt		= 0;
 	tss_navios[tarea].dtrap		= 0;

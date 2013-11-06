@@ -119,7 +119,7 @@ ISR 19
 
 global _isr32
 extern sched_proximo_indice;
-offset: DW 0 ;
+offset: DW 0 , 0 ,0 ;
 _isr32:
 	CLI
 	PUSHAD
@@ -127,17 +127,17 @@ _isr32:
 
     CALL		proximo_reloj
 
-	CALL		sched_proximo_indice
-
-	CMP ax, 0
-	JE .nojump
-		MOV [offset], ax
-		CALL fin_intr_pic1
-		XCHG bx, bx
-		JMP 0xc8:0
-
-		
-		JMP .end
+;	CALL		sched_proximo_indice
+;
+;	CMP ax, 0
+;	JE .nojump
+;		MOV [offset+2], ax
+;		CALL fin_intr_pic1
+;		XCHG bx, bx
+;		JMP 0xC8:0 ;
+;
+;		
+;		JMP .end
 
 
 .nojump:
