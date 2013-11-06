@@ -27,3 +27,5 @@ extern inicializar_buffer_modo_estado;
 
 	CALL inicializar_buffer_modo_mapa
 	CALL inicializar_buffer_modo_estado
+
+    CALL pintar_pantalla_modo_mapa
