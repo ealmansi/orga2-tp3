@@ -21,5 +21,6 @@ void hundir_navio();
 extern byte_t es_navio;
 extern byte_t navio_actual;
 extern byte_t bandera_actual;
+extern byte_t ultimo_hundido;
 
 #endif	/* !__SCHED_H__ */

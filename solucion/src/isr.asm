@@ -153,9 +153,9 @@ _isr32:
     CALL		proximo_reloj
 
 	MOV al, [es_navio];
-	xchg bx,bx;
 	CMP ax, 1 ;
 	JE .esNavio;
+	xchg bx, bx;
 		CALL hundir_navio;
 
 .esNavio:
@@ -172,7 +172,6 @@ _isr32:
 
 .noPisarTSS:
 		CALL fin_intr_pic1
-		XCHG bx, bx
 		JMP FAR [offset]
 
 		
@@ -358,6 +357,7 @@ _isr0x50:
 
 .desalojar_tarea:
 	
+	xchg bx, bx;
 	call hundir_navio
 
 	; call actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo);
@@ -387,6 +387,7 @@ _isr0x66:
 	MOV ax, es_navio
 	CMP ax, 0 ;
 	JE .bandera_verificada;
+	xchg bx, bx;
 		CALL hundir_navio;
 		JMP .salidaIsrSeisSeis
 
@@ -401,11 +402,11 @@ _isr0x66:
 .salidaIsrSeisSeis:
 	JMP 0xC0:0 ;
 
-	MOV ax, bandera_actual;
+;	MOV ax, bandera_actual;
 
-	PUSH ecx;
-	CALL tss_inicializar_bandera;
-	ADD esp, 4;
+;	PUSH ecx;
+;	CALL tss_inicializar_bandera;
+;	ADD esp, 4;
 
 	POPFD
 	POPAD
