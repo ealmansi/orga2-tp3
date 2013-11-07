@@ -252,7 +252,7 @@ void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
 	actualizar_paginas_de_tarea_en_estado(nro_tarea);
 }
 
-void actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo) {
+void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_desalojo) {
 
 }
 
