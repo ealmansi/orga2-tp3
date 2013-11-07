@@ -10,7 +10,7 @@
 #include "screen.h"
 #include "colors.h"
 
-extern dword_t selector;
+extern dword_t* selector;
 
 dword_t arr_navios[CANT_TAREAS];
 dword_t arr_banderas[CANT_TAREAS];
@@ -20,7 +20,7 @@ byte_t bandera_actual;
 byte_t navios_seguidos;
 byte_t banderas_restantes = CANT_TAREAS;
 byte_t banderas_seguidas;
-
+byte_t ultimo_hundido;
 byte_t es_navio;
 
 
@@ -31,7 +31,7 @@ void sched_resetear_tick(){
 }
 
 void hundir_navio(){
-	dword_t sel = selector >> 3;
+	dword_t sel = *selector >> 3;
 	if (sel < 0x19) {
 		dibujar_texto("El selector recibido no corresponde ni a una tarea ni a una bandera", punto(0, 0), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
 		int cero = 0;
@@ -45,11 +45,13 @@ void hundir_navio(){
 
 		arr_navios[navio_actual-1]=0;
 		arr_banderas[navio_actual-1]=0;
+		ultimo_hundido = navio_actual;
 
 	} else if (sel >= 0x9 && sel < 0x10){
 
 		arr_navios[bandera_actual-1] = 0;
 		arr_banderas[bandera_actual-1] = 0;
+		ultimo_hundido = bandera_actual;
 
 	} else {
 

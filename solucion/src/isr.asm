@@ -37,8 +37,16 @@ extern tss_pisar_bandera_actual
 %macro ISR 1
 global _isr%1
 _isr%1:
-    imprimir_texto_mp _isr_msj_%1, _isr_msj_len_%1, 0x07, 0, 0
-    JMP $
+    
+    
+    imprimir_texto_mp _isr_msj_%1, _isr_msj_len_%1, 0x9F, 1, 50
+    
+    call hundir_navio
+    
+    MOV WORD [selector], 0xC0
+	JMP  	0xC0:0
+    
+    iret
 %endmacro
 
 %define SYS_FONDEAR		0x923
@@ -56,45 +64,45 @@ reloj_numero:           dd 0x00000000
 reloj:                  db '|/-\'
 
 ; Mensajes a imprimir en las ISRs
-_isr_msj_0:             db 'Rutina de interrupcion nro 0'
+_isr_msj_0:             db 'Divide Error Exception'
 _isr_msj_len_0          equ $ - _isr_msj_0
-_isr_msj_1:             db 'Rutina de interrupcion nro 1'
+_isr_msj_1:             db 'Debug Exception'
 _isr_msj_len_1          equ $ - _isr_msj_1
-_isr_msj_2:             db 'Rutina de interrupcion nro 2'
+_isr_msj_2:             db 'Non Maskable Interrupt'
 _isr_msj_len_2          equ $ - _isr_msj_2
-_isr_msj_3:             db 'Rutina de interrupcion nro 3'
+_isr_msj_3:             db 'Breakpoint Exception'
 _isr_msj_len_3          equ $ - _isr_msj_3
-_isr_msj_4:             db 'Rutina de interrupcion nro 4'
+_isr_msj_4:             db 'Overflow Exception'
 _isr_msj_len_4          equ $ - _isr_msj_4
-_isr_msj_5:             db 'Rutina de interrupcion nro 5'
+_isr_msj_5:             db 'BOUND Range Exceeded Exception'
 _isr_msj_len_5          equ $ - _isr_msj_5
-_isr_msj_6:             db 'Rutina de interrupcion nro 6'
+_isr_msj_6:             db 'Invalid Opcode Exception'
 _isr_msj_len_6          equ $ - _isr_msj_6
-_isr_msj_7:             db 'Rutina de interrupcion nro 7'
+_isr_msj_7:             db 'Device Not Available Exception'
 _isr_msj_len_7          equ $ - _isr_msj_7
-_isr_msj_8:             db 'Rutina de interrupcion nro 8'
+_isr_msj_8:             db 'Double Fault Exception'
 _isr_msj_len_8          equ $ - _isr_msj_8
-_isr_msj_9:             db 'Rutina de interrupcion nro 9'
+_isr_msj_9:             db 'Coprocessor Segment Overrun'
 _isr_msj_len_9          equ $ - _isr_msj_9
-_isr_msj_10:            db 'Rutina de interrupcion nro 10'
+_isr_msj_10:            db 'Invalid TSS Exception'
 _isr_msj_len_10         equ $ - _isr_msj_10
-_isr_msj_11:            db 'Rutina de interrupcion nro 11'
+_isr_msj_11:            db 'Segment Not Present'
 _isr_msj_len_11         equ $ - _isr_msj_11
-_isr_msj_12:            db 'Rutina de interrupcion nro 12'
+_isr_msj_12:            db 'Stack Fault Exception'
 _isr_msj_len_12         equ $ - _isr_msj_12
-_isr_msj_13:            db 'Rutina de interrupcion nro 13'
+_isr_msj_13:            db 'General Protection Exception'
 _isr_msj_len_13         equ $ - _isr_msj_13
-_isr_msj_14:            db 'Rutina de interrupcion nro 14'
+_isr_msj_14:            db 'Page-Fault Exception'
 _isr_msj_len_14         equ $ - _isr_msj_14
-_isr_msj_15:            db 'Rutina de interrupcion nro 15'
+_isr_msj_15:            db 'Reserved'
 _isr_msj_len_15         equ $ - _isr_msj_15
-_isr_msj_16:            db 'Rutina de interrupcion nro 16'
+_isr_msj_16:            db 'x87 FPU Floating-Point Error'
 _isr_msj_len_16         equ $ - _isr_msj_16
-_isr_msj_17:            db 'Rutina de interrupcion nro 17'
+_isr_msj_17:            db 'Alignment Check Exception'
 _isr_msj_len_17         equ $ - _isr_msj_17
-_isr_msj_18:            db 'Rutina de interrupcion nro 18'
+_isr_msj_18:            db 'Machine-Check Exception'
 _isr_msj_len_18         equ $ - _isr_msj_18
-_isr_msj_19:            db 'Rutina de interrupcion nro 19'
+_isr_msj_19:            db 'SIMD Floating-Point Exception'
 _isr_msj_len_19         equ $ - _isr_msj_19
 
 ; strings a imprimir cuando se presiona un digito
@@ -153,9 +161,9 @@ _isr32:
     CALL		proximo_reloj
 
 	MOV al, [es_navio];
-	xchg bx,bx;
 	CMP ax, 1 ;
 	JE .esNavio;
+	xchg bx, bx;
 		CALL hundir_navio;
 
 .esNavio:
@@ -172,7 +180,6 @@ _isr32:
 
 .noPisarTSS:
 		CALL fin_intr_pic1
-		XCHG bx, bx
 		JMP FAR [offset]
 
 		
@@ -358,6 +365,7 @@ _isr0x50:
 
 .desalojar_tarea:
 	
+	xchg bx, bx;
 	call hundir_navio
 
 	; call actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo);
@@ -387,6 +395,7 @@ _isr0x66:
 	MOV ax, es_navio
 	CMP ax, 0 ;
 	JE .bandera_verificada;
+	xchg bx, bx;
 		CALL hundir_navio;
 		JMP .salidaIsrSeisSeis
 
@@ -401,11 +410,11 @@ _isr0x66:
 .salidaIsrSeisSeis:
 	JMP 0xC0:0 ;
 
-	MOV ax, bandera_actual;
+;	MOV ax, bandera_actual;
 
-	PUSH ecx;
-	CALL tss_inicializar_bandera;
-	ADD esp, 4;
+;	PUSH ecx;
+;	CALL tss_inicializar_bandera;
+;	ADD esp, 4;
 
 	POPFD
 	POPAD
