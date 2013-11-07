@@ -25,6 +25,27 @@ global _isr33
 global _isr0x50
 global _isr0x66
 
+global _estado_eax
+global _estado_ebx
+global _estado_ecx
+global _estado_edx
+global _estado_esi
+global _estado_edi
+global _estado_ebp
+global _estado_esp
+global _estado_eip
+global _estado_cr0
+global _estado_cr2
+global _estado_cr3
+global _estado_cr4
+global _estado_cs
+global _estado_ds
+global _estado_es
+global _estado_fs
+global _estado_gs
+global _estado_ss
+global _estado_eflags
+
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -33,11 +54,47 @@ global _isr0x66
 extern _isr%1_c
 global _isr%1
 _isr%1:
-    
+	CLI
+	PUSHAD
+	PUSHFD
+
+    guardar_estado
+
     CALL 	_isr%1_c
 
     JMP  	0xC0:0
-    
+	
+	POPFD
+	POPAD
+	STI
+	IRET
+%endmacro
+
+%macro guardar_estado 0
+	mov dword		[_estado_eax],eax
+	mov dword		[_estado_ebx], ebx
+	mov dword		[_estado_ecx], ecx
+	mov dword		[_estado_edx], edx
+	mov dword		[_estado_esi], esi
+	mov dword		[_estado_edi], edi
+	mov dword		[_estado_ebp], ebp
+	mov dword		[_estado_esp], esp
+	;mov dword		[_estado_eip], eip
+	mov 			eax, cr0
+	mov dword 		[_estado_cr0], eax
+	mov 			eax, cr2
+	mov dword 		[_estado_cr2], eax
+	mov 			eax, cr3
+	mov dword 		[_estado_cr3], eax
+	mov 			eax, cr4
+	mov dword 		[_estado_cr4], eax
+	;mov dword		[_estado_cs], cs
+	;mov dword		[_estado_ds], ds
+	;mov dword		[_estado_es], es
+	;mov dword		[_estado_fs], fs
+	;mov dword		[_estado_gs], gs
+	;mov dword		[_estado_ss], ss
+	;mov dword		[_estado_eflags], eflags
 %endmacro
 
 ;;
@@ -59,6 +116,27 @@ _digito_6_str:			db '6'
 _digito_7_str:			db '7'
 _digito_8_str:			db '8'
 _digito_9_str:			db '9'
+
+_estado_eax:		dd 0
+_estado_ebx:		dd 0
+_estado_ecx:		dd 0
+_estado_edx:		dd 0
+_estado_esi:		dd 0
+_estado_edi:		dd 0
+_estado_ebp:		dd 0
+_estado_esp:		dd 0
+_estado_eip:		dd 0
+_estado_cr0:		dd 0
+_estado_cr2:		dd 0
+_estado_cr3:		dd 0
+_estado_cr4:		dd 0
+_estado_cs:			dd 0
+_estado_ds:			dd 0
+_estado_es:			dd 0
+_estado_fs:			dd 0
+_estado_gs:			dd 0
+_estado_ss:			dd 0
+_estado_eflags:		dd 0
 
 ;;
 ;; Rutinas de atención de las EXCEPCIONES
@@ -97,7 +175,8 @@ _isr32:
 	PUSHAD
 	PUSHFD
 
-	CALL    	fin_intr_pic1
+	guardar_estado
+
     CALL		proximo_reloj
 
     CALL 		_isr32_c
@@ -105,6 +184,8 @@ _isr32:
     sal 		ax, 3
     MOV WORD	[_isr_32_selector], ax
     jmp far 	[_isr_32_offset]
+
+	CALL    	fin_intr_pic1
 
 	POPFD
 	POPAD
@@ -225,6 +306,8 @@ _isr0x50:
 	PUSHAD
 	PUSHFD
 
+	guardar_estado
+
 	PUSH 		ecx
 	PUSH 		ebx
 	PUSH 		eax
@@ -245,6 +328,8 @@ _isr0x66:
 	CLI
 	PUSHAD
 	PUSHFD
+
+	guardar_estado
 
     CALL 		_isr0x66_c
 
