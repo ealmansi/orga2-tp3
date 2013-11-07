@@ -89,10 +89,6 @@ void inicializar_manejo_video() {
 	actualizar_navegar(5, 0x0077A000, 0x0027F000);
 	actualizar_navegar(7, 0x0000F000, 0x0057F000);
 	actualizar_canonear(0x0077F000);
-	actualizar_bandera(0, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
-	actualizar_bandera(3, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
-	actualizar_bandera(4, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
-	actualizar_bandera(7, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
 }
 
 /* modo_estado */
