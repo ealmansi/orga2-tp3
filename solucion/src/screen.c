@@ -48,7 +48,7 @@ void dibujar_pagina(dword_t dir_pag, char caracter, byte_t color_fg, byte_t colo
 
 /* funciones de actualizacion */
 void actualizar_pagina_en_mapa(dword_t dir_pag);
-void actualizar_paginas_de_tarea_en_estado(int nro_tarea);
+void actualizar_paginas_de_tarea_en_estado(int nro_tarea, byte_t color);
 
 /* 
 *	implementacion
@@ -89,6 +89,7 @@ void inicializar_manejo_video() {
 	actualizar_navegar(5, 0x0077A000, 0x0027F000);
 	actualizar_navegar(7, 0x0000F000, 0x0057F000);
 	actualizar_canonear(0x0077F000);
+	actualizar_desalojo(0, 0, "msj_desalojo");
 }
 
 /* modo_estado */
@@ -178,7 +179,7 @@ void dibujar_panel_inferior() {
 	}
 
 	for (n = 0; n < 8; ++n)	{
-		actualizar_paginas_de_tarea_en_estado(n);
+		actualizar_paginas_de_tarea_en_estado(n, C_BLACK);
 	}
 }
 
@@ -237,7 +238,7 @@ void actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p
 	actualizar_pagina_en_mapa(dir_nueva_p1);
 	actualizar_pagina_en_mapa(dir_nueva_p2);
 
-	actualizar_paginas_de_tarea_en_estado(nro_tarea);
+	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_BLACK);
 }
 
 void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
@@ -249,11 +250,71 @@ void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
 	actualizar_pagina_en_mapa(ult_p3);
 	actualizar_pagina_en_mapa(dir_nueva_p3);
 
-	actualizar_paginas_de_tarea_en_estado(nro_tarea);
+	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_BLACK);
 }
 
 void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_desalojo) {
 
+	// pongo en gris la linea que muestra P1 P2 P3
+	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_WHITE);
+	dibujar_texto(msj_desalojo, punto(16 + nro_tarea, 45), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_rectangulo(punto(16 + nro_tarea, 1), punto(16 + nro_tarea + 1, VIDEO_COLS - 1), C_LIGHT_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+
+	// pongo la bandera en rojo
+	int i, j;
+	i = 3 + (nro_tarea / 4) * 7;
+	j = 2 + (nro_tarea % 4) * 12;
+	dibujar_rectangulo(punto(i, j), punto(i + 5, j + 10), C_RED, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+
+	// actualizo el panel del ultimo problema
+	char nombre_navio[] = "NAVIO x";
+	nombre_navio[6] = nro_tarea + 1 + '0';
+	dibujar_rectangulo(punto(1, 50), punto(2, VIDEO_COLS - 2), C_LIGHT_BLUE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_texto(msj_desalojo, punto(1, 51), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_texto(nombre_navio, punto(1, 71), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+
+	// escribo el valor de los registros
+	char reg_buffer[9];
+	dword_a_hexa_string(estado->eax, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 2, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->ebx, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 3, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->ecx, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 4, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->edx, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 5, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->esi, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 6, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->edi, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 7, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->ebp, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 8, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->esp, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 9, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->eip, reg_buffer);
+	dibujar_texto(reg_buffer, punto(10, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->cr0, reg_buffer);
+	dibujar_texto(reg_buffer, punto(11, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->cr2, reg_buffer);
+	dibujar_texto(reg_buffer, punto(12, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->cr3, reg_buffer);
+	dibujar_texto(reg_buffer, punto(13, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->cr4, reg_buffer);
+	dibujar_texto(reg_buffer, punto(14, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->cs, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 2, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->ds, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 3, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->es, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 4, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->fs, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 5, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->gs, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 6, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->ss, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 7, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(estado->eflags, reg_buffer);
+	dibujar_texto(reg_buffer, punto( 10, 66), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 }
 
 void actualizar_bandera(int nro_tarea, byte_t* buffer_bandera) {
@@ -309,21 +370,21 @@ void actualizar_pagina_en_mapa(dword_t dir_pag) {
 	}
 }
 
-void actualizar_paginas_de_tarea_en_estado(int n) {
+void actualizar_paginas_de_tarea_en_estado(int nro_tarea, byte_t color) {
 
 	char buffer_nro_pagina[] = "Pi:0x00000000";
 
 	buffer_nro_pagina[1] = '1';
-	dword_a_hexa_string(pagina_1_de_tarea(n), buffer_nro_pagina + 5);
-	dibujar_texto(buffer_nro_pagina, punto(16 + n, 3), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(pagina_1_de_tarea(nro_tarea), buffer_nro_pagina + 5);
+	dibujar_texto(buffer_nro_pagina, punto(16 + nro_tarea, 3), color, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
 	buffer_nro_pagina[1] = '2';
-	dword_a_hexa_string(pagina_2_de_tarea(n), buffer_nro_pagina + 5);
-	dibujar_texto(buffer_nro_pagina, punto(16 + n, 17), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(pagina_2_de_tarea(nro_tarea), buffer_nro_pagina + 5);
+	dibujar_texto(buffer_nro_pagina, punto(16 + nro_tarea, 17), color, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
 	buffer_nro_pagina[1] = '3';
-	dword_a_hexa_string(pagina_3_de_tarea(n), buffer_nro_pagina + 5);
-	dibujar_texto(buffer_nro_pagina, punto(16 + n, 31), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dword_a_hexa_string(pagina_3_de_tarea(nro_tarea), buffer_nro_pagina + 5);
+	dibujar_texto(buffer_nro_pagina, punto(16 + nro_tarea, 31), color, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 }
 
 /* funciones buffer -> memoria video */
