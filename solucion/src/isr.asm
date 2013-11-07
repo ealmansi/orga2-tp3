@@ -165,6 +165,7 @@ _isr32:
 	CMP ax, 0
 	JE .nojump
 		MOV [selector], ax
+			XCHG bx, bx,
 			MOV al, [es_navio];
 			CMP al, 1;
 			JE .noPisarTSS

@@ -79,7 +79,7 @@ void sched_inicializar() {
 
 unsigned short sched_proximo_indice() {
 
-	if (navios_seguidos <= 3) {
+	if (navios_seguidos < 3) {
 
 		navios_seguidos++;
 		buscar_proximo(&navio_actual, &arr_navios);
