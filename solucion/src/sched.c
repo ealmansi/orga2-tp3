@@ -8,6 +8,9 @@
 #include "sched.h"
 #include "defines.h"
 #include "screen.h"
+#include "screen.h"
+
+extern dword_t selector;
 
 dword_t arr_navios[CANT_TAREAS];
 dword_t arr_banderas[CANT_TAREAS];
@@ -26,9 +29,29 @@ void sched_resetear_tick(){
 }
 
 void sched_desalojar_tarea(){
+	dword_t sel = selector >> 3;
+	if (sel < 0x19) {
+		dibujar_texto("El selector recibido no corresponde ni a una tarea ni a una bandera", punto(0, 0), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
+		int t = 1/0; //Que explote todo y pare la ejecución.
+		}
 	
-	sel_navios[navio_actual] = 0;
-	sel_banderas[navio_actual] = 0;
+	sel -= 0x18;
+
+	if (sel < 0x9){
+
+		arr_navios[navio_actual-1]=0;
+		arr_banderas[navio_actual-1]=0;
+
+	} else if (sel >= 0x9 && sel < 0x10){
+
+		arr_navios[bandera_actual-1] = 0;
+		arr_banderas[bandera_actual-1] = 0;
+
+	} else {
+
+		dibujar_texto("El selector recibido se va de la gdt.", punto(0, 0), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
+
+	}
 	
 }
 

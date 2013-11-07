@@ -134,6 +134,7 @@ ISR 19
 ;; -------------------------------------------------------------------------- ;;
 
 global _isr32
+global selector
 extern sched_proximo_indice;
 
 offset: DD 0
