@@ -23,7 +23,7 @@ extern game_navegar
 ;; Funciones del Scheduler
 extern sched_resetear_tick
 extern sched_proximo_indice
-extern sched_desalojar_tarea
+extern hundir_navio
 
 ;;
 ;; Definición de MACROS
@@ -333,7 +333,7 @@ _isr0x50:
 
 .desalojar_tarea:
 	
-	call sched_desalojar_tarea
+	call hundir_navio
 	
 .terminar:
 

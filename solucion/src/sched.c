@@ -28,7 +28,7 @@ void sched_resetear_tick(){
 	
 }
 
-void sched_desalojar_tarea(){
+void hundir_navio(){
 	dword_t sel = selector >> 3;
 	if (sel < 0x19) {
 		dibujar_texto("El selector recibido no corresponde ni a una tarea ni a una bandera", punto(0, 0), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
