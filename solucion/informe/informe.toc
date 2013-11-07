@@ -1,4 +1,7 @@
 \select@language {spanish}
 \contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{2}
 \contentsline {section}{\numberline {2}Global Descriptor Table (GDT)}{3}
-\contentsline {section}{\numberline {3}Conclusiones}{4}
+\contentsline {section}{\numberline {3}Paginaci\IeC {\'o}n}{4}
+\contentsline {section}{\numberline {4}Manejo de tareas}{5}
+\contentsline {section}{\numberline {5}Scheduler}{6}
+\contentsline {section}{\numberline {6}Conclusiones}{7}
