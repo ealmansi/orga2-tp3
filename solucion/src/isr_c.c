@@ -38,8 +38,14 @@ void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2) {
 
 	int ind_tarea = obtener_indice_tarea_en_ejecucion();
 	int nro_tarea = numero_tarea(ind_tarea);
+	
+	if(es_bandera(ind_tarea)) {
+		desalojar_tarea(nro_tarea, "Bandera llamo INT 50");
+		return;
+	}
 
-	unsigned int ret;
+	int ret;
+	
 	switch(type) {
 	case SYS_FONDEAR:
 		ret = game_fondear(arg1);
@@ -54,13 +60,13 @@ void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2) {
 		actualizar_navegar(nro_tarea, arg1, arg2);
 		break;
 	default:
-		ret = FALSE;
-		break;
+		desalojar_tarea(numero_tarea(ind_tarea), "Syscall indefinida");
+		return;
 	}
 
 	if(ret == FALSE) {
-		int ind_tarea = obtener_indice_tarea_en_ejecucion();
 		desalojar_tarea(numero_tarea(ind_tarea), "Syscall devolvio FALSE");
+		return;
 	}
 }
 
@@ -70,7 +76,8 @@ void _isr0x66_c() {
 	int nro_tarea = numero_tarea(ind_tarea);
 
 	if(es_navio(ind_tarea)) {
-		desalojar_tarea(nro_tarea, "Navio llamando INT 0x66");
+		desalojar_tarea(nro_tarea, "Navio llamo INT 66");
+		return;
 	}
 
 	actualizar_bandera(nro_tarea, (byte_t*) BANDERA_BUFFER);
