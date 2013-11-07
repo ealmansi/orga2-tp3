@@ -70,6 +70,7 @@ void sched_inicializar() {
 	bandera_actual = 0;
 	banderas_seguidas = 0;
 	navios_seguidos = 0;
+	es_navio = 1;
 
 }
 
@@ -97,7 +98,6 @@ unsigned short sched_proximo_indice() {
 		buscar_proximo(&navio_actual, &arr_navios);
 		es_navio = 1;
 		return arr_navios[navio_actual-1];
-
 	}
 }
 

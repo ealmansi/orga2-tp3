@@ -8,6 +8,7 @@
 #include "tss.h"
 #include "gdt.h"
 #include "mmu.h"
+#include "sched.h"
 
 
 #define GDT_SEL_CODIG_0 (GDT_IDX_CODIG_0 << 3)
@@ -277,3 +278,10 @@ void tss_inicializar_entrada_gdt_bandera(unsigned int nro_tarea) {
         (byte_t) BITS(32, 24, (dword_t) &(tss_banderas[nro_tarea])),	/* base[31:24]  */
     };
 }
+
+
+
+void tss_pisar_bandera_actual(byte_t bandera){
+	tss_inicializar_bandera(bandera_actual-1);
+}
+
