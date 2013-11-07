@@ -70,7 +70,15 @@ _isr%1:
 	IRET
 %endmacro
 
+guardar_eip_en_eax:
+	MOV eax, [esp];
+	RET
+
+
 %macro guardar_estado 0
+	mov edx, eax
+	MOV edi, ebx
+	MOV esi, ecx
 	mov dword		[_estado_eax],eax
 	mov dword		[_estado_ebx], ebx
 	mov dword		[_estado_ecx], ecx
@@ -79,7 +87,8 @@ _isr%1:
 	mov dword		[_estado_edi], edi
 	mov dword		[_estado_ebp], ebp
 	mov dword		[_estado_esp], esp
-	;mov dword		[_estado_eip], eip
+	CALL guardar_eip_en_eax
+	mov dword		[_estado_eip], eax
 	mov 			eax, cr0
 	mov dword 		[_estado_cr0], eax
 	mov 			eax, cr2
@@ -88,13 +97,23 @@ _isr%1:
 	mov dword 		[_estado_cr3], eax
 	mov 			eax, cr4
 	mov dword 		[_estado_cr4], eax
-	;mov dword		[_estado_cs], cs
-	;mov dword		[_estado_ds], ds
-	;mov dword		[_estado_es], es
-	;mov dword		[_estado_fs], fs
-	;mov dword		[_estado_gs], gs
-	;mov dword		[_estado_ss], ss
-	;mov dword		[_estado_eflags], eflags
+	MOV ax, cs
+	mov 			[_estado_cs], ax
+	MOV ax, ds
+	mov 			[_estado_ds], ax
+	MOV ax, es
+	mov 			[_estado_es], ax
+	MOV ax, fs
+	mov 			[_estado_fs], ax
+	MOV ax, gs
+	mov 			[_estado_gs], ax
+	MOV ax, ss
+	mov 			[_estado_ss], ax
+	MOV eax, [esp]
+	mov dword		[_estado_eflags], eax
+	mov eax, edx
+	MOV ebx, edi
+	MOV ecx, esi
 %endmacro
 
 ;;
@@ -183,9 +202,9 @@ _isr32:
 
     sal 		ax, 3
     MOV WORD	[_isr_32_selector], ax
+	CALL    	fin_intr_pic1
     jmp far 	[_isr_32_offset]
 
-	CALL    	fin_intr_pic1
 
 	POPFD
 	POPAD
