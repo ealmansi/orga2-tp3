@@ -1,7 +1,10 @@
 \select@language {spanish}
 \contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{2}
-\contentsline {section}{\numberline {2}Global Descriptor Table (GDT)}{3}
-\contentsline {section}{\numberline {3}Paginaci\IeC {\'o}n}{4}
-\contentsline {section}{\numberline {4}Manejo de tareas}{5}
-\contentsline {section}{\numberline {5}Scheduler}{6}
-\contentsline {section}{\numberline {6}Conclusiones}{7}
+\contentsline {section}{\numberline {2}Modo real y modo protegido}{3}
+\contentsline {section}{\numberline {3}Global Descriptor Table (GDT)}{4}
+\contentsline {section}{\numberline {4}Paginaci\IeC {\'o}n}{5}
+\contentsline {section}{\numberline {5}Interrupciones}{6}
+\contentsline {section}{\numberline {6}Manejo de tareas}{7}
+\contentsline {section}{\numberline {7}Protecci\IeC {\'o}n}{8}
+\contentsline {section}{\numberline {8}Scheduler}{9}
+\contentsline {section}{\numberline {9}Conclusiones}{10}
