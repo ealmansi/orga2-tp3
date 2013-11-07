@@ -13,6 +13,7 @@ int es_navio(int indice);
 int es_bandera(int indice);
 int numero_tarea(int indice);
 
+#define BANDERA_BUFFER  0x40001000
 
 int _isr32_c() {
 
@@ -65,10 +66,13 @@ void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2) {
 void _isr0x66_c() {
 
 	int ind_tarea = obtener_indice_tarea_en_ejecucion();
+	int nro_tarea = numero_tarea(ind_tarea);
 
 	if(es_navio(ind_tarea)) {
-		sched_desalojar_tarea(numero_tarea(ind_tarea));
+		sched_desalojar_tarea(nro_tarea);
 	}
+
+	actualizar_bandera(nro_tarea, (byte_t*) BANDERA_BUFFER);
 }
 
 int obtener_indice_tarea_en_ejecucion() {

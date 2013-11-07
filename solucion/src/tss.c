@@ -168,7 +168,7 @@ void tss_inicializar_bandera(unsigned int tarea) {
 	tss_banderas[tarea].esp2		= 0;
 	tss_banderas[tarea].ss2			= 0;
 	tss_banderas[tarea].cr3			= ADDR_TASK_1_PAGE_DIREC + TAMANO_PAGINA * tarea;
-	tss_banderas[tarea].eip			= ADDR_VIRTUAL_TASK_CODE + *((dword_t*)(TASK_1_CODE_ADDR + TASK_SIZE * (tarea + 1) - 4));
+	tss_banderas[tarea].eip			= TASK_1_CODE_ADDR + TASK_SIZE * tarea + *((dword_t*)(TASK_1_CODE_ADDR + TASK_SIZE * (tarea + 1) - 4));
 	tss_banderas[tarea].eflags		= 0x202;
 	tss_banderas[tarea].eax			= 0;
 	tss_banderas[tarea].ecx			= 0;
