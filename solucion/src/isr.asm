@@ -280,6 +280,7 @@ _isr0x50:
 	PUSHAD
 	PUSHFD
 
+
 	cmp eax, 0x923
 	jne .no_fondear
 	
