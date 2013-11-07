@@ -97,7 +97,6 @@ unsigned short sched_proximo_indice() {
 		buscar_proximo(&navio_actual, &arr_navios);
 		es_navio = 1;
 		return arr_navios[navio_actual-1];
-
 	}
 }
 

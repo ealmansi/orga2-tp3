@@ -353,13 +353,18 @@ _isr0x50:
 	STI
 	IRET
 
+
+
+
+
 global _isr0x66
+extern navio_actual
 _isr0x66:	
 	CLI
 	PUSHAD
 	PUSHFD
 
-	JMP $
+	MOV ax, navio_actual
     MOV 			EAX, 0x42
 
     ; call actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
