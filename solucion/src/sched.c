@@ -28,7 +28,7 @@ void sched_inicializar() {
 	proximo_navio = -1;
 	proxima_bandera = -1;
 	cant_navios_vivos = CANT_TAREAS;
-	navios_pendientes = 4;
+	navios_pendientes = 3;
 	banderas_pendientes = 0;
 }
 
