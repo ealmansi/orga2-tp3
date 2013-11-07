@@ -8,7 +8,7 @@
 #include "sched.h"
 #include "defines.h"
 #include "screen.h"
-#include "screen.h"
+#include "colors.h"
 
 extern dword_t selector;
 
@@ -32,7 +32,9 @@ void sched_desalojar_tarea(){
 	dword_t sel = selector >> 3;
 	if (sel < 0x19) {
 		dibujar_texto("El selector recibido no corresponde ni a una tarea ni a una bandera", punto(0, 0), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
-		int t = 1/0; //Que explote todo y pare la ejecución.
+		int cero = 0;
+		int t = 1/cero; //Que explote todo y pare la ejecución.
+		t++;
 		}
 	
 	sel -= 0x18;
