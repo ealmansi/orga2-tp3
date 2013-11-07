@@ -167,7 +167,8 @@ _isr32:
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
-
+global pantalla_activa
+pantalla_activa: DB 	'm'
 global _isr33
 _isr33:
 	CLI
@@ -184,6 +185,7 @@ _isr33:
     JNE 			.letra_e
 
     call 			pintar_pantalla_modo_mapa
+    mov byte		[pantalla_activa], 'm'
 
     JMP 			.end_switch
 .letra_e:
@@ -191,6 +193,7 @@ _isr33:
     JNE 			.digito_0
 
     call 			pintar_pantalla_modo_estado
+    mov byte		[pantalla_activa], 'e'
 
 	JMP 			.end_switch
 .digito_0:

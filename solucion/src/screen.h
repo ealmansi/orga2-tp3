@@ -40,4 +40,6 @@ void pintar_pantalla_modo_mapa();
 #define 	punto(x,y)		(x), (y)
 void dibujar_texto(char* str, int i1, int j1, byte_t color, byte_t* buffer);
 
+extern char pantalla_activa;
+
 #endif  /* !__SCREEN_H__ */

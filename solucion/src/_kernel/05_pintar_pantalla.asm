@@ -26,4 +26,4 @@ extern inicializar_manejo_video;
 
 	CALL inicializar_manejo_video
 
-    CALL pintar_pantalla_modo_estado
+    CALL pintar_pantalla_modo_mapa

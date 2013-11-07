@@ -52,6 +52,8 @@ void dibujar_pagina(dword_t dir_pag, char caracter, byte_t color_fg, byte_t colo
 void actualizar_pagina_en_mapa(dword_t dir_pag);
 void actualizar_paginas_de_tarea_en_estado(int nro_tarea, byte_t color);
 
+void refrescar_pantalla_activa();
+
 /* 
 *	implementacion
 *
@@ -81,16 +83,16 @@ void inicializar_manejo_video() {
 	inicializar_buffer_modo_estado();
 	inicializar_buffer_modo_mapa();
 
-	actualizar_fondear(0, 0x0007F000);
-	actualizar_fondear(2, 0x0017F000);
-	actualizar_fondear(4, 0x0027F000);
-	actualizar_fondear(6, 0x0037F000);
-	actualizar_navegar(0, 0x0047F000, 0x0011F000);
-	actualizar_navegar(1, 0x0057F000, 0x0022F000);
-	actualizar_navegar(3, 0x0067F000, 0x0033F000);
-	actualizar_navegar(5, 0x0077A000, 0x0027F000);
-	actualizar_navegar(7, 0x0000F000, 0x0057F000);
-	actualizar_canonear(0x0077F000);
+	// actualizar_fondear(0, 0x0007F000);
+	// actualizar_fondear(2, 0x0017F000);
+	// actualizar_fondear(4, 0x0027F000);
+	// actualizar_fondear(6, 0x0037F000);
+	// actualizar_navegar(0, 0x0047F000, 0x0011F000);
+	// actualizar_navegar(1, 0x0057F000, 0x0022F000);
+	// actualizar_navegar(3, 0x0067F000, 0x0033F000);
+	// actualizar_navegar(5, 0x0077A000, 0x0027F000);
+	// actualizar_navegar(7, 0x0000F000, 0x0057F000);
+	// actualizar_canonear(0x0077F000);
 	//actualizar_desalojo(0, 0, "msj_desalojo");
 }
 
@@ -225,6 +227,8 @@ void actualizar_canonear(dword_t dir_misil) {
 
 	actualizar_pagina_en_mapa(dir_ult_misil);
 	actualizar_pagina_en_mapa(dir_misil_actual);
+
+	refrescar_pantalla_activa();
 }
 
 void actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p2) {
@@ -241,6 +245,8 @@ void actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p
 	actualizar_pagina_en_mapa(dir_nueva_p2);
 
 	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_BLACK);
+
+	refrescar_pantalla_activa();
 }
 
 void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
@@ -253,6 +259,8 @@ void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
 	actualizar_pagina_en_mapa(dir_nueva_p3);
 
 	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_BLACK);
+
+	refrescar_pantalla_activa();
 }
 
 
@@ -333,6 +341,8 @@ void actualizar_desalojo(dword_t eflags, dword_t edi, dword_t esi, dword_t ebp, 
 	dibujar_texto(reg_buffer, punto( 7, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dword_a_hexa_string(eflags, reg_buffer); // parámetro.
 	dibujar_texto(reg_buffer, punto( 10, 66), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+
+	refrescar_pantalla_activa();
 }
 
 
@@ -352,6 +362,8 @@ void actualizar_bandera(int nro_tarea, byte_t* buffer_bandera) {
 			buffer_estado[2 * ((c + j) + (f + i) * VIDEO_COLS) + 1] = buffer_bandera[2 * (j + i * 10) + 1];
 		}
 	}
+
+	refrescar_pantalla_activa();
 }
 
 void actualizar_pagina_en_mapa(dword_t dir_pag) {
@@ -423,6 +435,14 @@ void pintar_pantalla_modo_mapa() {
 	byte_t* buffer = (byte_t*) ADDR_BUFFER_VIDEO_MAPA;
 
 	memcpy(mem_video, buffer, MEM_VIDEO_CANT_BYTES);
+}
+
+void refrescar_pantalla_activa() {
+
+	if(pantalla_activa == 'm')
+		pintar_pantalla_modo_mapa();
+	else
+		pintar_pantalla_modo_estado();
 }
 
 /* auxiliares */
