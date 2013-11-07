@@ -15,5 +15,6 @@ void mmu_inicializar_tablas_kernel();
 void mmu_inicializar_tareas();
 
 void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attr);
+void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3);
 
 #endif	/* !__MMU_H__ */
