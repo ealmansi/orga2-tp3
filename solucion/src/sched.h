@@ -16,9 +16,9 @@ void printSquareText(unsigned int X, unsigned int Y, unsigned int long, char* te
 void sched_inicializar();
 unsigned short sched_proximo_indice();
 void sched_resetear_tick();
-void sched_desalojar_tarea();
+void hundir_navio();
 
-
+extern byte_t es_navio;
 extern dword_t sel_navios[CANT_TAREAS];
 extern dword_t sel_banderas[CANT_TAREAS];
 

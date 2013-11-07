@@ -23,7 +23,7 @@ extern game_navegar
 ;; Funciones del Scheduler
 extern sched_resetear_tick
 extern sched_proximo_indice
-extern sched_desalojar_tarea
+extern hundir_navio
 
 ;;
 ;; Definición de MACROS
@@ -339,7 +339,7 @@ _isr0x50:
 
 .desalojar_tarea:
 	
-	call sched_desalojar_tarea
+	call hundir_navio
 
 	; call actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo);
 	
@@ -360,10 +360,9 @@ _isr0x66:
 	PUSHFD
 
 	JMP $
-
-	; call actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
-	
     MOV 			EAX, 0x42
+
+    ; call actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
 
 	POPFD
 	POPAD
