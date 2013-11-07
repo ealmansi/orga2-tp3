@@ -370,3 +370,7 @@ void dibujar_pagina(dword_t dir_pag, char caracter, byte_t color_fg, byte_t colo
 	dibujar_casillero(caracter, punto(i, j), color_fg, color_bg, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
 }
 
+void imprimir_nombre_del_grupo() {
+
+	dibujar_texto(NOMBRE_GRUPO_STR, punto(0, 1), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
+}

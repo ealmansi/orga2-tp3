@@ -10,6 +10,8 @@
 
 #include "defines.h"
 
+void imprimir_nombre_del_grupo();
+
 void inicializar_manejo_video();
 
 void actualizar_canonear(dword_t dir_misil);
