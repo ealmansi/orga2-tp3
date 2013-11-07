@@ -31,11 +31,11 @@ KERNEL_PIECES = ./_kernel/00_cargar_la_GDT.asm 						\
 DEPEND = Makefile \
 	kernel.asm isr.asm \
 	imprimir.mac \
-	gdt.c gdt.h pic.c pic.h idt.c idt.h isr.h tss.c tss.h mmu.c mmu.h \
+	gdt.c gdt.h pic.c pic.h idt.c idt.h isr_c.c isr.h tss.c tss.h mmu.c mmu.h \
 	sched.c sched.h screen.c screen.h \
 	game.c game.h syscall.h
 
-OBJ=$(KERNEL_OBJ) gdt.o pic.o idt.o isr.o mmu.o sched.o tss.o screen.o game.o plantillas.o screenFunctions.o utils.o
+OBJ=$(KERNEL_OBJ) gdt.o pic.o idt.o isr_c.o isr.o mmu.o sched.o tss.o screen.o game.o plantillas.o screenFunctions.o utils.o
 DISK_IMG=diskette.img
 DISK_IMG_BZ=diskette.img.bz2
 

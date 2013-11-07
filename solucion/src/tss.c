@@ -168,7 +168,7 @@ void tss_inicializar_bandera(unsigned int tarea) {
 	tss_banderas[tarea].esp2		= 0;
 	tss_banderas[tarea].ss2			= 0;
 	tss_banderas[tarea].cr3			= ADDR_TASK_1_PAGE_DIREC + TAMANO_PAGINA * tarea;
-	tss_banderas[tarea].eip			= ADDR_VIRTUAL_TASK_CODE;
+	tss_banderas[tarea].eip			= *((dword_t*)(TASK_1_CODE_ADDR + TASK_SIZE * (tarea + 1) - 4));
 	tss_banderas[tarea].eflags		= 0x202;
 	tss_banderas[tarea].eax			= 0;
 	tss_banderas[tarea].ecx			= 0;
@@ -182,8 +182,8 @@ void tss_inicializar_bandera(unsigned int tarea) {
 	tss_banderas[tarea].cs			= GDT_SEL_CODIG_3;
 	tss_banderas[tarea].ss			= GDT_SEL_DATOS_3;
 	tss_banderas[tarea].ds			= GDT_SEL_DATOS_3;
-	tss_banderas[tarea].fs			= GDT_SEL_VIDEO_0;
-	tss_banderas[tarea].gs			= GDT_SEL_DATOS_3;
+	tss_banderas[tarea].fs			= GDT_SEL_DATOS_3;	// esto estaba en GDT_SEL_VIDEO_0 pero
+	tss_banderas[tarea].gs			= GDT_SEL_DATOS_3;	//  tiraba Invalid TSS exception
 	tss_banderas[tarea].ldt			= 0;
 	tss_banderas[tarea].dtrap		= 0;
 	tss_banderas[tarea].iomap		= 0xFFFF;
@@ -278,10 +278,3 @@ void tss_inicializar_entrada_gdt_bandera(unsigned int nro_tarea) {
         (byte_t) BITS(32, 24, (dword_t) &(tss_banderas[nro_tarea])),	/* base[31:24]  */
     };
 }
-
-
-
-void tss_pisar_bandera_actual(byte_t bandera){
-	tss_inicializar_bandera(bandera_actual-1);
-}
-

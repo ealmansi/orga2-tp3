@@ -6,119 +6,64 @@
 */
 
 #include "sched.h"
+#include "gdt.h"
 #include "defines.h"
-#include "screen.h"
-#include "colors.h"
 
-extern dword_t* selector;
-
-dword_t arr_navios[CANT_TAREAS];
-dword_t arr_banderas[CANT_TAREAS];
-byte_t navio_actual;
-byte_t bandera_actual;
-
-byte_t navios_seguidos;
-byte_t banderas_restantes = CANT_TAREAS;
-byte_t banderas_seguidas;
-byte_t ultimo_hundido;
-byte_t es_navio;
-
-
-byte_t buscar_proximo();
-
-void sched_resetear_tick(){
-	
-}
-
-void hundir_navio(){
-	dword_t sel = *selector >> 3;
-	if (sel < 0x19) {
-		dibujar_texto("El selector recibido no corresponde ni a una tarea ni a una bandera", punto(0, 0), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
-		int cero = 0;
-		int t = 1/cero; //Que explote todo y pare la ejecución.
-		t++;
-		}
-	
-	sel -= 0x18;
-
-	if (sel < 0x9){
-
-		arr_navios[navio_actual-1]=0;
-		arr_banderas[navio_actual-1]=0;
-		ultimo_hundido = navio_actual;
-
-	} else if (sel >= 0x9 && sel < 0x10){
-
-		arr_navios[bandera_actual-1] = 0;
-		arr_banderas[bandera_actual-1] = 0;
-		ultimo_hundido = bandera_actual;
-
-	} else {
-
-		dibujar_texto("El selector recibido se va de la gdt.", punto(0, 0), C_WHITE, (byte_t*) ADDR_MEM_VIDEO);
-
-	}
-	
-}
+int ind_navios[CANT_TAREAS];
+int ind_banderas[CANT_TAREAS];
+int proximo_navio;
+int proxima_bandera;
+int cant_navios_vivos;
+int navios_pendientes;
+int banderas_pendientes;
 
 void sched_inicializar() {
-	int i = 0;
 
-	for (i = 0; i < CANT_TAREAS; i++) {
-		arr_navios[i] = (0x19+i) << 3;
-		arr_banderas[i] = (0x21+i) << 3 ;
+	int i;
+	for (i = 0; i < CANT_TAREAS; ++i) {
+
+		ind_navios[i] = (GDT_IDX_TASK_OFFSET + i);
+		ind_banderas[i] = (GDT_IDX_TASK_BANDERA_OFFSET + i);
 	}
-	navio_actual = 0;
-	bandera_actual = 0;
-	banderas_seguidas = 0;
-	navios_seguidos = 0;
-	es_navio = 1;
-
+	proximo_navio = -1;
+	proxima_bandera = -1;
+	cant_navios_vivos = CANT_TAREAS;
+	navios_pendientes = 3;
+	banderas_pendientes = 0;
 }
 
+int sched_proximo_indice() {
 
-unsigned short sched_proximo_indice() {
+	if(0 < navios_pendientes) {
 
-	if (navios_seguidos < 3) {
+		do {
+			proximo_navio = ((proximo_navio + 1) % CANT_TAREAS);
+		} while(ind_navios[proximo_navio] == 0);
 
-		navios_seguidos++;
-		buscar_proximo(&navio_actual, &arr_navios);
-		es_navio = 1;
-		return arr_navios[navio_actual-1];
+		if(--navios_pendientes == 0) banderas_pendientes = cant_navios_vivos;
 
-	} else if (banderas_seguidas < banderas_restantes) {
+		return ind_navios[proximo_navio];
 
-		buscar_proximo(&bandera_actual, &arr_banderas);
-		banderas_seguidas++;
-		es_navio = 0;
-		return arr_banderas[bandera_actual-1];
+	} else if(0 < banderas_pendientes) {
+
+		do {
+			proxima_bandera = ((proxima_bandera + 1) % CANT_TAREAS);
+		} while(ind_banderas[proxima_bandera] == 0);
+
+		if(--banderas_pendientes == 0) navios_pendientes = 3;
+
+		return ind_banderas[proxima_bandera];
 
 	} else {
 
-		navios_seguidos = 1;
-		banderas_seguidas = 0;
-		buscar_proximo(&navio_actual, &arr_navios);
-		es_navio = 1;
-		return arr_navios[navio_actual-1];
+		return 0;
 	}
 }
 
-byte_t buscar_proximo(byte_t* actual, dword_t** arreglo){
-	byte_t aux = *actual;
-	(*actual)++;
-	if (*actual>CANT_TAREAS) {
-		*actual=1;
-	}
-	
-	while ((*actual) != aux && (*arreglo)[(*actual)-1]==0) {
-		(*actual)++;
-		if ((*actual) == CANT_TAREAS) {
-			(*actual) = 1;
-		}
-	}
-	if ((*actual) == aux) {
-		return 0;
-	}
-	
-	return (*actual);
+void sched_desalojar_tarea(int nro_tarea) {
+
+	ind_navios[nro_tarea] = 0;
+	ind_banderas[nro_tarea] = 0;
+
+	--cant_navios_vivos;
 }

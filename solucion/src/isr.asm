@@ -38,15 +38,9 @@ extern tss_pisar_bandera_actual
 global _isr%1
 _isr%1:
     
+    imprimir_texto_mp _isr_msj_%1, _isr_msj_len_%1, 0x0F, 20, 40
+    jmp $
     
-    imprimir_texto_mp _isr_msj_%1, _isr_msj_len_%1, 0x9F, 1, 50
-    
-    call hundir_navio
-    
-    MOV WORD [selector], 0xC0
-	JMP  	0xC0:0
-    
-    iret
 %endmacro
 
 %define SYS_FONDEAR		0x923
@@ -146,51 +140,23 @@ ISR 19
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
 
+extern _isr32_c
+_isr_32_offset:		DD 0
+_isr_32_selector:	DW 0
 global _isr32
-global selector
-extern sched_proximo_indice;
-
-offset: DD 0
-selector: DW 0
-
 _isr32:
 	CLI
 	PUSHAD
 	PUSHFD
 
+	CALL    	fin_intr_pic1
     CALL		proximo_reloj
 
-	MOV al, [es_navio];
-	CMP al, 1 ;
-	JE .esNavio;
-		;XCHG bx, bx
-		;CALL hundir_navio;
+    CALL 		_isr32_c
 
-.esNavio:
-
-	CALL		sched_proximo_indice
-
-	CMP ax, 0
-	JE .nojump
-		MOV [selector], ax
-			XCHG bx, bx,
-			MOV al, [es_navio];
-			CMP al, 1;
-			JE .noPisarTSS
-			CALL tss_pisar_bandera_actual;
-
-.noPisarTSS:
-		CALL fin_intr_pic1
-		JMP FAR [offset]
-
-		
-		JMP .end
-
-
-.nojump:
-	CALL    fin_intr_pic1
-
-.end:
+    sal 		ax, 3
+    MOV WORD	[_isr_32_selector], ax
+    jmp far 	[_isr_32_offset]
 
 	POPFD
 	POPAD
@@ -202,7 +168,6 @@ _isr32:
 ;; -------------------------------------------------------------------------- ;;
 
 global _isr33
-extern cuadradoColor;
 _isr33:
 	CLI
 	PUSHAD
@@ -309,114 +274,38 @@ _isr33:
 ;; -------------------------------------------------------------------------- ;;
 
 ;~ Habria que checkear quien la llama? (talvez alguna tarea no tiene permiso para llamarla)
+extern _isr0x50_c
 global _isr0x50
 _isr0x50:	
 	CLI
 	PUSHAD
 	PUSHFD
 
-.fondear:
+	PUSH 		ecx
+	PUSH 		ebx
+	PUSH 		eax
+    CALL 		_isr0x50_c
+    POP 		eax
+    POP 		ebx
+    POP 		ecx
 
-	cmp eax, SYS_FONDEAR
-	jne .canonear
-
-	push ebx
-	call game_fondear
-	pop ebx
-
-	; call actualizar_fondear(int nro_tarea, dword_t dir_pag_anclada);
-	
-	cmp eax, TRUE
-	jne .desalojar_tarea
-	jmp .terminar
-	
-.canonear:
-
-	cmp eax, SYS_CANONEAR
-	jne .navegar
-	
-	push ecx
-	push ebx
-	call game_canonear
-	pop ebx
-	pop ecx
-
-	; call actualizar_canonear(dword_t dir_misil);
-	
-	cmp eax, TRUE
-	jne .desalojar_tarea
-	jmp .terminar
-	
-.navegar:
-
-	cmp eax, SYS_NAVEGAR
-	jne .desalojar_tarea
-
-	push ecx
-	push ebx
-	call game_navegar
-	pop ebx
-	pop ecx
-
-	; call actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p2);
-
-	cmp eax, TRUE
-	jne .desalojar_tarea
-	jmp .terminar
-
-.desalojar_tarea:
-	
-	;	XCHG bx, bx
-	;call hundir_navio
-
-	; call actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo);
-	
-.terminar:
-
-	MOV WORD [selector], 0xC0
-	JMP  	0xC0:0
+    JMP  		0xC0:0
 
 	POPFD
 	POPAD
 	STI
 	IRET
 
-
-
-
-
+extern _isr0x66_c
 global _isr0x66
-extern bandera_actual;
-extern tss_inicializar_bandera;
 _isr0x66:	
 	CLI
 	PUSHAD
 	PUSHFD
 
-	MOV ax, es_navio
-	CMP ax, 0 ;
-	JE .bandera_verificada;
-		;XCHG bx, bx
-		;CALL hundir_navio;
+    CALL 		_isr0x66_c
 
-		JMP .salidaIsrSeisSeis
-
-.bandera_verificada:
-	
-
-
-    MOV 			EAX, 0x42
-
-    ; call actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
-
-.salidaIsrSeisSeis:
-	JMP 0xC0:0 ;
-
-;	MOV ax, bandera_actual;
-
-;	PUSH ecx;
-;	CALL tss_inicializar_bandera;
-;	ADD esp, 4;
+    JMP  		0xC0:0
 
 	POPFD
 	POPAD

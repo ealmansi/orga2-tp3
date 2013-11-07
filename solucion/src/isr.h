@@ -32,5 +32,8 @@ void _isr32();
 void _isr33();
 void _isr0x50();
 void _isr0x66();
+int _isr32_c();
+void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2);
+void _isr0x66_c();
 
 #endif  /* !__ISR_H__ */
