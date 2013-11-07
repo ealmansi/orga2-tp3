@@ -54,4 +54,6 @@ typedef struct str_tss {
 void tss_inicializar();
 void tss_inicializar_entradas_gdt();
 
+void tss_pisar_bandera_actual(byte_t bandera);
+
 #endif  /* !__TSS_H__ */

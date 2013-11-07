@@ -70,6 +70,7 @@ void sched_inicializar() {
 	bandera_actual = 0;
 	banderas_seguidas = 0;
 	navios_seguidos = 0;
+	es_navio = 1;
 
 }
 

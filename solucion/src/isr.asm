@@ -24,6 +24,11 @@ extern game_navegar
 extern sched_resetear_tick
 extern sched_proximo_indice
 extern hundir_navio
+extern es_navio;
+
+
+;; Funciones de la tss
+extern tss_pisar_bandera_actual
 
 ;;
 ;; Definición de MACROS
@@ -147,7 +152,8 @@ _isr32:
 
     CALL		proximo_reloj
 
-	MOV ax, es_navio;
+	MOV al, [es_navio];
+	xchg bx,bx;
 	CMP ax, 1 ;
 	JE .esNavio;
 		CALL hundir_navio;
@@ -159,6 +165,12 @@ _isr32:
 	CMP ax, 0
 	JE .nojump
 		MOV [selector], ax
+			MOV al, [es_navio];
+			CMP al, 1;
+			JE .noPisarTSS
+			CALL tss_pisar_bandera_actual;
+
+.noPisarTSS:
 		CALL fin_intr_pic1
 		XCHG bx, bx
 		JMP FAR [offset]
@@ -365,7 +377,8 @@ _isr0x50:
 
 
 global _isr0x66
-extern es_navio
+extern bandera_actual;
+extern tss_inicializar_bandera;
 _isr0x66:	
 	CLI
 	PUSHAD
@@ -375,7 +388,7 @@ _isr0x66:
 	CMP ax, 0 ;
 	JE .bandera_verificada;
 		CALL hundir_navio;
-		JMP .fin_isr0x66
+		JMP .salidaIsrSeisSeis
 
 .bandera_verificada:
 	
@@ -385,8 +398,14 @@ _isr0x66:
 
     ; call actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
 
-.fin_isr0x66:
+.salidaIsrSeisSeis:
 	JMP 0xC0:0 ;
+
+	MOV ax, bandera_actual;
+
+	PUSH ecx;
+	CALL tss_inicializar_bandera;
+	ADD esp, 4;
 
 	POPFD
 	POPAD

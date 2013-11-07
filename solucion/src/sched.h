@@ -19,7 +19,7 @@ void sched_resetear_tick();
 void hundir_navio();
 
 extern byte_t es_navio;
-extern dword_t sel_navios[CANT_TAREAS];
-extern dword_t sel_banderas[CANT_TAREAS];
+extern byte_t navio_actual;
+extern byte_t bandera_actual;
 
 #endif	/* !__SCHED_H__ */
