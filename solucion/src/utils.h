@@ -9,5 +9,6 @@ void memclear(void* dst, int size);
 int strlen(char* str);
 int int_size(int num);
 
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 
 #endif /* !__UTILS_H__ */
