@@ -23,7 +23,7 @@ unsigned int game_fondear(unsigned int ancla_dir_fisica) {
 unsigned int game_canonear(unsigned int dir_misil_fisica, unsigned int dir_buffer_relativa) {
 	
 	if(AREA_MAR_INICIO <= dir_misil_fisica && dir_misil_fisica <= AREA_MAR_FIN){
-		memcpy((void*)dir_misil_fisica,(void*) dir_buffer_relativa, 97);
+		memcpy((void*)dir_misil_fisica,(void*) dir_buffer_relativa, min(97,AREA_MAR_FIN-dir_misil_fisica+1));
 		return TRUE;
 	}
 	
