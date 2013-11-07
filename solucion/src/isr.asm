@@ -156,6 +156,7 @@ _isr32:
 
     sal 		ax, 3
     MOV WORD	[_isr_32_selector], ax
+    xchg 		bx, bx
     jmp far 	[_isr_32_offset]
 
 	POPFD
