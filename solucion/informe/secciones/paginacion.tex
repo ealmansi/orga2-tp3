@@ -1,0 +1,33 @@
+	La parte de paginación se resolvió de manera bastante intuitiva.
+
+	Se crearon funciones en C que se encargar de inicializar los directorios
+de páginas del kernel y de las tareas. Un detalle importante de la implementación
+es que tanto el kernel como las tareas comparten las primeras 2 tablas de páginas
+de sus directores de páginas.
+
+	Estas dos tablas son las que se hacen con identity mapping. El identity mapping
+está en todos los mapas de memoria de la misma manera y con los mismos atributos. Además
+nunca debe ser cambiado a lo largo de la ejecución de todo el programa en ninguno de los
+mapas. Por eso decidimos crear sólo 2 tablas de páginas y hacer que todas las tareas lo compartan.
+
+	En un princio a cada tarea se le asigna una tabla extra inicializada en cero.
+Luego mediante las funciones para mapear páginas se completan estas tablas de manera adecuada
+para que se efectivicen los mapeos.
+
+	Es importante notar que el resultado final de esto es que cada tarea tiene mapeadas
+2 tablas con identity mapping y con proviligios restringidos (sólo para supervisor) y
+luego un par de páginas mas con permisos de usuario, que son donde efectivamente va a trabajar.
+
+	Todo eso se englobó en las siguientes funciones de C:
+	
+\begin{minted}[tabsize=4]{c}
+	void mmu_inicializar_dir_kernel();
+	void mmu_inicializar_paginas_kernel();
+	void mmu_inicializar_tareas();
+\end{minted}
+
+	$mmu\_inicializar\_tareas$ no solo inicializar los directorios de páginas sino
+que además hace los mapeos de páginas correspondientes.
+
+	Finalmente esas funciones se llaman dentro de kernel.asm. Una vez terminado eso
+se habilita la paginación.
