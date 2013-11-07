@@ -89,6 +89,10 @@ void inicializar_manejo_video() {
 	actualizar_navegar(5, 0x0077A000, 0x0027F000);
 	actualizar_navegar(7, 0x0000F000, 0x0057F000);
 	actualizar_canonear(0x0077F000);
+	actualizar_bandera(0, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
+	actualizar_bandera(3, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
+	actualizar_bandera(4, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
+	actualizar_bandera(7, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
 }
 
 /* modo_estado */
@@ -258,6 +262,19 @@ void actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo) {
 
 void actualizar_bandera(int nro_tarea, byte_t* buffer_bandera) {
 
+	int f, c;
+	f = 3 + (nro_tarea / 4) * 7;
+	c = 2 + (nro_tarea % 4) * 12;
+
+	byte_t* buffer_estado = (byte_t*) ADDR_BUFFER_VIDEO_ESTADO;
+
+	int i, j;
+	for (i = 0; i < 5; ++i) {
+		for (j = 0; j < 10; ++j) {
+			buffer_estado[2 * ((c + j) + (f + i) * VIDEO_COLS)] = buffer_bandera[2 * (j + i * 10)];
+			buffer_estado[2 * ((c + j) + (f + i) * VIDEO_COLS) + 1] = buffer_bandera[2 * (j + i * 10) + 1];
+		}
+	}
 }
 
 void actualizar_pagina_en_mapa(dword_t dir_pag) {

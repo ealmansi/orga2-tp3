@@ -10,15 +10,9 @@
 #include "utils.h"
 #include "i386.h"
 
-#define PAGE_DESC_ATTR_SUP_RW_P 0b000000011
-#define PAGE_DESC_ATTR_USR_RW_P 0b000000111
-#define PAGE_DESC_ATTR_USR_RO_P 0b000000101
-
 void mmu_inicializar_tarea(int nro_tarea);
 void mmu_copiar_codigo_tarea(int nro_tarea);
 void mmu_inicializar_dir_tarea(int nro_tarea);
-void mmu_mapear_pagina (unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attr);
-void mmu_unmapear_pagina (unsigned int virtual, unsigned int cr3);
 
 /* directorio y tablas del kernel */
 
@@ -132,13 +126,12 @@ void mmu_mapear_pagina (unsigned int virtual, unsigned int cr3, unsigned int fis
 	dword_t* page_table = (dword_t*) (page_directory[dir_index] & ~0xFFF);
 	
 	page_table[table_index] = fisica + attr;
-	
-	tlbflush();
 }
 
 void mmu_unmapear_pagina (unsigned int virtual, unsigned int cr3) {
 	
 	mmu_mapear_pagina(virtual, cr3, 0x0, 0x0);
-
+	
+	tlbflush();
 }
 
