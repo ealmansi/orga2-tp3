@@ -62,23 +62,11 @@ void refrescar_pantalla_activa();
 /* inicializacion */
 
 dword_t dir_misil_actual;
-
 dword_t paginas_por_tarea[3 * 8];
-#define pagina_1_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 0])
-#define pagina_2_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 1])
-#define pagina_3_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 2])
 
 void inicializar_manejo_video() {
 
 	dir_misil_actual = -1;
-
-	int n;
-	for (n = 0; n < 8; ++n) {
-
-		pagina_1_de_tarea(n) = 0;
-		pagina_2_de_tarea(n) = 0;
-		pagina_3_de_tarea(n) = 0;
-	}
 
 	inicializar_buffer_modo_estado();
 	inicializar_buffer_modo_mapa();

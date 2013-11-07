@@ -86,7 +86,7 @@ start:
 
     %include "_kernel/09_habilitar_paginacion.asm"
 
-    %include "_kernel/10_inicializar_tarea_idle.asm"
+    %include "_kernel/10_inicializar_manejo_video.asm"
 
     %include "_kernel/11_inicializar_todas_las_tsss.asm"
 

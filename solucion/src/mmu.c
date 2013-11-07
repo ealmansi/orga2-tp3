@@ -8,6 +8,7 @@
 #include "mmu.h"
 #include "defines.h"
 #include "utils.h"
+#include "screen.h"
 #include "i386.h"
 
 void mmu_inicializar_tarea(int nro_tarea);
@@ -113,6 +114,10 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 						(unsigned int) page_directory, 
 						0, 
 						PAGE_DESC_ATTR_USR_RO_P);
+
+	pagina_1_de_tarea(nro_tarea) = TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE;
+	pagina_2_de_tarea(nro_tarea) = TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE  + TAMANO_PAGINA;
+	pagina_3_de_tarea(nro_tarea) = 0;
 }
 
 /* mapear y unmapear paginas */

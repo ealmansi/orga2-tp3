@@ -21,9 +21,4 @@ extern inicializar_manejo_video;
     ADD     ebx, 2
     LOOP    .setearFormatoFilas
 
-    ; Colorear pantalla    
-    
-
-	CALL inicializar_manejo_video
-
-    CALL pintar_pantalla_modo_mapa
+    ; Colorear pantalla

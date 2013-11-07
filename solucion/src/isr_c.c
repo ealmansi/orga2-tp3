@@ -45,7 +45,7 @@ void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2) {
 	}
 
 	int ret;
-	
+
 	switch(type) {
 	case SYS_FONDEAR:
 		ret = game_fondear(arg1);

@@ -51,5 +51,10 @@ void pintar_pantalla_modo_mapa();
 void dibujar_texto(char* str, int i1, int j1, byte_t color, byte_t* buffer);
 
 extern int pantalla_activa;
+extern dword_t paginas_por_tarea[3 * 8];
+
+#define pagina_1_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 0])
+#define pagina_2_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 1])
+#define pagina_3_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 2])
 
 #endif  /* !__SCREEN_H__ */

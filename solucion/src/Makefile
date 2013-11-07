@@ -18,7 +18,7 @@ KERNEL_PIECES = ./_kernel/00_cargar_la_GDT.asm 						\
 	./_kernel/07_inicializar_el_directorio_de_paginas.asm 			\
 	./_kernel/08_inicializar_memoria_de_tareas.asm 					\
 	./_kernel/09_habilitar_paginacion.asm 							\
-	./_kernel/10_inicializar_tarea_idle.asm 						\
+	./_kernel/10_inicializar_manejo_video.asm 						\
 	./_kernel/11_inicializar_todas_las_tsss.asm 					\
 	./_kernel/12_inicializar_entradas_de_la_gdt_de_las_tsss.asm 	\
 	./_kernel/13_inicializar_el_scheduler.asm 						\
