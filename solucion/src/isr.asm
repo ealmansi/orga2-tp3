@@ -153,10 +153,10 @@ _isr32:
     CALL		proximo_reloj
 
 	MOV al, [es_navio];
-	CMP ax, 1 ;
+	CMP al, 1 ;
 	JE .esNavio;
-	xchg bx, bx;
-		CALL hundir_navio;
+		;XCHG bx, bx
+		;CALL hundir_navio;
 
 .esNavio:
 
@@ -357,8 +357,8 @@ _isr0x50:
 
 .desalojar_tarea:
 	
-	xchg bx, bx;
-	call hundir_navio
+	;	XCHG bx, bx
+	;call hundir_navio
 
 	; call actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo);
 	
@@ -387,8 +387,9 @@ _isr0x66:
 	MOV ax, es_navio
 	CMP ax, 0 ;
 	JE .bandera_verificada;
-	xchg bx, bx;
-		CALL hundir_navio;
+		;XCHG bx, bx
+		;CALL hundir_navio;
+
 		JMP .salidaIsrSeisSeis
 
 .bandera_verificada:
