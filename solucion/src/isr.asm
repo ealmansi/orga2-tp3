@@ -334,21 +334,11 @@ _isr0x50:
 .desalojar_tarea:
 	
 	call sched_desalojar_tarea
-	MOV WORD [selector], 0xC0
-	JMP  	0xC0:0
 	
 .terminar:
 
-;	call sched_resetear_tick
-;	call sched_proximo_indice
-;	
-;	cmp ax, [selector]
-;	je .sin_cambios
-;	
-;.siguiente_tarea:
-;	mov [selector], ax
-;	jmp far [offset]
-;
+	MOV WORD [selector], 0xC0
+	JMP  	0xC0:0
 
 	POPFD
 	POPAD
