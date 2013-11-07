@@ -126,13 +126,12 @@ void mmu_mapear_pagina (unsigned int virtual, unsigned int cr3, unsigned int fis
 	dword_t* page_table = (dword_t*) (page_directory[dir_index] & ~0xFFF);
 	
 	page_table[table_index] = fisica + attr;
-	
-	tlbflush();
 }
 
 void mmu_unmapear_pagina (unsigned int virtual, unsigned int cr3) {
 	
 	mmu_mapear_pagina(virtual, cr3, 0x0, 0x0);
-
+	
+	tlbflush();
 }
 

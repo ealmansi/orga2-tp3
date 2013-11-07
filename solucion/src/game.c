@@ -12,6 +12,7 @@
 unsigned int game_fondear(unsigned int ancla_dir_fisica) {
 	
 	if(ancla_dir_fisica <= AREA_TIERRA_FIN){
+		mmu_unmapear_pagina(TASK_ANCLA, rcr3());
 		mmu_mapear_pagina(TASK_ANCLA, rcr3(), ancla_dir_fisica, PAGE_DESC_ATTR_USR_RO_P);
 		return TRUE;
 	}
