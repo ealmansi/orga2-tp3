@@ -113,6 +113,8 @@ _digito_7_str:			db '7'
 _digito_8_str:			db '8'
 _digito_9_str:			db '9'
 
+extern pantalla_activa
+
 ;;
 ;; Rutinas de atención de las EXCEPCIONES
 ;; -------------------------------------------------------------------------- ;;
@@ -168,8 +170,7 @@ _isr32:
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
-global pantalla_activa
-pantalla_activa: DB 	'm'
+
 global _isr33
 _isr33:
 	CLI

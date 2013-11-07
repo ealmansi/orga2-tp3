@@ -18,7 +18,7 @@
 
 #define 	punto(x,y)		(x), (y)
 
-extern int pantalla_activa;
+int pantalla_activa;
 
 /* 
 *	prototipos funciones auxiliares
@@ -411,7 +411,7 @@ void refrescar_pantalla_activa() {
 
 	if(pantalla_activa == 'm')
 		pintar_pantalla_modo_mapa();
-	else
+	else if(pantalla_activa == 'e')
 		pintar_pantalla_modo_estado();
 }
 
