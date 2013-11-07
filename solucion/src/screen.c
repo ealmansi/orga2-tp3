@@ -42,7 +42,7 @@ void dibujar_panel_ultimo_error();
 void dibujar_panel_inferior();
 void dibujar_paginas_por_tarea();
 void dword_a_hexa_string(dword_t nro, char buffer[9]);
-void dibujar_barra_inferior();
+void dibujar_barra_inferior(byte_t* buffer);
 
 /* modo_mapa */
 void dibujar_mar_y_tierra();
@@ -79,7 +79,7 @@ void inicializar_buffer_modo_estado() {
 	dibujar_barra_superior();
 	dibujar_panel_superior();
 	dibujar_panel_inferior();
-	dibujar_barra_inferior();
+	dibujar_barra_inferior((byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 }
 
 void dibujar_barra_superior() {
@@ -173,10 +173,17 @@ void dword_a_hexa_string(dword_t nro, char buffer[9]) {
 	buffer[8] = 0;
 }
 
-void dibujar_barra_inferior() {
+void dibujar_barra_inferior(byte_t* buffer) {
 
-	dibujar_rectangulo(punto(VIDEO_FILS - 1, 0), punto(VIDEO_FILS, VIDEO_COLS), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dibujar_texto("Barra inferior no implementada (porque me dio paja)", punto(VIDEO_FILS - 1, 0), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_rectangulo(punto(VIDEO_FILS - 1, 0), punto(VIDEO_FILS, VIDEO_COLS), C_BLACK, buffer);
+	
+	int i;
+	for (i = 0; i < 8; ++i) {
+		dibujar_casillero(i + 1 + '0', VIDEO_FILS - 1, 4 + i * 3, C_BLACK, C_WHITE, buffer);
+		dibujar_casillero('*', VIDEO_FILS - 1, 4 + i * 3 + 1, C_BLACK, C_WHITE, buffer);
+		dibujar_casillero(i + 1 + '0', VIDEO_FILS - 1, 34 + i * 3, C_BLACK, C_LIGHT_BROWN, buffer);
+		dibujar_casillero('*', VIDEO_FILS - 1, 34 + i * 3 + 1, C_BLACK, C_LIGHT_BROWN, buffer);
+	}
 }
 
 /* modo_mapa */
@@ -184,7 +191,7 @@ void dibujar_barra_inferior() {
 void inicializar_buffer_modo_mapa() {
 
 	dibujar_mar_y_tierra();
-	dibujar_barra_inferior();
+	dibujar_barra_inferior((byte_t*) ADDR_BUFFER_VIDEO_MAPA);
 }
 
 void dibujar_mar_y_tierra() {
@@ -301,6 +308,16 @@ void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_d
 	// dibujar_texto(reg_buffer, punto( 7, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	// dword_a_hexa_string(estado->eflags, reg_buffer);
 	// dibujar_texto(reg_buffer, punto( 10, 66), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+
+	// actualizo barra inferior
+	dibujar_casillero(nro_tarea + 1 + '0', VIDEO_FILS - 1, 4 + nro_tarea * 3, C_WHITE, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_casillero(' ', VIDEO_FILS - 1, 4 + nro_tarea * 3 + 1, C_BLACK, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_casillero(nro_tarea + 1 + '0', VIDEO_FILS - 1, 34 + nro_tarea * 3, C_WHITE, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_casillero(' ', VIDEO_FILS - 1, 34 + nro_tarea * 3 + 1, C_BLACK, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_casillero(nro_tarea + 1 + '0', VIDEO_FILS - 1, 4 + nro_tarea * 3, C_WHITE, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
+	dibujar_casillero(' ', VIDEO_FILS - 1, 4 + nro_tarea * 3 + 1, C_BLACK, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
+	dibujar_casillero(nro_tarea + 1 + '0', VIDEO_FILS - 1, 34 + nro_tarea * 3, C_WHITE, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
+	dibujar_casillero(' ', VIDEO_FILS - 1, 34 + nro_tarea * 3 + 1, C_BLACK, C_RED, (byte_t*) ADDR_BUFFER_VIDEO_MAPA);
 
 	refrescar_pantalla_activa();
 }
