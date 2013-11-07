@@ -18,7 +18,7 @@
 
 #define 	punto(x,y)		(x), (y)
 
-int pantalla_activa;
+int pantalla_activa = 'm';
 
 /* 
 *	prototipos funciones auxiliares
@@ -116,13 +116,13 @@ void dibujar_banderas() {
 	i = 2; j = 2;
 	for (n = 1; n <= 4; ++n, j += 12) {
 		
+		dibujar_rectangulo(punto(i + 1, j), punto(i + 6, j + 10), C_GREEN, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 		nombre_navio[6] = n + '0';
 		dibujar_texto(nombre_navio, punto(i, j), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-		dibujar_rectangulo(punto(i + 1, j), punto(i + 6, j + 10), C_GREEN, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 		
+		dibujar_rectangulo(punto(i + 8, j), punto(i + 13, j + 10), C_GREEN, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 		nombre_navio[6] = n + 4 + '0';
 		dibujar_texto(nombre_navio, punto(i + 7, j), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-		dibujar_rectangulo(punto(i + 8, j), punto(i + 13, j + 10), C_GREEN, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	}
 }
 
@@ -254,9 +254,9 @@ void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
 void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_desalojo) {
 
 	// pongo en gris la linea que muestra P1 P2 P3
+	dibujar_rectangulo(punto(16 + nro_tarea, 1), punto(16 + nro_tarea + 1, VIDEO_COLS - 1), C_LIGHT_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_WHITE);
 	dibujar_texto(msj_desalojo, punto(16 + nro_tarea, 45), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dibujar_rectangulo(punto(16 + nro_tarea, 1), punto(16 + nro_tarea + 1, VIDEO_COLS - 1), C_LIGHT_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
 	// pongo la bandera en rojo
 	int i, j;
@@ -268,7 +268,7 @@ void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_d
 	char nombre_navio[] = "NAVIO x";
 	nombre_navio[6] = nro_tarea + 1 + '0';
 	dibujar_rectangulo(punto(1, 50), punto(2, VIDEO_COLS - 2), C_LIGHT_BLUE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dibujar_texto(msj_desalojo, punto(1, 51), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	//dibujar_texto(msj_desalojo, punto(1, 51), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dibujar_texto(nombre_navio, punto(1, 71), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
 	// // escribo el valor de los registros
@@ -422,6 +422,7 @@ void dibujar_rectangulo(int i1, int j1, int i2, int j2, byte_t color, byte_t* bu
 	int i, j;
 	for(i = i1; i < i2; ++i) {
 		for(j = j1; j < j2; ++j) {
+			buffer[2 * (j + i * VIDEO_COLS)] = ' ';
 			buffer[2 * (j + i * VIDEO_COLS) + 1] &= 0x0F;
 			buffer[2 * (j + i * VIDEO_COLS) + 1] |= color << 4;
 		}
@@ -443,8 +444,8 @@ void dibujar_casillero(char caracter, int i, int j, byte_t color_fg, byte_t colo
 	char caracter_str[2] = " ";
 	caracter_str[0] = caracter;
 
-	dibujar_texto(caracter_str, punto(i, j), color_fg, buffer);
 	dibujar_rectangulo(punto(i, j), punto(i + 1, j + 1), color_bg, buffer);
+	dibujar_texto(caracter_str, punto(i, j), color_fg, buffer);
 }
 
 void dibujar_pagina(dword_t dir_pag, char caracter, byte_t color_fg, byte_t color_bg) {
