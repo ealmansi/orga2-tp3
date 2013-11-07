@@ -35,6 +35,12 @@ _isr%1:
     JMP $
 %endmacro
 
+%define SYS_FONDEAR		0x923
+%define SYS_CANONEAR	0x83A
+%define SYS_NAVEGAR		0xAEF
+
+%define TRUE	1
+%define FALSE	0
 ;;
 ;; Datos
 ;; -------------------------------------------------------------------------- ;;
@@ -139,17 +145,17 @@ _isr32:
 
     CALL		proximo_reloj
 
-;	CALL		sched_proximo_indice
-;
-;	CMP ax, 0
-;	JE .nojump
-;		MOV [offset+2], ax
-;		CALL fin_intr_pic1
-;		XCHG bx, bx
-;		JMP 0xC8:0 ;
-;
-;		
-;		JMP .end
+	CALL		sched_proximo_indice
+
+	CMP ax, 0
+	JE .nojump
+		MOV [selector], ax
+		CALL fin_intr_pic1
+		XCHG bx, bx
+		JMP FAR [offset]
+
+		
+		JMP .end
 
 
 .nojump:
@@ -280,58 +286,67 @@ _isr0x50:
 	PUSHAD
 	PUSHFD
 
-
-	cmp eax, 0x923
-	jne .no_fondear
-	
 .fondear:
+
+	cmp eax, SYS_FONDEAR
+	jne .canonear
 
 	push ebx
 	call game_fondear
-	add esp, 4
-	;~ Deberia checkear que eax sea TRUE?
-	jmp .terminar
+	pop ebx
 	
-.no_fondear:
-
-	cmp eax, 0x83A
-	jne .no_canonear
+	cmp eax, TRUE
+	jne .desalojar_tarea
+	jmp .terminar
 	
 .canonear:
 
+	cmp eax, SYS_CANONEAR
+	jne .navegar
+	
 	push ecx
 	push ebx
 	call game_canonear
-	add esp, 8
-	;~ Deberia checkear que eax sea TRUE?
+	pop ebx
+	pop ecx
+	
+	cmp eax, TRUE
+	jne .desalojar_tarea
 	jmp .terminar
 	
-.no_canonear:
-
-	cmp eax, 0xAEF
-	jne .sin_cambios
-	
 .navegar:
+
+	cmp eax, SYS_NAVEGAR
+	jne .desalojar_tarea
 
 	push ecx
 	push ebx
 	call game_navegar
-	add esp, 8
-	;~ Deberia checkear que eax sea TRUE?
+	pop ebx
+	pop ecx
 
+	cmp eax, TRUE
+	jne .desalojar_tarea
+	jmp .terminar
+
+.desalojar_tarea:
+	
+	jmp .terminar
+	
 .terminar:
 
-	call sched_resetear_tick
-	call sched_proximo_indice
-	
-	cmp ax, [selector]
-	je .sin_cambios
-	
-.siguiente_tarea:
-	mov [selector], ax
-	jmp far [offset]
+;	call sched_resetear_tick
+;	call sched_proximo_indice
+;	
+;	cmp ax, [selector]
+;	je .sin_cambios
+;	
+;.siguiente_tarea:
+;	mov [selector], ax
+;	jmp far [offset]
+;
 
-.sin_cambios:
+	JMP  	0xC0:0
 
 	POPFD
 	POPAD
