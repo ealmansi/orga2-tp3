@@ -1,0 +1,104 @@
+% ** Cuidado: El indice se actualiza al compilar 2 veces. **
+
+% -- Configuración --
+\documentclass[10pt, a4paper]{article}
+\usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{float}
+\usepackage{mdframed}
+\usepackage[section]{placeins}
+% \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{verbatim}
+\usepackage{tikz}
+\usepackage{dsfont}
+\usepackage{amsmath}
+\usetikzlibrary{chains,fit,shapes}
+\newcommand{\ig}[1]{\includegraphics[width=\textwidth]{#1}}
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+\usepackage{parskip}
+\usepackage{handy}
+\usepackage{mdframed}
+
+ 
+% -- Documento --
+\begin{document}
+
+\setlength{\parindent}{25pt}
+
+	% -- Carátula --
+	
+	\thispagestyle{empty}
+	\title{%
+	\huge{Organización del Computador \RNum{2}}\\
+	\vspace{4mm}
+	\large{Trabajo Práctico 2}
+	}
+	\date{\vspace{5mm}$2^{\mathrm{do}}$ cuatrimestre de 2013}
+
+	\author{
+		\\
+		{\rm Emilio Almansi }\\
+		\small{ealmansi@gmail.com}
+		\and
+		\\
+		{\rm Álvaro Machicado }\\
+		\small{rednaxela.007@hotmail.com}
+		\and
+		\\
+		{\rm Miguel Duarte}\\
+		\small{miguelfeliped@gmail.com}
+	} % end author
+	\maketitle
+
+	
+	\vspace{10mm}
+	% -- Resumen --
+	\begin{abstract}
+		\centering{%
+			Un breve abstract sobre como arruinar tu vida en 24 hs, cortesía de Bochs.
+		}
+	\end{abstract}
+	\vspace{10mm}
+
+	% -- Indice --
+
+	\tableofcontents
+
+	\clearpage
+	% -- Contenido --
+	% Se edita cada seccion por separado, no hay que cambiar nada acá.
+	\section{Introducción}
+		\input{secciones/introduccion.tex}
+	\clearpage
+
+	\section{Modo real y modo protegido}
+		\input{secciones/gdt.tex}
+	\clearpage
+
+	\section{Global Descriptor Table (GDT)}
+		\input{secciones/gdt.tex}
+	\clearpage
+
+	\section{Paginación}
+		\input{secciones/paginacion.tex}
+	\clearpage
+
+	\section{Interrupciones}
+		\input{secciones/paginacion.tex}
+	\clearpage
+
+	\section{Manejo de tareas}
+		\input{secciones/manejo_de_tareas.tex}
+	\clearpage
+
+	\section{Scheduler}
+		\input{secciones/scheduler.tex}
+	\clearpage
+
+	\section{Conclusiones}
+		\input{secciones/conclusiones.tex}
+
+\end{document}
