@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.9.9)  7 NOV 2013 15:14
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.9.9)  7 NOV 2013 15:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1174,20 +1174,22 @@ tex) [2
 ] (./secciones/manejo_de_tareas.tex)
 [7
 
-] (./secciones/scheduler.tex) [8
+] (./secciones/proteccion.tex) [8
 
-] (./secciones/conclusiones.tex) [9
+] (./secciones/scheduler.tex) [9
 
 ]
-(./informe.aux
+(./secciones/conclusiones.tex) [10
+
+] (./informe.aux
 LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 ) ) 
 Here is how much of TeX's memory you used:
- 19440 strings out of 495059
- 368144 string characters out of 3182031
- 450413 words of memory out of 3000000
- 22182 multiletter control sequences out of 15000+200000
+ 19444 strings out of 495059
+ 368212 string characters out of 3182031
+ 451413 words of memory out of 3000000
+ 22183 multiletter control sequences out of 15000+200000
  9622 words of font info for 35 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  56i,7n,60p,840b,259s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1200,10 +1202,10 @@ t/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmr9.pfb>
-Output written on informe.pdf (9 pages, 114939 bytes).
+Output written on informe.pdf (10 pages, 119784 bytes).
 PDF statistics:
- 73 PDF objects out of 1000 (max. 8388607)
- 52 compressed objects within 1 object stream
+ 76 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
