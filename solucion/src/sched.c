@@ -21,6 +21,8 @@ byte_t navios_seguidos;
 byte_t banderas_restantes = CANT_TAREAS;
 byte_t banderas_seguidas;
 
+byte_t es_navio;
+
 
 byte_t buscar_proximo();
 
@@ -78,12 +80,14 @@ unsigned short sched_proximo_indice() {
 
 		navios_seguidos++;
 		buscar_proximo(&navio_actual, &arr_navios);
+		es_navio = 1;
 		return arr_navios[navio_actual-1];
 
 	} else if (banderas_seguidas < banderas_restantes) {
 
 		buscar_proximo(&bandera_actual, &arr_banderas);
 		banderas_seguidas++;
+		es_navio = 0;
 		return arr_banderas[bandera_actual-1];
 
 	} else {
@@ -91,8 +95,9 @@ unsigned short sched_proximo_indice() {
 		navios_seguidos = 1;
 		banderas_seguidas = 0;
 		buscar_proximo(&navio_actual, &arr_navios);
-
+		es_navio = 1;
 		return arr_navios[navio_actual-1];
+
 	}
 }
 

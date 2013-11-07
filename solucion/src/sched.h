@@ -18,7 +18,7 @@ unsigned short sched_proximo_indice();
 void sched_resetear_tick();
 void hundir_navio();
 
-
+extern byte_t es_navio;
 extern dword_t sel_navios[CANT_TAREAS];
 extern dword_t sel_banderas[CANT_TAREAS];
 
