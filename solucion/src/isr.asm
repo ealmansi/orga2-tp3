@@ -11,24 +11,19 @@ BITS 32
 ;; PIC
 extern fin_intr_pic1
 
-;; Funciones de pantalla
-extern pintar_pantalla_modo_mapa
-extern pintar_pantalla_modo_estado
+;; var global
+extern pantalla_activa
 
-;; Funciones de juego
-extern game_fondear
-extern game_canonear
-extern game_navegar
+;; ISR's en C
+extern _isr32_c
+extern _isr0x50_c
+extern _isr0x66_c
 
-;; Funciones del Scheduler
-extern sched_resetear_tick
-extern sched_proximo_indice
-extern hundir_navio
-extern es_navio;
-
-
-;; Funciones de la tss
-extern tss_pisar_bandera_actual
+;; exportadas
+global _isr32
+global _isr33
+global _isr0x50
+global _isr0x66
 
 ;;
 ;; Definición de MACROS
@@ -45,12 +40,6 @@ _isr%1:
     
 %endmacro
 
-%define SYS_FONDEAR		0x923
-%define SYS_CANONEAR	0x83A
-%define SYS_NAVEGAR		0xAEF
-
-%define TRUE	1
-%define FALSE	0
 ;;
 ;; Datos
 ;; -------------------------------------------------------------------------- ;;
@@ -58,48 +47,6 @@ _isr%1:
 ; Scheduler
 reloj_numero:           dd 0x00000000
 reloj:                  db '|/-\'
-
-; Mensajes a imprimir en las ISRs
-_isr_msj_0:             db 'Divide Error Exception'
-_isr_msj_len_0          equ $ - _isr_msj_0
-_isr_msj_1:             db 'Debug Exception'
-_isr_msj_len_1          equ $ - _isr_msj_1
-_isr_msj_2:             db 'Non Maskable Interrupt'
-_isr_msj_len_2          equ $ - _isr_msj_2
-_isr_msj_3:             db 'Breakpoint Exception'
-_isr_msj_len_3          equ $ - _isr_msj_3
-_isr_msj_4:             db 'Overflow Exception'
-_isr_msj_len_4          equ $ - _isr_msj_4
-_isr_msj_5:             db 'BOUND Range Exceeded Exception'
-_isr_msj_len_5          equ $ - _isr_msj_5
-_isr_msj_6:             db 'Invalid Opcode Exception'
-_isr_msj_len_6          equ $ - _isr_msj_6
-_isr_msj_7:             db 'Device Not Available Exception'
-_isr_msj_len_7          equ $ - _isr_msj_7
-_isr_msj_8:             db 'Double Fault Exception'
-_isr_msj_len_8          equ $ - _isr_msj_8
-_isr_msj_9:             db 'Coprocessor Segment Overrun'
-_isr_msj_len_9          equ $ - _isr_msj_9
-_isr_msj_10:            db 'Invalid TSS Exception'
-_isr_msj_len_10         equ $ - _isr_msj_10
-_isr_msj_11:            db 'Segment Not Present'
-_isr_msj_len_11         equ $ - _isr_msj_11
-_isr_msj_12:            db 'Stack Fault Exception'
-_isr_msj_len_12         equ $ - _isr_msj_12
-_isr_msj_13:            db 'General Protection Exception'
-_isr_msj_len_13         equ $ - _isr_msj_13
-_isr_msj_14:            db 'Page-Fault Exception'
-_isr_msj_len_14         equ $ - _isr_msj_14
-_isr_msj_15:            db 'Reserved'
-_isr_msj_len_15         equ $ - _isr_msj_15
-_isr_msj_16:            db 'x87 FPU Floating-Point Error'
-_isr_msj_len_16         equ $ - _isr_msj_16
-_isr_msj_17:            db 'Alignment Check Exception'
-_isr_msj_len_17         equ $ - _isr_msj_17
-_isr_msj_18:            db 'Machine-Check Exception'
-_isr_msj_len_18         equ $ - _isr_msj_18
-_isr_msj_19:            db 'SIMD Floating-Point Exception'
-_isr_msj_len_19         equ $ - _isr_msj_19
 
 ; strings a imprimir cuando se presiona un digito
 _digito_0_str:			db '0'
@@ -112,8 +59,6 @@ _digito_6_str:			db '6'
 _digito_7_str:			db '7'
 _digito_8_str:			db '8'
 _digito_9_str:			db '9'
-
-extern pantalla_activa
 
 ;;
 ;; Rutinas de atención de las EXCEPCIONES
@@ -144,10 +89,9 @@ ISR 19
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
 
-extern _isr32_c
+
 _isr_32_offset:		DD 0
 _isr_32_selector:	DW 0
-global _isr32
 _isr32:
 	CLI
 	PUSHAD
@@ -171,7 +115,6 @@ _isr32:
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
 
-global _isr33
 _isr33:
 	CLI
 	PUSHAD
@@ -186,7 +129,6 @@ _isr33:
     CMP 			AL, 0x32			; M
     JNE 			.letra_e
 
-    call 			pintar_pantalla_modo_mapa
     mov byte		[pantalla_activa], 'm'
 
     JMP 			.end_switch
@@ -194,7 +136,6 @@ _isr33:
     CMP 			AL, 0x12			; E
     JNE 			.digito_0
 
-    call 			pintar_pantalla_modo_estado
     mov byte		[pantalla_activa], 'e'
 
 	JMP 			.end_switch
@@ -279,9 +220,6 @@ _isr33:
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
 
-;~ Habria que checkear quien la llama? (talvez alguna tarea no tiene permiso para llamarla)
-extern _isr0x50_c
-global _isr0x50
 _isr0x50:	
 	CLI
 	PUSHAD
@@ -302,8 +240,7 @@ _isr0x50:
 	STI
 	IRET
 
-extern _isr0x66_c
-global _isr0x66
+
 _isr0x66:	
 	CLI
 	PUSHAD

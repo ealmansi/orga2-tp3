@@ -187,8 +187,8 @@ void dword_a_hexa_string(dword_t nro, char buffer[9]) {
 
 void dibujar_barra_inferior() {
 
-	dibujar_texto("Barra inferior no implementada (porque me dio paja)", punto(VIDEO_FILS - 1, 0), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dibujar_rectangulo(punto(VIDEO_FILS - 1, 0), punto(VIDEO_FILS, VIDEO_COLS), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_texto("Barra inferior no implementada (porque me dio paja)", punto(VIDEO_FILS - 1, 0), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 }
 
 /* modo_mapa */
@@ -254,7 +254,7 @@ void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
 void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_desalojo) {
 
 	// pongo en gris la linea que muestra P1 P2 P3
-	dibujar_rectangulo(punto(16 + nro_tarea, 1), punto(16 + nro_tarea + 1, VIDEO_COLS - 1), C_LIGHT_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_rectangulo(punto(16 + nro_tarea, 2), punto(16 + nro_tarea + 1, VIDEO_COLS - 1), C_LIGHT_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_WHITE);
 	dibujar_texto(msj_desalojo, punto(16 + nro_tarea, 45), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
