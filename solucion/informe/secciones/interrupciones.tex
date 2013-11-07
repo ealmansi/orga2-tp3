@@ -1,0 +1,26 @@
+	Las interrupciones se manejaron de 2 maneras diferentes:
+
+	Por un lado están las excepciones de sistema. De esas sólo se busca
+que si una tarea las produce esta sea desalojada. De esta manera se pudieron
+implementar mediante un macro sin mayores inconvenientes.
+
+	Por otro lado están las otras interrupciones: La de reloj, la de teclado
+y las syscalls. Estas si se tuvieorn que elaborarse de manera mas detenida.
+
+	La interrupción de teclado basicamente es un gran $switch$ que verifica si
+el contenido del código obtenido. Si este coincide con alguna de las teclas esperadas
+(``e'',``m'', ``0-9'') entonces realiza la acción debida en pantalla.
+
+	En las syscalls se tiene el cuidado de verificar quién las llama y como. Muchas
+posibles llamadas a syscals son ilegales. Por ejemplo si la llamada a una int0x50 la realiza
+una bandera esta debe ser desalojada. Lo mismo si esa interrupción es llamada con parámetros ilegales.
+Toda esta lógica se implementó medante una función escrita en C y llamada desde assembler.
+
+	La interrupción de reloj terminó siendo la mas compleja. Para implementarla lo que se hizo, entonces,
+fue realizar una función en c que se llama desde la interrupción. Esta función verifica si quién
+se estaba ejecutando al memento de la interrupción de reloj era una bandera. En ese caso la desaloja.
+Luego le pide al scheduller el índice de la GDT que necesario pra realizar un JUMP far al contexto
+de la otra tarea. A continuación se fija si la próxima tarea a ejecutarse es una bandera. Si es una bandera
+entonces primero reinicia su tss y luego, si, realiza el JMP FAR.
+
+	

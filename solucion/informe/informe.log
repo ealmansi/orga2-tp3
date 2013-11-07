@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.9.9)  7 NOV 2013 16:13
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.9.9)  7 NOV 2013 16:34
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1239,39 +1239,27 @@ runsystem(rm informe.pyg)...executed.
 ) [5
 
 ]
-(./secciones/paginacion.tex
-\openout3 = `informe.pyg'.
+(./secciones/interrupciones.tex) [6
 
-runsystem(pygmentize -l c -f latex -F tokenmerge             -P "verboptions= ,
-tabsize=4" -o informe.out.pyg informe.pyg)...executed.
-
- (./informe.out.pyg)
-runsystem(rm informe.out.pyg)...executed.
-
-runsystem(rm informe.pyg)...executed.
-
-) [6
-
-]
-(./secciones/manejo_de_tareas.tex) [7
+] (./secciones/manejo_de_tareas.tex)
+[7
 
 ] (./secciones/proteccion.tex) [8
 
-]
-(./secciones/scheduler.tex) [9
-
-] (./secciones/conclusiones.tex) [10
+] (./secciones/scheduler.tex) [9
 
 ]
-(./informe.aux
+(./secciones/conclusiones.tex) [10
+
+] (./informe.aux
 LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 ) ) 
 Here is how much of TeX's memory you used:
  20227 strings out of 495059
- 380060 string characters out of 3182031
+ 380058 string characters out of 3182031
  466217 words of memory out of 3000000
- 22930 multiletter control sequences out of 15000+200000
+ 22931 multiletter control sequences out of 15000+200000
  9790 words of font info for 36 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  56i,7n,60p,840b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1285,7 +1273,7 @@ t/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts
 public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmtt10.pfb>
-Output written on informe.pdf (10 pages, 136357 bytes).
+Output written on informe.pdf (10 pages, 136815 bytes).
 PDF statistics:
  80 PDF objects out of 1000 (max. 8388607)
  57 compressed objects within 1 object stream
