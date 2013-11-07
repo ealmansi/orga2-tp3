@@ -35,11 +35,13 @@ extern tss_pisar_bandera_actual
 ;; -------------------------------------------------------------------------- ;;
 
 %macro ISR 1
+extern _isr%1_c
 global _isr%1
 _isr%1:
     
-    imprimir_texto_mp _isr_msj_%1, _isr_msj_len_%1, 0x0F, 20, 40
-    jmp $
+    CALL 	_isr%1_c
+
+    JMP  	0xC0:0
     
 %endmacro
 
@@ -156,7 +158,6 @@ _isr32:
 
     sal 		ax, 3
     MOV WORD	[_isr_32_selector], ax
-    xchg 		bx, bx
     jmp far 	[_isr_32_offset]
 
 	POPFD
