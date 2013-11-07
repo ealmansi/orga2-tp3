@@ -9,8 +9,8 @@
 #include "defines.h"
 #include "screen.h"
 
-dword_t sel_navios[CANT_TAREAS];
-dword_t sel_banderas[CANT_TAREAS];
+dword_t arr_navios[CANT_TAREAS];
+dword_t arr_banderas[CANT_TAREAS];
 byte_t navio_actual;
 byte_t bandera_actual;
 
@@ -36,8 +36,8 @@ void sched_inicializar() {
 	int i = 0;
 
 	for (i = 0; i < CANT_TAREAS; i++) {
-		sel_navios[i] = (0x19+i) << 3;
-		sel_banderas[i] = (0x21+i) << 3 ;
+		arr_navios[i] = (0x19+i) << 3;
+		arr_banderas[i] = (0x21+i) << 3 ;
 	}
 	navio_actual = 0;
 	bandera_actual = 0;
@@ -52,22 +52,22 @@ unsigned short sched_proximo_indice() {
 	if (navios_seguidos <= 3) {
 
 		navios_seguidos++;
-		buscar_proximo(&navio_actual, &sel_navios);
-		return sel_navios[navio_actual-1];
+		buscar_proximo(&navio_actual, &arr_navios);
+		return arr_navios[navio_actual-1];
 
 	} else if (banderas_seguidas < banderas_restantes) {
 
-		buscar_proximo(&bandera_actual, &sel_banderas);
+		buscar_proximo(&bandera_actual, &arr_banderas);
 		banderas_seguidas++;
-		return sel_banderas[bandera_actual-1];
+		return arr_banderas[bandera_actual-1];
 
 	} else {
 
 		navios_seguidos = 1;
 		banderas_seguidas = 0;
-		buscar_proximo(&navio_actual, &sel_navios);
+		buscar_proximo(&navio_actual, &arr_navios);
 
-		return sel_navios[navio_actual-1];
+		return arr_navios[navio_actual-1];
 	}
 }
 

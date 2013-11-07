@@ -146,17 +146,17 @@ _isr32:
 
     CALL		proximo_reloj
 
-;	CALL		sched_proximo_indice
-;
-;	CMP ax, 0
-;	JE .nojump
-;		MOV [offset+2], ax
-;		CALL fin_intr_pic1
-;		XCHG bx, bx
-;		JMP 0xC8:0 ;
-;
-;		
-;		JMP .end
+	CALL		sched_proximo_indice
+
+	CMP ax, 0
+	JE .nojump
+		MOV [selector], ax
+		CALL fin_intr_pic1
+		XCHG bx, bx
+		JMP FAR [offset]
+
+		
+		JMP .end
 
 
 .nojump:
