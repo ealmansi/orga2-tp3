@@ -28,7 +28,7 @@ void sched_inicializar() {
 	proximo_navio = -1;
 	proxima_bandera = -1;
 	cant_navios_vivos = CANT_TAREAS;
-	navios_pendientes = 4;
+	navios_pendientes = 3;
 	banderas_pendientes = 0;
 }
 
@@ -50,7 +50,7 @@ int sched_proximo_indice() {
 			proxima_bandera = ((proxima_bandera + 1) % CANT_TAREAS);
 		} while(ind_banderas[proxima_bandera] == 0);
 
-		if(--banderas_pendientes == 0) navios_pendientes = 4;
+		if(--banderas_pendientes == 0) navios_pendientes = 3;
 
 		return ind_banderas[proxima_bandera];
 
