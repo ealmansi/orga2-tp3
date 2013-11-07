@@ -9,6 +9,8 @@
 #include "screen.h"
 #include "utils.h"
 #include "colors.h"
+#include "i386.h"
+#include "gdt.h"
 
 /* definicion de la pantalla */
 
@@ -89,7 +91,7 @@ void inicializar_manejo_video() {
 	actualizar_navegar(5, 0x0077A000, 0x0027F000);
 	actualizar_navegar(7, 0x0000F000, 0x0057F000);
 	actualizar_canonear(0x0077F000);
-	actualizar_desalojo(0, 0, "msj_desalojo");
+	//actualizar_desalojo(0, 0, "msj_desalojo");
 }
 
 /* modo_estado */
@@ -253,7 +255,9 @@ void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
 	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_BLACK);
 }
 
-void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_desalojo) {
+
+void actualizar_desalojo(dword_t eflags, dword_t edi, dword_t esi, dword_t ebp, dword_t esp,
+	 dword_t ebx, dword_t edx, dword_t ecx, dword_t eax, dword_t eip, int nro_tarea , char* msj_desalojo) {
 
 	// pongo en gris la linea que muestra P1 P2 P3
 	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_WHITE);
@@ -273,49 +277,65 @@ void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_d
 	dibujar_texto(msj_desalojo, punto(1, 51), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dibujar_texto(nombre_navio, punto(1, 71), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
+	// Se consiguen los datos que faltan.
+
+	int cr0 = rcr0();
+	//int cr1 = rcr1();
+	int cr2 = rcr2();
+	int cr3 = rcr3();
+	int cr4 = rcr4();
+	int es = GDT_IDX_CODIG_3;
+	int cs = GDT_IDX_CODIG_3;
+	int ss = GDT_IDX_DATOS_3;
+	int ds = GDT_IDX_DATOS_3;
+	int fs = GDT_IDX_DATOS_3;
+	int gs = GDT_IDX_DATOS_3;
+
 	// escribo el valor de los registros
 	char reg_buffer[9];
-	dword_a_hexa_string(estado->eax, reg_buffer);
+	dword_a_hexa_string(eax, reg_buffer); // parámetro
 	dibujar_texto(reg_buffer, punto( 2, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->ebx, reg_buffer);
+	dword_a_hexa_string(ebx, reg_buffer); // parámetro
 	dibujar_texto(reg_buffer, punto( 3, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->ecx, reg_buffer);
+	dword_a_hexa_string(ecx, reg_buffer); // parámetro
 	dibujar_texto(reg_buffer, punto( 4, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->edx, reg_buffer);
+	dword_a_hexa_string(edx, reg_buffer); // parámero
 	dibujar_texto(reg_buffer, punto( 5, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->esi, reg_buffer);
+	dword_a_hexa_string(esi, reg_buffer);  // parámetro
 	dibujar_texto(reg_buffer, punto( 6, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->edi, reg_buffer);
+	dword_a_hexa_string(edi, reg_buffer);// parámetro
 	dibujar_texto(reg_buffer, punto( 7, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->ebp, reg_buffer);
+	dword_a_hexa_string(ebp, reg_buffer);// parámetro
 	dibujar_texto(reg_buffer, punto( 8, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->esp, reg_buffer);
+	dword_a_hexa_string(esp, reg_buffer);// parámetro
 	dibujar_texto(reg_buffer, punto( 9, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->eip, reg_buffer);
+	dword_a_hexa_string(eip, reg_buffer);// parámetro
 	dibujar_texto(reg_buffer, punto(10, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->cr0, reg_buffer);
+	dword_a_hexa_string(cr0, reg_buffer); // Conseguir mediante funciones C
 	dibujar_texto(reg_buffer, punto(11, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->cr2, reg_buffer);
+	dword_a_hexa_string(cr2, reg_buffer); // Conseguir mediante funciones C
 	dibujar_texto(reg_buffer, punto(12, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->cr3, reg_buffer);
+	dword_a_hexa_string(cr3, reg_buffer); // Conseguir mediante funciones C
 	dibujar_texto(reg_buffer, punto(13, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->cr4, reg_buffer);
+	dword_a_hexa_string(cr4, reg_buffer);  // Conseguir meduante funcioens C
 	dibujar_texto(reg_buffer, punto(14, 55), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->cs, reg_buffer);
+	dword_a_hexa_string(cs, reg_buffer); // Hardcodear
 	dibujar_texto(reg_buffer, punto( 2, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->ds, reg_buffer);
+	dword_a_hexa_string(ds, reg_buffer); // Hardcodear
 	dibujar_texto(reg_buffer, punto( 3, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->es, reg_buffer);
+	dword_a_hexa_string(es, reg_buffer);  // Hardcodear
 	dibujar_texto(reg_buffer, punto( 4, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->fs, reg_buffer);
+	dword_a_hexa_string(fs, reg_buffer); // Hardcodear
 	dibujar_texto(reg_buffer, punto( 5, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->gs, reg_buffer);
+	dword_a_hexa_string(gs, reg_buffer); // Hardcodear
 	dibujar_texto(reg_buffer, punto( 6, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->ss, reg_buffer);
+	dword_a_hexa_string(ss, reg_buffer); // Hardcodear
 	dibujar_texto(reg_buffer, punto( 7, 69), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dword_a_hexa_string(estado->eflags, reg_buffer);
+	dword_a_hexa_string(eflags, reg_buffer); // parámetro.
 	dibujar_texto(reg_buffer, punto( 10, 66), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 }
+
+
 
 void actualizar_bandera(int nro_tarea, byte_t* buffer_bandera) {
 
