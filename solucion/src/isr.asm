@@ -23,6 +23,7 @@ extern game_navegar
 ;; Funciones del Scheduler
 extern sched_resetear_tick
 extern sched_proximo_indice
+extern sched_desalojar_tarea
 
 ;;
 ;; Definición de MACROS
@@ -331,7 +332,9 @@ _isr0x50:
 
 .desalojar_tarea:
 	
-	jmp .terminar
+	call sched_desalojar_tarea
+	MOV WORD [selector], 0xC0
+	JMP  	0xC0:0
 	
 .terminar:
 
@@ -345,8 +348,6 @@ _isr0x50:
 ;	mov [selector], ax
 ;	jmp far [offset]
 ;
-
-	JMP  	0xC0:0
 
 	POPFD
 	POPAD

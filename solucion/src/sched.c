@@ -14,14 +14,21 @@ dword_t sel_banderas[CANT_TAREAS];
 byte_t navio_actual;
 byte_t bandera_actual;
 
-byte_t navios_seguidos = 0;
+byte_t navios_seguidos;
 byte_t banderas_restantes = CANT_TAREAS;
-byte_t banderas_seguidas = 0;
+byte_t banderas_seguidas;
 
 
 byte_t buscar_proximo();
 
 void sched_resetear_tick(){
+	
+}
+
+void sched_desalojar_tarea(){
+	
+	sel_navios[navio_actual] = 0;
+	sel_banderas[navio_actual] = 0;
 	
 }
 
@@ -34,6 +41,8 @@ void sched_inicializar() {
 	}
 	navio_actual = 0;
 	bandera_actual = 0;
+	banderas_seguidas = 0;
+	navios_seguidos = 0;
 
 }
 
