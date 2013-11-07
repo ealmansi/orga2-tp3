@@ -147,6 +147,13 @@ _isr32:
 
     CALL		proximo_reloj
 
+	MOV ax, es_navio;
+	CMP ax, 1 ;
+	JE .esNavio;
+		CALL hundir_navio;
+
+.esNavio:
+
 	CALL		sched_proximo_indice
 
 	CMP ax, 0
@@ -358,16 +365,28 @@ _isr0x50:
 
 
 global _isr0x66
-extern navio_actual
+extern es_navio
 _isr0x66:	
 	CLI
 	PUSHAD
 	PUSHFD
 
-	MOV ax, navio_actual
+	MOV ax, es_navio
+	CMP ax, 0 ;
+	JE .bandera_verificada;
+		CALL hundir_navio;
+		JMP .fin_isr0x66
+
+.bandera_verificada:
+	
+
+
     MOV 			EAX, 0x42
 
     ; call actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
+
+.fin_isr0x66:
+	JMP 0xC0:0 ;
 
 	POPFD
 	POPAD
