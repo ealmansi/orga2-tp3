@@ -296,6 +296,8 @@ _isr0x50:
 	push ebx
 	call game_fondear
 	pop ebx
+
+	; call actualizar_fondear(int nro_tarea, dword_t dir_pag_anclada);
 	
 	cmp eax, TRUE
 	jne .desalojar_tarea
@@ -311,6 +313,8 @@ _isr0x50:
 	call game_canonear
 	pop ebx
 	pop ecx
+
+	; call actualizar_canonear(dword_t dir_misil);
 	
 	cmp eax, TRUE
 	jne .desalojar_tarea
@@ -327,6 +331,8 @@ _isr0x50:
 	pop ebx
 	pop ecx
 
+	; call actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p2);
+
 	cmp eax, TRUE
 	jne .desalojar_tarea
 	jmp .terminar
@@ -334,6 +340,8 @@ _isr0x50:
 .desalojar_tarea:
 	
 	call sched_desalojar_tarea
+
+	; call actualizar_desalojo(int nro_tarea, void* contexto, char* msj_desalojo);
 	
 .terminar:
 
@@ -352,6 +360,9 @@ _isr0x66:
 	PUSHFD
 
 	JMP $
+
+	; call actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
+	
     MOV 			EAX, 0x42
 
 	POPFD
