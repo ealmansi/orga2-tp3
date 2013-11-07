@@ -1,0 +1,4 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{2}
+\contentsline {section}{\numberline {2}Global Descriptor Table (GDT)}{3}
+\contentsline {section}{\numberline {3}Conclusiones}{4}
