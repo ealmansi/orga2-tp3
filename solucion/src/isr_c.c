@@ -52,8 +52,8 @@ void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2) {
 		actualizar_fondear(nro_tarea, arg1);
 		break;
 	case SYS_CANONEAR:
-		ret = game_canonear(arg1, arg2);
-		actualizar_canonear(arg1);
+		ret = game_canonear(arg2, arg1);
+		actualizar_canonear(arg2);
 		break;
 	case SYS_NAVEGAR:
 		ret = game_navegar(arg1, arg2);

@@ -5,4 +5,3 @@
 
 	CALL pintar_pantalla_modo_mapa
 	
-	breakpoint
