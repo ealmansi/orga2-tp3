@@ -49,15 +49,15 @@ void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2) {
 	switch(type) {
 	case SYS_FONDEAR:
 		ret = game_fondear(arg1);
-		actualizar_fondear(nro_tarea, arg1);
+		if (ret) actualizar_fondear(nro_tarea, arg1);
 		break;
 	case SYS_CANONEAR:
 		ret = game_canonear(arg2, arg1);
-		actualizar_canonear(arg2);
+		if (ret) actualizar_canonear(arg2);
 		break;
 	case SYS_NAVEGAR:
 		ret = game_navegar(arg1, arg2);
-		actualizar_navegar(nro_tarea, arg1, arg2);
+		if (ret) actualizar_navegar(nro_tarea, arg1, arg2);
 		break;
 	default:
 		desalojar_tarea(numero_tarea(ind_tarea), "Syscall indefinida");

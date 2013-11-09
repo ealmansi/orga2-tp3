@@ -35,8 +35,11 @@ unsigned char * bandera();
 
 void task() {
     /* Tarea 4 */
+	int i;
     while(1) {
-        // TODO: Implementar.
+        for (i = AREA_MAR_INICIO; i < AREA_MAR_FIN; i+= 2<< 12) {
+        	syscall_navegar(i, i + (1<<12));
+        }
     };
 }
 
