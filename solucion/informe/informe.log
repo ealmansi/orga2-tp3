@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.28)  28 NOV 2013 01:08
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.28)  28 NOV 2013 13:58
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1222,9 +1222,31 @@ runsystem(rm informe.pyg)...executed.
 ) [3
 
 ]
-(./secciones/gdt.tex) [4
+(./secciones/gdt.tex
+\openout3 = `informe.pyg'.
 
-] (./secciones/paginacion.tex
+runsystem(pygmentize -l c -f latex -F tokenmerge             -P "verboptions= "
+ -o informe.out.pyg informe.pyg)...executed.
+
+ (./informe.out.pyg)
+runsystem(rm informe.out.pyg)...executed.
+
+runsystem(rm informe.pyg)...executed.
+
+\openout3 = `informe.pyg'.
+
+runsystem(pygmentize -l c -f latex -F tokenmerge             -P "verboptions= "
+ -o informe.out.pyg informe.pyg)...executed.
+
+ (./informe.out.pyg)
+runsystem(rm informe.out.pyg)...executed.
+
+runsystem(rm informe.pyg)...executed.
+
+) [4
+
+]
+(./secciones/paginacion.tex
 \openout3 = `informe.pyg'.
 
 runsystem(pygmentize -l c -f latex -F tokenmerge             -P "verboptions= ,
@@ -1235,10 +1257,10 @@ runsystem(rm informe.out.pyg)...executed.
 
 runsystem(rm informe.pyg)...executed.
 
-)
-[5
+) [5
 
-] (./secciones/interrupciones.tex) [6
+]
+(./secciones/interrupciones.tex) [6
 
 ] (./secciones/manejo_de_tareas.tex)
 [7
@@ -1255,11 +1277,11 @@ LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 ) ) 
 Here is how much of TeX's memory you used:
- 20971 strings out of 494969
- 399070 string characters out of 6179592
- 491810 words of memory out of 5000000
- 23695 multiletter control sequences out of 15000+600000
- 9957 words of font info for 37 fonts, out of 8000000 for 9000
+ 20977 strings out of 494969
+ 399155 string characters out of 6179592
+ 492811 words of memory out of 5000000
+ 23696 multiletter control sequences out of 15000+600000
+ 10303 words of font info for 38 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  56i,8n,60p,840b,313s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
@@ -1273,11 +1295,12 @@ ts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type
 /amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on informe.pdf (10 pages, 170570 bytes).
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on informe.pdf (10 pages, 185456 bytes).
 PDF statistics:
- 92 PDF objects out of 1000 (max. 8388607)
- 66 compressed objects within 1 object stream
+ 96 PDF objects out of 1000 (max. 8388607)
+ 69 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
