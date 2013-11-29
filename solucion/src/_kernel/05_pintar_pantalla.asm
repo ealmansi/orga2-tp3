@@ -1,4 +1,4 @@
-extern inicializar_manejo_video;
+
 
     ; Limpiar pantalla
 

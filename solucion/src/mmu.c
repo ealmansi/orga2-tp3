@@ -15,6 +15,8 @@ void mmu_inicializar_tarea(int nro_tarea);
 void mmu_copiar_codigo_tarea(int nro_tarea);
 void mmu_inicializar_dir_tarea(int nro_tarea);
 
+dword_t paginas_por_tarea[3 * 8];
+
 /* directorio y tablas del kernel */
 
 void mmu_inicializar_dir_kernel() {

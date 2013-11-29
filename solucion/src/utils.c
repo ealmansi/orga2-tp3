@@ -1,6 +1,9 @@
 
 #include "utils.h"
 #include "defines.h"
+#include "mmu.h"
+#include "gdt.h"
+#include "i386.h"
 
 
 int int_size(int num);
@@ -47,3 +50,27 @@ int int_size(int num){
 	return i;
 }
 
+int obtener_indice_tarea_en_ejecucion() {
+	
+	return (rtr() >> 3);	
+}
+
+int es_navio(int indice) {
+
+	return (GDT_IDX_TASK_OFFSET <= indice
+		&& indice < (GDT_IDX_TASK_OFFSET + CANT_TAREAS));
+}
+
+int es_bandera(int indice) {
+
+	return (GDT_IDX_TASK_BANDERA_OFFSET <= indice
+		&& indice < (GDT_IDX_TASK_BANDERA_OFFSET + CANT_TAREAS));
+}
+
+int numero_tarea(int indice) {
+
+	if(GDT_IDX_TASK_OFFSET <= indice && indice < (GDT_IDX_TASK_OFFSET + CANT_TAREAS))
+		return indice - GDT_IDX_TASK_OFFSET;
+	else
+		return indice - GDT_IDX_TASK_BANDERA_OFFSET;
+}

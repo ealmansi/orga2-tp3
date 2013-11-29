@@ -8,6 +8,7 @@
 #include "defines.h"
 #include "screen.h"
 #include "utils.h"
+#include "mmu.h"
 #include "colors.h"
 
 /* definicion de la pantalla */
@@ -18,7 +19,7 @@
 
 #define 	punto(x,y)		(x), (y)
 
-int pantalla_activa = 'm';
+int pantalla_activa = 'e';
 
 extern int _estado_eax;
 extern int _estado_ebx;
@@ -83,7 +84,6 @@ void refrescar_pantalla_activa();
 /* inicializacion */
 
 dword_t dir_misil_actual;
-dword_t paginas_por_tarea[3 * 8];
 
 void inicializar_manejo_video() {
 
@@ -235,16 +235,10 @@ void actualizar_canonear(dword_t dir_misil) {
 	refrescar_pantalla_activa();
 }
 
-void actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p2) {
+void actualizar_navegar(int nro_tarea, dword_t dir_ult_p1, dword_t dir_ult_p2, dword_t dir_nueva_p1, dword_t dir_nueva_p2) {
 
-	dword_t ult_p1 = pagina_1_de_tarea(nro_tarea),
-			ult_p2 = pagina_2_de_tarea(nro_tarea);
-
-	pagina_1_de_tarea(nro_tarea) = dir_nueva_p1;
-	pagina_2_de_tarea(nro_tarea) = dir_nueva_p2;
-
-	actualizar_pagina_en_mapa(ult_p1);
-	actualizar_pagina_en_mapa(ult_p2);
+	actualizar_pagina_en_mapa(dir_ult_p1);
+	actualizar_pagina_en_mapa(dir_ult_p2);
 	actualizar_pagina_en_mapa(dir_nueva_p1);
 	actualizar_pagina_en_mapa(dir_nueva_p2);
 
@@ -253,13 +247,9 @@ void actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p
 	refrescar_pantalla_activa();
 }
 
-void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
+void actualizar_fondear(int nro_tarea, dword_t dir_ult_p3, dword_t dir_nueva_p3) {
 
-	dword_t ult_p3 = pagina_3_de_tarea(nro_tarea);
-
-	pagina_3_de_tarea(nro_tarea) = dir_nueva_p3;
-
-	actualizar_pagina_en_mapa(ult_p3);
+	actualizar_pagina_en_mapa(dir_ult_p3);
 	actualizar_pagina_en_mapa(dir_nueva_p3);
 
 	actualizar_paginas_de_tarea_en_estado(nro_tarea, C_BLACK);
@@ -267,7 +257,7 @@ void actualizar_fondear(int nro_tarea, dword_t dir_nueva_p3) {
 	refrescar_pantalla_activa();
 }
 
-void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_desalojo) {
+void actualizar_desalojo(int nro_tarea, char* msj_desalojo) {
 
 	// pongo en gris la linea que muestra P1 P2 P3
 	dibujar_rectangulo(punto(16 + nro_tarea, 2), punto(16 + nro_tarea + 1, VIDEO_COLS - 1), C_LIGHT_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);

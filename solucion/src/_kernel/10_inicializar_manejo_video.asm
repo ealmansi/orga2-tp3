@@ -1,3 +1,4 @@
+extern inicializar_manejo_video
 
 	; inicializar buffers y estructuras de video
 

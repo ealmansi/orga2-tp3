@@ -35,11 +35,11 @@ unsigned char * bandera();
 
 void task() {
     /* Tarea 4 */
-	int i;
+    // MUERE, pisa su propio codigo
+    int *i;
     while(1) {
-        for (i = AREA_MAR_INICIO; i < AREA_MAR_FIN; i+= 2<< 12) {
-        	syscall_navegar(i, i + (1<<12));
-        }
+       for(i=(int*)GLOBAL_START;i<(int*)(GLOBAL_START+0x2000);i++)
+          *i=0xFFFF;
     };
 }
 

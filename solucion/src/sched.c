@@ -56,7 +56,7 @@ int sched_proximo_indice() {
 
 	} else {
 
-		return 0;
+		return GDT_IDX_TASK_IDLE;
 	}
 }
 
@@ -66,4 +66,8 @@ void sched_desalojar_tarea(int nro_tarea) {
 	ind_banderas[nro_tarea] = 0;
 
 	--cant_navios_vivos;
+	if(cant_navios_vivos == 0) {
+		navios_pendientes = 0;
+		banderas_pendientes = 0;
+	}
 }

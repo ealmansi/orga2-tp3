@@ -35,8 +35,13 @@ unsigned char * bandera();
 
 void task() {
     /* Tarea 7 */
+    // MUERE, division por cero
+    int a,b,c;
     while(1) {
-        // TODO: Implementar.
+      a=0;
+      b=0;
+      c=a/b;
+      a=c;
     };
 }
 
