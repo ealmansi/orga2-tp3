@@ -35,8 +35,14 @@ unsigned char * bandera();
 
 void task() {
     /* Tarea 8 */
+    //NOSE, navega muchas paginas y en una de esas rompe todo
+    int i;
     while(1) {
-        // TODO: Implementar.
+       for(i=0;i<=10000000000;i=i+0x1000) {
+          int a = (int)(0x00101000+i); 
+          int b = (int)(0x00103000+i); 
+          syscall_navegar((unsigned int)a,(unsigned int)b);
+       }
     };
 }
 
@@ -54,7 +60,7 @@ unsigned char * bandera() {
             else
                buffer[fil][col].a = C_BG_MAGENTA | C_FG_LIGHT_MAGENTA;
         }
-    }
+    } 
     syscall_bandera_fin((unsigned int) buffer);
     /* Para que el compilador no tire warning... */
     return 0;

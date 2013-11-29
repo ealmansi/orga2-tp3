@@ -8,6 +8,7 @@
 #include "sched.h"
 #include "gdt.h"
 #include "defines.h"
+#include "i386.h"
 
 int ind_navios[CANT_TAREAS];
 int ind_banderas[CANT_TAREAS];
@@ -34,30 +35,36 @@ void sched_inicializar() {
 
 int sched_proximo_indice() {
 
-	if(0 < navios_pendientes) {
+	if (cant_navios_vivos){
+		if(0 < navios_pendientes) {
 
-		do {
-			proximo_navio = ((proximo_navio + 1) % CANT_TAREAS);
-		} while(ind_navios[proximo_navio] == 0);
+			do {
+				proximo_navio = ((proximo_navio + 1) % CANT_TAREAS);
+			} while(ind_navios[proximo_navio] == 0);
 
-		if(--navios_pendientes == 0) banderas_pendientes = cant_navios_vivos;
+			if(--navios_pendientes == 0) banderas_pendientes = cant_navios_vivos;
 
-		return ind_navios[proximo_navio];
+			return ind_navios[proximo_navio];
 
-	} else if(0 < banderas_pendientes) {
+		} else if(0 < banderas_pendientes) {
 
-		do {
-			proxima_bandera = ((proxima_bandera + 1) % CANT_TAREAS);
-		} while(ind_banderas[proxima_bandera] == 0);
+			do {
+				proxima_bandera = ((proxima_bandera + 1) % CANT_TAREAS);
+			} while(ind_banderas[proxima_bandera] == 0);
 
-		if(--banderas_pendientes == 0) navios_pendientes = 3;
+			if(--banderas_pendientes == 0) navios_pendientes = 3;
 
-		return ind_banderas[proxima_bandera];
+			return ind_banderas[proxima_bandera];
 
+		} else {
+			
+			return 0;
+		}
 	} else {
-
+		breakpoint();
 		return 0;
 	}
+
 }
 
 void sched_desalojar_tarea(int nro_tarea) {

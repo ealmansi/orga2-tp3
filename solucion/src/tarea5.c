@@ -35,8 +35,9 @@ unsigned char * bandera();
 
 void task() {
     /* Tarea 5 */
+    // MUERE, una tarea NO puede llamar a la int 66
     while(1) {
-        // TODO: Implementar.
+        syscall_bandera_fin((unsigned int) 0); 
     };
 }
 

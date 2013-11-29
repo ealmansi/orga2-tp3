@@ -25,7 +25,7 @@ int _isr32_c() {
 	}
 
 	int ind_prox = sched_proximo_indice();
-	if(ind_prox == 0) return GDT_IDX_TASK_IDLE;
+	if(ind_prox == 0) return 0;
 
 	if(es_bandera(ind_prox)) {
 		tss_inicializar_bandera(numero_tarea(ind_prox));

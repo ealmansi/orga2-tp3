@@ -199,7 +199,16 @@ _isr32:
     CALL		proximo_reloj
 
     CALL 		_isr32_c
+	CMP ax, 0 ;
+		JNE etiqueta
+		CALL fin_intr_pic1
+		POPFD
+		POPAD
+		STI
+		JMP 0xC0:0 ;
+		IRET
 
+etiqueta:
     sal 		ax, 3
     MOV WORD	[_isr_32_selector], ax
 	CALL    	fin_intr_pic1

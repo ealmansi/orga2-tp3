@@ -35,6 +35,7 @@ unsigned char * bandera();
 
 void task() {
     /* Tarea 6 */
+    // MUERE, no hace nada, pero su bandera llama a un servicio del sistema
     while(1) {
         // TODO: Implementar.
     };
@@ -57,6 +58,7 @@ unsigned char * bandera() {
             }
         }
     }
+    syscall_fondear(0); // -- MAL --
     syscall_bandera_fin((unsigned int) buffer);
     /* Para que el compilador no tire warning... */
     return 0;
