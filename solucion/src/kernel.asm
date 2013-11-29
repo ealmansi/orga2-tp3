@@ -17,12 +17,12 @@ extern resetear_pic
 extern habilitar_pic
 
 ;; Funciones gráficas
-extern plantillaEstado
-extern imprimirNombreEquipo
-extern inicializar_buffer_modo_estado
-extern inicializar_buffer_modo_mapa
 extern pintar_pantalla_modo_estado
 extern pintar_pantalla_modo_mapa
+
+;; Funciones mmu
+extern mmu_inicializar_dir_kernel
+extern mmu_inicializar_tablas_kernel
 
 ;;
 ;; Macros.

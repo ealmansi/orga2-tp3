@@ -10,37 +10,14 @@
 
 #include "defines.h"
 
-typedef struct str_screen_estado_tarea {
-	dword_t eax;
-	dword_t ebx;
-	dword_t ecx;
-	dword_t edx;
-	dword_t esi;
-	dword_t edi;
-	dword_t ebp;
-	dword_t esp;
-	dword_t eip;
-	dword_t cr0;
-	dword_t cr2;
-	dword_t cr3;
-	dword_t cr4;
-	dword_t cs;
-	dword_t ds;
-	dword_t es;
-	dword_t fs;
-	dword_t gs;
-	dword_t ss;
-	dword_t eflags;
-} screen_estado_tarea;
-
 void imprimir_nombre_del_grupo();
 
 void inicializar_manejo_video();
 
 void actualizar_canonear(dword_t dir_misil);
-void actualizar_navegar(int nro_tarea, dword_t dir_nueva_p1, dword_t dir_nueva_p2);
-void actualizar_fondear(int nro_tarea, dword_t dir_pag_anclada);
-void actualizar_desalojo(int nro_tarea, screen_estado_tarea* estado, char* msj_desalojo);
+void actualizar_navegar(int nro_tarea, dword_t dir_ult_p1, dword_t dir_ult_p2, dword_t dir_nueva_p1, dword_t dir_nueva_p2);
+void actualizar_fondear(int nro_tarea, dword_t dir_ult_p3, dword_t dir_nueva_p3);
+void actualizar_desalojo(int nro_tarea, char* msj_desalojo);
 void actualizar_bandera(int nro_tarea, byte_t* buffer_bandera);
 
 void pintar_pantalla_modo_estado();
@@ -51,10 +28,5 @@ void pintar_pantalla_modo_mapa();
 void dibujar_texto(char* str, int i1, int j1, byte_t color, byte_t* buffer);
 
 extern int pantalla_activa;
-extern dword_t paginas_por_tarea[3 * 8];
-
-#define pagina_1_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 0])
-#define pagina_2_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 1])
-#define pagina_3_de_tarea(tarea) 	(paginas_por_tarea[3 * (tarea) + 2])
 
 #endif  /* !__SCREEN_H__ */
