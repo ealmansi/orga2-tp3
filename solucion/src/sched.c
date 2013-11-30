@@ -8,6 +8,7 @@
 #include "sched.h"
 #include "gdt.h"
 #include "defines.h"
+#include "i386.h"
 
 int ind_navios[CANT_TAREAS];
 int ind_banderas[CANT_TAREAS];
@@ -55,8 +56,8 @@ int sched_proximo_indice() {
 		return ind_banderas[proxima_bandera];
 
 	} else {
-
-		return GDT_IDX_TASK_IDLE;
+		breakpoint();
+		return 0;
 	}
 }
 
