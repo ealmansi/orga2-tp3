@@ -5,8 +5,10 @@
 #include "tss.h"
 #include "syscall.h"
 #include "game.h"
+#include "mmu.h"
 #include "screen.h"
 #include "sched.h"
+#include "utils.h"
 
 int obtener_indice_tarea_en_ejecucion();
 int es_navio(int indice);
@@ -19,8 +21,6 @@ void desalojar_tarea(int nro_tarea, char* msj_desalojo);
 int _isr32_c() {
 
 	int ind_tarea = obtener_indice_tarea_en_ejecucion();
-
-	if (!ind_tarea) return 0;
 
 	if(es_bandera(ind_tarea)) {
 		desalojar_tarea(numero_tarea(ind_tarea), "Bandera excedio tick");
@@ -46,29 +46,34 @@ void _isr0x50_c(unsigned int type, unsigned int arg1, unsigned int arg2) {
 		return;
 	}
 
-	int ret;
+	dword_t dir_ult_p1 = pagina_1_de_tarea(nro_tarea),
+			dir_ult_p2 = pagina_2_de_tarea(nro_tarea),
+			dir_ult_p3 = pagina_3_de_tarea(nro_tarea);
+
+	int ret = FALSE;
 
 	switch(type) {
 	case SYS_FONDEAR:
 		ret = game_fondear(arg1);
-		if (ret) actualizar_fondear(nro_tarea, arg1);
+		pagina_3_de_tarea(nro_tarea) = arg1;
+		if (ret == TRUE) actualizar_fondear(nro_tarea, dir_ult_p3, arg1);
+		else desalojar_tarea(numero_tarea(ind_tarea), "Syscall fondear devolvio False");
 		break;
 	case SYS_CANONEAR:
 		ret = game_canonear(arg2, arg1);
-		if (ret) actualizar_canonear(arg2);
+		if (ret == TRUE) actualizar_canonear(arg2);
+		else desalojar_tarea(numero_tarea(ind_tarea), "Syscall canonear devolvio False");
 		break;
 	case SYS_NAVEGAR:
-		ret = game_navegar(arg1, arg2);
-		if (ret) actualizar_navegar(nro_tarea, arg1, arg2);
+		ret = game_navegar(arg1, arg2, dir_ult_p1, dir_ult_p2);
+		pagina_1_de_tarea(nro_tarea) = arg1;
+		pagina_2_de_tarea(nro_tarea) = arg2;
+		if (ret == TRUE) actualizar_navegar(nro_tarea, dir_ult_p1, dir_ult_p2, arg1, arg2);
+		else desalojar_tarea(numero_tarea(ind_tarea), "Syscall navegar devolvio False");
 		break;
 	default:
 		desalojar_tarea(numero_tarea(ind_tarea), "Syscall indefinida");
-		return;
-	}
-
-	if(ret == FALSE) {
-		desalojar_tarea(numero_tarea(ind_tarea), "Syscall devolvio FALSE");
-		return;
+		break;
 	}
 }
 
@@ -85,35 +90,10 @@ void _isr0x66_c() {
 	actualizar_bandera(nro_tarea, (byte_t*) BANDERA_BUFFER);
 }
 
-int obtener_indice_tarea_en_ejecucion() {
-	
-	return (rtr() >> 3);	
-}
-
-int es_navio(int indice) {
-
-	return (GDT_IDX_TASK_OFFSET <= indice
-		&& indice < (GDT_IDX_TASK_OFFSET + CANT_TAREAS));
-}
-
-int es_bandera(int indice) {
-
-	return (GDT_IDX_TASK_BANDERA_OFFSET <= indice
-		&& indice < (GDT_IDX_TASK_BANDERA_OFFSET + CANT_TAREAS));
-}
-
-int numero_tarea(int indice) {
-
-	if(GDT_IDX_TASK_OFFSET <= indice && indice < (GDT_IDX_TASK_OFFSET + CANT_TAREAS))
-		return indice - GDT_IDX_TASK_OFFSET;
-	else
-		return indice - GDT_IDX_TASK_BANDERA_OFFSET;
-}
-
 void desalojar_tarea(int nro_tarea, char* msj_desalojo) {
 
 	sched_desalojar_tarea(nro_tarea);
-	actualizar_desalojo(nro_tarea, 0, msj_desalojo);
+	actualizar_desalojo(nro_tarea, msj_desalojo);
 }
 
 void _isr0_c() {
