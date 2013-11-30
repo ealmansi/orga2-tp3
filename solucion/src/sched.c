@@ -56,7 +56,6 @@ int sched_proximo_indice() {
 		return ind_banderas[proxima_bandera];
 
 	} else {
-		breakpoint();
 		return 0;
 	}
 }

@@ -19,6 +19,9 @@ extern _isr32_c
 extern _isr0x50_c
 extern _isr0x66_c
 
+;; Funciones de pantalla
+extern refrescar_pantalla_activa
+
 ;; exportadas
 global _isr32
 global _isr33
@@ -238,8 +241,8 @@ _isr33:
 .letra_m:
     CMP 			AL, 0x32			; M
     JNE 			.letra_e
-
     mov byte		[pantalla_activa], 'm'
+	CALL refrescar_pantalla_activa
 
     JMP 			.end_switch
 .letra_e:
@@ -247,6 +250,7 @@ _isr33:
     JNE 			.digito_0
 
     mov byte		[pantalla_activa], 'e'
+	CALL refrescar_pantalla_activa
 
 	JMP 			.end_switch
 .digito_0:
