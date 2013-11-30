@@ -1,3 +1,11 @@
+	Las interrupciones y las excepciones son el médotodo
+a través del cuál se logra administrar las tareas y asegurar
+la integridad del sistema. Todos los handlers de interrupción
+fueron pensados y escritors con esos objetivos en mente.
+
+
+
+\beggin{comment}
 	Las interrupciones se manejaron de 2 maneras diferentes:
 
 	Por un lado están las excepciones de sistema. De esas sólo se busca
@@ -22,5 +30,5 @@ se estaba ejecutando al memento de la interrupción de reloj era una bandera. En
 Luego le pide al scheduller el índice de la GDT que necesario pra realizar un JUMP far al contexto
 de la otra tarea. A continuación se fija si la próxima tarea a ejecutarse es una bandera. Si es una bandera
 entonces primero reinicia su tss y luego, si, realiza el JMP FAR.
-
+\end{comment}
 	

@@ -49,8 +49,21 @@ los mapeos que necesita para acceder a su código y al ancla.
 	
 	En tiempo de ejecución se generan todas las estructuras necesarias
 para que el sistema y las tareas puedan funcionar. Esto incluye un page directory para cada
-tarea, 1 para el kernel, 1 page table privado de cada tarea 2 page table compartidos.
+tarea, 1 para el kernel, 1 page table privado de cada tarea (con
+permisos de usuario) y 2 page table compartidos(con permisos de administrador).
 
+	Las page table privadas en un principio se inicializan en cero, luego
+se actualizan de manera adecuada con funciones de mapeo de página
+de las que se hablará mas adelante.
+
+	La otra acción que se realiza en este momento es la de
+copiar el código de las tareas de la tierra al mar. Elegimos hacerlo
+en este momento porque así ya se pueden hacer los mapeos y dejar
+todo todo listo para el momento en que empicen a correr las tareas.
+
+	Todo explicado recién se hacer mediante una sola función escrita en c
+que luego se llama desde kernel. asm
+\newpage
 	Los page table compartidos tienen los mapeos de las direcciones del kernel.
 Esas direcciones estar mapeadas en todas las tareas y con los mismos atributos, motivo
 por le cuál decidimos hacerlos comunes. Esto significa todas las primeras entradas
@@ -59,14 +72,25 @@ a los primeros 4mb de kernel, del mismo modo todas las segundas entradas
 de page dir apuntan también a una page table común que direcciona
 a la segunda parte del kernel.
 
+
+\begin{figure}[h]
+\begin{center}
+  \includegraphics[scale=0.3]{secciones/dibujitos/diagramapaginas.jpg}
+\end{center}
+\caption{Esquema de las estructuras de paginación}
+\label{fig:diagramapaginas}
+\end{figure}
+
+
 	Una vez que el sistema está corriendo los mapeos de página se modifican
 en tiempo real mediante dos funciones que se encargan de crear
 mapeos de página y de borrar mapeos de página.
 
-\begin{minted}[tabzie=4,obeytabes=true]{c}
+\begin{minted}{c}
 void mmu_mapear_pagina (unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attr) 
 void mmu_unmapear_pagina (unsigned int virtual, unsigned int cr3) 
 \end{minted}
+
 
 	La función encargada de deshacer los mapeos termina con realizando un flush
 de la tlb para asegurar la coherencia de todas las estructuras de paginación (
@@ -84,8 +108,6 @@ llamar a esas funciones en el momento adecuado.
 registro \textbf{cr0}. Es indispensable que en el momento en que se
 activa ese bit cr3 ya esté seteado de manera adecuada y al menos las
 estructuras de paginación del kernel esten debidamenta cargadas en memoria.
-
-
 
 
 

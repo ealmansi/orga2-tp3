@@ -9,8 +9,10 @@
 \contentsline {subsection}{\numberline {3.2}Descriptores de segmento}{4}
 \contentsline {subsection}{\numberline {3.3}Descriptores de TSS}{4}
 \contentsline {section}{\numberline {4}Paginaci\IeC {\'o}n}{5}
-\contentsline {section}{\numberline {5}Interrupciones}{6}
-\contentsline {section}{\numberline {6}Manejo de tareas}{7}
-\contentsline {section}{\numberline {7}Protecci\IeC {\'o}n}{8}
-\contentsline {section}{\numberline {8}Scheduler}{9}
-\contentsline {section}{\numberline {9}Conclusiones}{10}
+\contentsline {subsection}{\numberline {4.1}Implementaci\IeC {\'o}n del mapa de memoria.}{5}
+\contentsline {subsection}{\numberline {4.2}Activando la paginaci\IeC {\'o}n}{6}
+\contentsline {section}{\numberline {5}Interrupciones}{7}
+\contentsline {section}{\numberline {6}Manejo de tareas}{8}
+\contentsline {section}{\numberline {7}Protecci\IeC {\'o}n}{9}
+\contentsline {section}{\numberline {8}Scheduler}{10}
+\contentsline {section}{\numberline {9}Conclusiones}{11}
