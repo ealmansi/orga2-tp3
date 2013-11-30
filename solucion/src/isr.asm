@@ -19,6 +19,9 @@ extern _isr32_c
 extern _isr0x50_c
 extern _isr0x66_c
 
+;; Funciones de pantalla
+extern refrescar_pantalla_activa
+
 ;; exportadas
 global _isr32
 global _isr33
@@ -199,22 +202,23 @@ _isr32:
     CALL		proximo_reloj
 
     CALL 		_isr32_c
-	CMP ax, 0 ;
-		JNE etiqueta
-		CALL fin_intr_pic1
-		POPFD
-		POPAD
+		CMP ax, 0 ;
+		JNE saltar_isr32;
+		CALL fin_intr_pic1;
 		STI
-		JMP 0xC0:0 ;
-		IRET
+		jmp fin_isr32
 
-etiqueta:
+
+saltar_isr32:
     sal 		ax, 3
     MOV WORD	[_isr_32_selector], ax
 	CALL    	fin_intr_pic1
+	STI
     jmp far 	[_isr_32_offset]
 
 
+
+fin_isr32:
 	POPFD
 	POPAD
 	STI
@@ -239,6 +243,7 @@ _isr33:
     JNE 			.letra_e
 
     mov byte		[pantalla_activa], 'm'
+	CALL refrescar_pantalla_activa
 
     JMP 			.end_switch
 .letra_e:
@@ -246,6 +251,7 @@ _isr33:
     JNE 			.digito_0
 
     mov byte		[pantalla_activa], 'e'
+	CALL refrescar_pantalla_activa
 
 	JMP 			.end_switch
 .digito_0:

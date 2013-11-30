@@ -20,6 +20,8 @@ int _isr32_c() {
 
 	int ind_tarea = obtener_indice_tarea_en_ejecucion();
 
+	if (!ind_tarea) return 0;
+
 	if(es_bandera(ind_tarea)) {
 		desalojar_tarea(numero_tarea(ind_tarea), "Bandera excedio tick");
 	}
