@@ -10,12 +10,12 @@ de acción y otra para correr su código de bandera. Además hay 2 tss
 extra, una para la tarea idle y otra auxiliar (\emph{tarea inicial}), para poder realizar
 el primer salto sin inconvenientes.
 
-	Para poder primer cambio de contexto (\texttt{JMP FAR}) sobre esta
-tss auxiliar previamente se setea el TR. Este seteo está hardcodeado
+	Para poder realizar el primer cambio de contexto (\texttt{JMP FAR}) sobre esta
+tss auxiliar, previamente se setea el TR. Este seteo está hardcodeado
 porque el descriptor de la tss auxiliar siempre se guarda exactamente
 en el mismo índice de la gdt.
 
-	Todos los cambios de texto se hacen mediante un \texttt{JMP FAR}. En ningún
+	Todos los cambios de tarea se hacen mediante un \texttt{JMP FAR}. En ningún
 momento se usa ningún otro mecanismo. El problema que surge con
 esto es que las banderas no tienen un código cíclico. Es decir, las banderas
 ejecutan una porción de código que termina, al terminar su contexto queda
