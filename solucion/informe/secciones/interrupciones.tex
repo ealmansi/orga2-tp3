@@ -27,15 +27,15 @@ La única variación se tomó en el DPL: los servicios del sistema o syscalls se
 
 \subsection{Interrupciones de control de flujo y administración de sistema}
 
-	
 	La principal encargada de controlar el flujo de ejecución en el sistema es la int0x32: 
 la interrupción generada por el reloj. Esta interrupción funciona de manera muy cercana 
 al scheduler, consultándole cuál tarea es la próxima a ejecutar y realizando el cambio 
 de tarea de ser necesario. El scheduler implementado tiene un valor de retorno distinguido: 
-si retorna un valor igual a 0, significa que la tarea ejecutándose actualmente debe seguir haciéndolo, 
-si por el contrario devuelve cualquier otro número se lo interpreta como un índice en
-la GDT al que se debe realizar un \texttt{jmp far}, suscitando un cambio de contexto 
-automático.
+si retorna un valor igual a 0, significa que la tarea ejecutándose actualmente debe 
+seguir haciéndolo, si por el contrario devuelve cualquier otro número se lo interpreta 
+como un índice en la GDT al que se debe realizar un \texttt{jmp far}, suscitando un 
+cambio de contexto automático. En general, el único caso donde hay que continuar ejecutando 
+la tarea actual es al final del juego cuando solo permanece en ejecución la tarea idle.
 
 	Por otra parte, antes de realizar el \texttt{jmp far} es importante
 verificar si la tarea a la que se va a saltar es una bandera o un
@@ -68,15 +68,6 @@ todas estas interrupciones tienen exactamente la misma lógica, por lo
 que en principio se podrían implementar todas con un macro de nasm.
 El único código específico que se implementó para cada una es una funcion de C
 que actualiza la pantalla de manera adecuada.
-
-	La syscalls también tienen que hacer algunas verificaciones de
-seguridad. Las banderas no pueden llamar a las funciones de los barcos
-y los barcos no pueden llamar a la interrupción de final de bandera.
-
-	La interrupción de reloj debe verificar que el contexto en el
-que se está ejecutando no sea el de una bandera, pues si es así
-debe hacer desalojarla. 
-
 
 
 \begin{comment}
