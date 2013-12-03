@@ -20,10 +20,10 @@ la TSS apuntada por el registro Task Register (TR). Esta característica tuvo do
 en la implementación realizada. En primer lugar, previo a la ejecución de la primer tarea 
 mediante este mecanismo, el contexto de ejecución no corresponde a ninguna tarea en particular, y 
 no tendría sentido que sobreescriba la TSS de ninguna tarea. Por esta razón, se genera una 
-TSS adicional para una \"tarea inicial\", cuyo único propósito es ser la TSS que se altera 
+TSS adicional para una tarea inicial, cuyo único propósito es ser la TSS que se altera 
 al realizar el primer salto. En segundo lugar, como a priori no es necesario guardar el estado de las tareas que ejecutan funciones bandera, se podría prescindir de construir una TSS para cada 
 una de ellas. Sin embargo, para proveer un espacio de memoria donde escribir el contexto actual 
-cada vez que se interrumpe una tarea tipo bandera, se optó por brindar una TSS a cada una de ellas.
+cada vez que termina una de ellas, se optó por brindar una TSS a cada una de ellas.
 
 	Para mantener el comportamiento acíclico de las tareas bandera, en vez de recuperar el 
 contexto de su TSS asociada (allí se encuentra el estado de la última vez que se ejecutó), se
