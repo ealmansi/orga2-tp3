@@ -58,8 +58,20 @@ a la memoria de video por medio del segmento flat de datos de nivel 0.
 \label{fig:descriptorDeSegmento}
 \end{figure}
 
-
 	
+	En realidad esta es posiblemente la parte del trabajo donde menos libertad
+existe. Al usar sementación flat sólo existe una posibilidad correcta en los
+atributos para cada segmento. La base se tiene que estar en cero, 
+el límite en el tamaño máximo de cada segmento (1,75gb en este caso),
+G tiene que estar en 1, pues los sectores tienen que ser de 4kb,
+y P tiene que estar en 1, pues el segmento tiene que figurar como
+presente siempre.
+
+	El resto de los parámetros varían en cada segmento, pero siempre
+sin absolutamente nada de margen. 2 segmentos tienen que ser de sistema
+y tener DPL 0, otros 2 tienen que ser de usuario y tener DPL 3. Por último
+un segmento de sistema tiene que ser de datos y otro de código y los
+de usuario también tienen que ser uno de datos y otro de código.
 
 \subsection{Descriptores de TSS}
 
