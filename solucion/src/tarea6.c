@@ -33,12 +33,16 @@ unsigned char * bandera();
 #define GLOBAL_START 0x40000000  
 #define var_B GLOBAL_START+0x2000-0x200
 
+// void task() {
+//     /* Tarea 6 */
+//     // MUERE, no hace nada, pero su bandera llama a un servicio del sistema
+//     while(1) {
+//         // TODO: Implementar.
+//     };
+// }
+
 void task() {
-    /* Tarea 6 */
-    // MUERE, no hace nada, pero su bandera llama a un servicio del sistema
-    while(1) {
-        // TODO: Implementar.
-    };
+    while(1) {}
 }
 
 unsigned char * bandera() {
@@ -58,7 +62,7 @@ unsigned char * bandera() {
             }
         }
     }
-    syscall_fondear(0); // -- MAL --
+    // syscall_fondear(0); // -- MAL --
     syscall_bandera_fin((unsigned int) buffer);
     /* Para que el compilador no tire warning... */
     return 0;

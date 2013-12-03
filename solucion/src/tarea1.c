@@ -33,14 +33,21 @@ unsigned char * bandera();
 #define GLOBAL_START 0x40000000
 #define var_B GLOBAL_START+0x2000-0x200
 
+// void task() {
+//     /* Tarea 1 */
+//     unsigned int i = 0;    
+//     while(1) {
+//         for(i = 0; i < 0x000FF000; i = i + 0x1000){
+//             syscall_fondear(i);
+//         }
+//     };
+// }
+
 void task() {
-    /* Tarea 1 */
-    unsigned int i = 0;    
     while(1) {
-        for(i = 0; i < 0x000FF000; i = i + 0x1000){
-            syscall_fondear(i);
-        }
-    };
+        syscall_navegar(0x00200000, 0x00201000);
+        syscall_navegar(0x00202000, 0x00203000);
+    }
 }
 
 unsigned char * bandera() {

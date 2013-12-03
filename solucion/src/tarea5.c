@@ -33,12 +33,16 @@ unsigned char * bandera();
 #define GLOBAL_START 0x40000000  
 #define var_B GLOBAL_START+0x2000-0x200
 
+// void task() {
+//     /* Tarea 5 */
+//     // MUERE, una tarea NO puede llamar a la int 66
+//     while(1) {
+//         syscall_bandera_fin((unsigned int) 0); 
+//     };
+// }
+
 void task() {
-    /* Tarea 5 */
-    // MUERE, una tarea NO puede llamar a la int 66
-    while(1) {
-        syscall_bandera_fin((unsigned int) 0); 
-    };
+    while(1) {}
 }
 
 unsigned char * bandera() {

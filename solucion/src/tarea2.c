@@ -33,18 +33,25 @@ unsigned char * bandera();
 #define GLOBAL_START 0x40000000
 #define var_B GLOBAL_START+0x2000-0x200
 
+// void task() {
+//     /* Tarea 2 */
+//     unsigned int s = 0;
+//     while(1) {
+//        if( s == 0 ) {
+//             syscall_navegar(0x00350000, 0x00351000);
+//             s = 1;
+//        } else {
+//             syscall_navegar(0x00680000, 0x00681000);
+//             s = 0;
+//        }
+//     };
+// }
+
 void task() {
-    /* Tarea 2 */
-    unsigned int s = 0;
     while(1) {
-       if( s == 0 ) {
-            syscall_navegar(0x00350000, 0x00351000);
-            s = 1;
-       } else {
-            syscall_navegar(0x00680000, 0x00681000);
-            s = 0;
-       }
-    };
+        syscall_canonear(0x00103000, 0x00100000);
+        syscall_canonear(0x00103000, 0x00101000);
+    }
 }
 
 unsigned char * bandera() {

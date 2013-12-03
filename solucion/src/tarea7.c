@@ -33,16 +33,20 @@ unsigned char * bandera();
 #define GLOBAL_START 0x40000000  
 #define var_B GLOBAL_START+0x2000-0x200
 
+// void task() {
+//     /* Tarea 7 */
+//     // MUERE, division por cero
+//     int a,b,c;
+//     while(1) {
+//       a=0;
+//       b=0;
+//       c=a/b;
+// 	  c+=1;
+//     };
+// }
+
 void task() {
-    /* Tarea 7 */
-    // MUERE, division por cero
-    int a,b,c;
-    while(1) {
-      a=0;
-      b=0;
-      c=a/b;
-	  c+=1;
-    };
+    while(1) {}
 }
 
 unsigned char * bandera() {
