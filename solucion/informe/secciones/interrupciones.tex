@@ -1,11 +1,84 @@
-	Las interrupciones y las excepciones son el médotodo
-a través del cuál se logra administrar las tareas y asegurar
-la integridad del sistema. Todos los handlers de interrupción
-fueron pensados y escritors con esos objetivos en mente.
+	Las interrupciones y las excepciones son el método
+a través del cuál se logra administrar los recursos del sistema y asegurar
+la integridad del sistema. Todos los handlers de interrupción fueron
+pensados y escritos con esos objetivos en mente.
+
+	De esta manera en cada handler se pueden notar esas dos aristas,
+en algunos handlers predomina la lógica con respecto al control de los
+recursos de sistema, como en la interrupción de reloj que se maneja codo
+a codo con el scheduller administrar el tiempo de ejecución entre
+las distintas tareas. En otras, por el contrario, lo que mas se aprecia
+es la lógica destinada a asegurar la integridad del sistema como puede
+ser el caso de una excepción generada por un page fault o un seg fault.
+
+\subsection{Interrupciones de control de flujo y administración de sistema}
+
+	
+	La principal encarga de esto es la int0x32, es decir la interrupción
+que produce el reloj. Esta interrupción funcina de manera muy cercana al escheduller
+y su función basicamente es saltar a la tarea a la que le toca ejecutar o
+bien, no hacer nada en caso de que la tarea que está corriendo deba continuar.
+Para tomar esta desición lo que hace es consultarle al scheduller que tarea
+debe seguir corriendo. Si el escheduller devuelve 0 significa que la tarea
+que corre actualmente debe seguir haciéndolo, si por el contrario
+devuelve cualquier otro número se lo interpreta como un índice en
+la gdt al que se debe realizar un JMP FAR para realizar un cambio
+de contexto automático.
+
+	Por otra parte antes de realizar el JMP far es importante
+verificar si la tarea a la que se va a saltar es una bandera o un
+navío. Antes de saltar a una bandera re inicializamos su TSS para
+que el EIP vuelva a apuntar a donde es debido, si esto no se hiciera
+la ejecución seguiría a partir de la interrupción de fin de bandera
+y ese no es el compartamiento esperado. En los navíos, por otra parte
+, no hace falta hacer nada en espececial, basta realizar el salto
+para que las cosas funcionen.
+
+	Es importante que en el código de la interrupción se contempla
+que cuando a la tarea le vuelva a tocar su eip va a estar ubicado adentro
+de la interrupción, por lo tanto tiene que siempre haber un JMP al
+final de la interrupción, incluso luego de un JMP FAR.
+	
+	Otra interrupción que controla importantemente el control de
+flujo es la interrupción de teclado. De hecho la misma no tiene
+ningún control de seguridad. Sencillamente es un gran switch
+donde se verifica que tecla se tocó y en caso de caer en alguna
+de las teclas contempladas (``e'',``m'',``0-9'') entonces
+se realiza el efecto esperado. Las teclas ``e'' y ``m'' se
+manejan mediante funciones escritas en C.
+
+	Por último todos los handlers referidos a las excepciones de
+sistema (page fault, etc) al final también cambian el flujo de ejecución
+pues luego de la lógica referida a la seguridad tienen que retomar
+el flujo de ejecución a algún lado, ya sea al lugar donde vino o
+, en caso de que esa tarea haya sido desalojada, a algún otro lado
+(la tarea idle).
+
+\subsection{Interrupciones de seguridad}
+
+	Las excepciones de sistema como \textit{General Protection}
+son el mejor ejemplo. El algoritmo de estas interrupciones es
+sencillo, lo que hace es verificar que quién produjo
+esa excepción sea efectivamente una tarea. Si fue una tarea la desaloja, 
+sino Interrumpe el sistema y avisa que hubo una excepción. Luego
+de desalojar la tarea sencillamente salta hacia la tarea idle. Además
+todas estas interrupciones tienen exactamente la misma lógica, por lo
+que en principio se podrían implementar todas con un macro de nasm.
+El único código específico que implementamos para cada una es una funcion de C
+que actualiza la pantalla de manera adecuada. Sobre esto se hablará
+mas en detalla en la sección de pantalla.
+
+	La syscalls también tienen que hacer algunas verificaciones de
+seguridad. Las banderas no pueden llamar a las funciones de los barcos
+y los barcos no pueden llamar a la interrupción de final de bandera.
+
+	La interrupción de reloj debe verificar que el contexto en el
+que se está ejecutando no sea el de una bandera, pues si es así
+debe hacer desalojarla. 
 
 
 
-\beggin{comment}
+\begin{comment}
 	Las interrupciones se manejaron de 2 maneras diferentes:
 
 	Por un lado están las excepciones de sistema. De esas sólo se busca
