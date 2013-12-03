@@ -1,16 +1,13 @@
-	Las tareas corren en el anillo de seguridad 3. El kernel en anillo 0.
-A nivel paginación las tareas son usuario y el kernel es supervisor.
+	A nivel de segmentación, el kernel se ejecuta en anillo de nivel 0 y las tareas 
+en anillo de nivel 3. A nivel paginación, las tareas son usuario y el kernel es supervisor.
 
-	Las tareas no pueden acceder a memoria del kernel bajo ninguna circinstancia.
-Esto está asegurado en el mapa de memoria. El mismo si bien incluye las tablas de memoria
-del kernel las incluye con un privilegios mayor, por lo tanto si una tarea intenta
-acceder a esas páginas cae en un page fault que termina en el desalojo de esa tarea.
+	Por construcción del mapa de memoria, las tareas no pueden acceder a memoria del 
+kernel bajo ninguna circinstancia. Si bien el mapa incluye las tablas de memoria
+del kernel, estas precisan un nivel de privilegios mayor (anillo 0); es decir, si una tarea intenta
+acceder a esas páginas, se genera una falta en la unidad de paginación.
 
-	El kernel está programado para no tener que incurrir en ninguna excepción especial,
-por lo tanto el código que se ejecuta cuando ocurre una excepción es siempre el mismo. Desalojar
-a esa tarea y saltar a la tarea idle. Esto asegura que toda tarea que realice una acción
-ilegal que produzca uan excepción (dividir entre cero, seg fault, page fault, etc) será
-desalojada.
-
-	Además hay un par de cuestiones extra. Por ejemplo, una bandera no puede llamar a una int0x50.
-Si hace esto inmediatamente es desalojada.
+	Cuando ocurre una excepción o una tarea genera un error de cualquier tipo, el comportamiento 
+implementado siempre es el mismo: desalojar a la tarea que generó el problema, y ejecutar la tarea 
+idle hasta el próximo tick del reloj. Las razones adicionales por las cuales una tarea puede ser 
+desalojada son: si esta hace un llamado a la inx0x66, si su función bandera hace un llamado a la int0x50, 
+o si su bandera excede su cuota de tiempo de ejecución y aún no finalizó cuando se generá un nuevo tick del reloj.
