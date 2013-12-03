@@ -15,32 +15,32 @@ ser el caso de una excepción generada por un page fault o un seg fault.
 
 	
 	La principal encarga de esto es la int0x32, es decir la interrupción
-que produce el reloj. Esta interrupción funcina de manera muy cercana al escheduller
+que produce el reloj. Esta interrupción funcina de manera muy cercana al scheduller
 y su función basicamente es saltar a la tarea a la que le toca ejecutar o
 bien, no hacer nada en caso de que la tarea que está corriendo deba continuar.
 Para tomar esta desición lo que hace es consultarle al scheduller que tarea
-debe seguir corriendo. Si el escheduller devuelve 0 significa que la tarea
+debe seguir corriendo. Si el scheduller devuelve 0 significa que la tarea
 que corre actualmente debe seguir haciéndolo, si por el contrario
 devuelve cualquier otro número se lo interpreta como un índice en
-la gdt al que se debe realizar un JMP FAR para realizar un cambio
+la gdt al que se debe realizar un \texttt{JMP FAR} para realizar un cambio
 de contexto automático.
 
-	Por otra parte antes de realizar el JMP far es importante
+	Por otra parte antes de realizar el \texttt{JMP far} es importante
 verificar si la tarea a la que se va a saltar es una bandera o un
 navío. Antes de saltar a una bandera re inicializamos su TSS para
 que el EIP vuelva a apuntar a donde es debido, si esto no se hiciera
 la ejecución seguiría a partir de la interrupción de fin de bandera
 y ese no es el compartamiento esperado. En los navíos, por otra parte
-, no hace falta hacer nada en espececial, basta realizar el salto
+, no hace falta hacer nada en especial: basta realizar el salto
 para que las cosas funcionen.
 
-	Es importante que en el código de la interrupción se contempla
-que cuando a la tarea le vuelva a tocar su eip va a estar ubicado adentro
+	Es importante que en el código de la interrupción se contemple
+que, cuando a la tarea le vuelva a tocar, su eip va a estar ubicado adentro
 de la interrupción, por lo tanto tiene que siempre haber un JMP al
-final de la interrupción, incluso luego de un JMP FAR.
+final de la interrupción, incluso luego de un \texttt{JMP FAR}.
 	
 	Otra interrupción que controla importantemente el control de
-flujo es la interrupción de teclado. De hecho la misma no tiene
+flujo es la \emph{interrupción de teclado}. De hecho la misma no tiene
 ningún control de seguridad. Sencillamente es un gran switch
 donde se verifica que tecla se tocó y en caso de caer en alguna
 de las teclas contempladas (``e'',``m'',``0-9'') entonces

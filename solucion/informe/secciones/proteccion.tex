@@ -2,13 +2,13 @@
 A nivel paginación las tareas son usuario y el kernel es supervisor.
 
 	Las tareas no pueden acceder a memoria del kernel bajo ninguna circinstancia.
-Esto está asegurado en el mapa de memoria. El mismo si bien incluye las tablasde memoria
+Esto está asegurado en el mapa de memoria. El mismo si bien incluye las tablas de memoria
 del kernel las incluye con un privilegios mayor, por lo tanto si una tarea intenta
-acceder a esas páginas cae un page fault que termina en el desalojo de esa tarea.
+acceder a esas páginas cae en un page fault que termina en el desalojo de esa tarea.
 
 	El kernel está programado para no tener que incurrir en ninguna excepción especial,
-lo tanto el código que se ejecuta cuando ocurre una excepción es siempre el mismo. Desalojar
-a esa tarea y saltar a la tarea iddle. Esto asegura que toda tarea que realice una acción
+por lo tanto el código que se ejecuta cuando ocurre una excepción es siempre el mismo. Desalojar
+a esa tarea y saltar a la tarea idle. Esto asegura que toda tarea que realice una acción
 ilegal que produzca uan excepción (dividir entre cero, seg fault, page fault, etc) será
 desalojada.
 

@@ -1,5 +1,5 @@
 	La paginación es un método de direccionamiento de memoria
-en el cuál se redirigen bloques de direcciones "virtuales"
+en el cuál se redirigen bloques de direcciones ``virtuales''
 a bloques de direcciones físicas. Estos bloques se llaman páginas, y
 en la arquitectura intel en el modo usado en el trabajo tiene
 un tamaño de 4kb (\texttt{0x1000}). La gran ventaja de la paginación
@@ -15,6 +15,13 @@ table contiene direcciones físicas de páginas. De esta manera una dirección
 virtual (es decir la dirección a la que accede una tarea) se interpreta
 como un índice en el page directory, un índice en la page table obtenida y
 , finalmente, un offset para la página encontrada en el page table.
+
+\begin{figure}[h]
+\begin{center}
+  \includegraphics[scale=0.7]{secciones/dibujitos/mmu.png}
+\end{center}
+\caption{Estructura de paginaci\'on}
+\end{figure}
 
 	La siguiente gran ventaja de todo esto es que uno puede tener muchas
 estructuras de paginación en memoria y asignarle una distinta a cada tarea.
@@ -99,14 +106,14 @@ más con la realidad).
 
 	Todo esto fue implementado en C. Tanto las funciones
 encargadas de crear las estructuras como las funciones encargadas
-de los mapeos. Lo único que se hace desde \textit{kernel.asm} es
+de los mapeos. Lo único que se hace desde \texttt{kernel.asm} es
 llamar a esas funciones en el momento adecuado.
 
 \subsection{Activando la paginación}
 
-	La paginación se activa mediante el bit de paginación activa en el
-registro \textbf{cr0}. Es indispensable que en el momento en que se
-activa ese bit cr3 ya esté seteado de manera adecuada y al menos las
+	La paginación se activa mediante el bit de paginación, en el
+registro \textbf{cr0}. Es indispensable que, en el momento en que se
+activa ese bit, cr3 ya esté seteado de manera adecuada y al menos las
 estructuras de paginación del kernel esten debidamenta cargadas en memoria.
 
 

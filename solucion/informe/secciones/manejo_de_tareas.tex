@@ -7,19 +7,19 @@ automático que provee la arquitectura intel.
 de facilitar la gestión la tareas se decidió crear una tss extra para cada
 bandera. De esta forma cada navio tiene 2 tss, una para correr su código
 de acción y otra para correr su código de bandera. Además hay 2 tss
-extra, una para la tarea idle y otra auxiliar, para poder realizar
+extra, una para la tarea idle y otra auxiliar (\emph{tarea inicial}), para poder realizar
 el primer salto sin inconvenientes.
 
-	Para poder primer cambio de contexto (JMP FAR) sobre esta
+	Para poder primer cambio de contexto (\texttt{JMP FAR}) sobre esta
 tss auxiliar previamente se setea el TR. Este seteo está hardcodeado
-porque el descriptor de la tss auxiliar siemre se guarda exactamente
+porque el descriptor de la tss auxiliar siempre se guarda exactamente
 en el mismo índice de la gdt.
 
-	Todos los cambios de texto se hacen mediante un JMP FAR. En ningún
+	Todos los cambios de texto se hacen mediante un \texttt{JMP FAR}. En ningún
 momento se usa ningún otro mecanismo. El problema que surge con
 esto es que las banderas no tienen un código cíclico. Es decir, las banderas
 ejecutan una porción de código que termina, al terminar su contexto queda
-estático en la posición en la uqe terminó, por lo tanto se se llama a esa bandera
+estático en la posición en la que terminó, por lo tanto si se llama a esa bandera
 otra vez en ese mismo contexto sin hacer nada la bandera va a ejecutar 
 cosas indebidas. Para subsanar ese inconveniente siempre antes de saltar una
 bandera se vuelve a inicializar su tss, de esta forma nos aseguramos de que el contexto
