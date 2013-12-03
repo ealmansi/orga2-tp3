@@ -9,6 +9,12 @@
 #ifndef __DEFINES_H__
 #define __DEFINES_H__
 
+typedef unsigned int dword_t;
+typedef unsigned short word_t;
+typedef unsigned char byte_t;
+typedef unsigned long long int bits_t;
+
+
 /* Bool */
 /* -------------------------------------------------------------------------- */
 #define TRUE                    0x00000001
@@ -182,11 +188,6 @@
 #define ADDR_VIRTUAL_TASK_PILA_TAREA 	0x40001C00
 #define ADDR_VIRTUAL_TASK_PILA_BANDERA 	0X40001FFC
 #define ADDR_VIRTUAL_TASK_DIR_F_BANDERA 0X40001FFC 
-
-typedef unsigned int dword_t;
-typedef unsigned short word_t;
-typedef unsigned char byte_t;
-typedef unsigned long long int bits_t;
 
 /* macro para extraer bits
 	BITS(hasta, desde, num): bits desde 'desde' inclusive hasta 'hasta' NO inclusive

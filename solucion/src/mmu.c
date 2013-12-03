@@ -77,10 +77,12 @@ void mmu_inicializar_tarea(int nro_tarea) {
 	mmu_inicializar_dir_tarea(nro_tarea);
 }
 
+dword_t addr_task_code[] = {0x00100000, 0x00202000, 0x00304000, 0x00406000, 0x00508000, 0x0060A000, 0x0070C000, 0x007FE000};
+
 void mmu_copiar_codigo_tarea(int nro_tarea) {
 
 	dword_t* src_tierra = (dword_t*) (TASK_1_CODE_SRC_ADDR + nro_tarea * TASK_SIZE);
-	dword_t* dst_mar = (dword_t*) (TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE);
+	dword_t* dst_mar = (dword_t*) addr_task_code[nro_tarea];
 	memcpy(dst_mar, src_tierra, TASK_SIZE);
 }
 
@@ -104,12 +106,12 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 	}
 	mmu_mapear_pagina(	ADDR_VIRTUAL_TASK_CODE, 						/* virtual */
 						(unsigned int) page_directory, 					/* cr3 */
-						TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE, 		/* fisica */
+						addr_task_code[nro_tarea], 		/* fisica */
 						PAGE_DESC_ATTR_USR_RW_P);						/* attr */
 
 	mmu_mapear_pagina(	ADDR_VIRTUAL_TASK_CODE + TAMANO_PAGINA, 
 						(unsigned int) page_directory, 
-						TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE  + TAMANO_PAGINA, 
+						addr_task_code[nro_tarea] + TAMANO_PAGINA, 
 						PAGE_DESC_ATTR_USR_RW_P);
 
 	mmu_mapear_pagina(	ADDR_VIRTUAL_TASK_CODE + 2 * TAMANO_PAGINA, 
@@ -117,8 +119,8 @@ void mmu_inicializar_dir_tarea(int nro_tarea) {
 						0, 
 						PAGE_DESC_ATTR_USR_RO_P);
 
-	pagina_1_de_tarea(nro_tarea) = TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE;
-	pagina_2_de_tarea(nro_tarea) = TASK_1_CODE_ADDR + nro_tarea * TASK_SIZE  + TAMANO_PAGINA;
+	pagina_1_de_tarea(nro_tarea) = addr_task_code[nro_tarea];
+	pagina_2_de_tarea(nro_tarea) = addr_task_code[nro_tarea] + TAMANO_PAGINA;
 	pagina_3_de_tarea(nro_tarea) = 0;
 }
 
