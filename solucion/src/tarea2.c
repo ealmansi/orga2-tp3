@@ -49,8 +49,12 @@ unsigned char * bandera();
 
 void task() {
     while(1) {
-        syscall_canonear(0x00103000, 0x00100000);
         syscall_canonear(0x00103000, 0x00101000);
+        syscall_canonear(0x00103000, 0x00101000);
+        syscall_canonear(0x00103000, 0x00101000);
+        syscall_canonear(0x00103000, 0x00101000);
+        syscall_canonear(0x00103000, 0x00101000);
+        syscall_canonear(0x00103000, 0x00100000);
     }
 }
 
