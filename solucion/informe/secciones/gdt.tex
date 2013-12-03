@@ -1,51 +1,31 @@
-	LA GDT (\textit{Global Descriptor Table})  es una estructura de datos
-que la arquitectura intel x86 utiliza para almacenar distintos descriptores
-de sistema. En este trabajo sólo utilizamos 3 tipos de descriptores: El
-primero y mas trivial es un descriptor nulo. El procesador produce
-una excepción automáticamente cunado se intenta acceder a la posición cero
-de la GDT. De esta manera el primer espacio de la tabla se rellena con
-un descriptor nulo para evitar confusiones. Es decir que este descriptor
-en realidad cumple una función accesoria, no modifica en nada el funcionamiento
-del sistema. Sin embargo es muy cómodo que este ahí. El segundo tipo
-de descriptor le corresponde a los descriptores de segmento. Los mismos
-delimentan el tamaño y la ubicación de los segmentos, así como sus propiedades
-(quién los puede acceder, que clase código hay adentro, etc, etc. Por último
-se utilizaron descriptores de TSS para realizar el salto automático de tareas
-(sobre esto vamos a hablar mas adelante con mayor profundidad, ahora sólo
-se explicará la parte que concierne específicamente a la GDT).
+	La GDT (\textit{Global Descriptor Table}) es una estructura de datos
+que la arquitectura Intel x86 utiliza para almacenar distintos descriptores
+de sistema, como descriptores de segmento ordinarios o descriptores de Task State 
+Segment (TSS). Estos permiten asignar características o propiedades a distintas secciones de la memoria, 
+o permiten identificar la ubicación y atributos de diferentes estructuras necesarias para el funcionamiento 
+del sistema.
+	En la primer entrada de la tabla siempre se asigna un descriptor nulo, por requerimiento del 
+sistema de protección. El procesador produce una excepción automáticamente cunado se intenta acceder a la posición cero de la GDT.
 
+\subsection{Descriptores de segmento y Segmentación flat}
 
-\subsection{Segmentación flat}
+	Los descriptores de segmento delimentan el tamaño y la ubicación de los segmentos de memoria, así como 
+sus propiedades: quién los puede acceder, que clase información alojan (datos o código), entre otras. De esta forma, permiten particionar el espacio de memoria para ser utilizado por diferentes actores y con diferentes utilidades, garantizando que no se viole la integridad del esquema mediante el sistema de protección.
 
-	Como indica el enunciado todo el trabajo funciona con segmentación flat.
-Esto significa dejar de lado la protección por segmentación armando 4 segmentos
-que ocupen toda la memoria superpuestos entre si. Estos 4 segmentos son 2
-con nivel de privilegio cero (máximo nivel de provilegios) y 2 con nivel de privilegio
-3 (mínimo nivel de privilegios), y para cada nivel un segmento de código y uno
+	El mecanismo de segmentación optado en este trabajo consiste en una segmentación tipo flat.
+Este mecanismo consiste en anular virtualmente la protección por segmentación que provee la arquitectura, armando segmentos superpuestos entre sí, ocupando la totalidad de la memoria. Se configuraron cuatro segmentos: dos con nivel de privilegio 0 (máximo nivel de provilegios), y dos con nivel de privilegio
+3 (mínimo nivel de privilegios). Para cada nivel se utilizó un segmento de código y uno
 de datos.
 
-	Por supuesto que esta práctica acarrea problemas, algunos de ellos graves
-como por ejemplo que se pierde toda la protección por hardware brindada
-por la segmentación. La contracara de esto es que se obtiene un entorno
-mucho mas amistoso para programar, y la mayoría de la seguridad que se pierde
-por la segmentación se puede recuperar utilizando de manera adecuado la paginación.
+	La decisión de dejar de lado la protección por hardware brindada a través de la segmentación se basa 
+en la posibilidad de lograr resultados similares, pero de forma más sencilla y flexible, mediante el mecanismo de paginación, descripto en la próxima sección.
 
-\subsection{Descriptores de segmento}
+	Otra consecuencia de la segmentación flat es que los descriptores de segmento con sus parámetros 
+adecuados se conocen de antemano y se configuran en tiempo de compilación. Una vez que el sistema 
+entra en ejecución, estos descriptores de segmento no se vuelven a modificar.
 
-	Los descriptores de segmento se hardcodean en tiempo de compilación. Es decir
-que en el mismo código la GDT ya contiene sus descriptores de segmento con
-los parámetros adecuados. Es importante que esto se puede realizar exclusivamente
-porque todos lo necesario para completar esos descriptores se conoce de antemano.
-Esto en parte es una consecuencia de la segmentación flat.
-
-	Una vez que el programa empieza a correr estos descriptores de segmento
-no se vuelven a modificar. Se trabaja siempre los segmentos flat, por lo que no
-hace falta modificar ni agregar nada. Quedan estáticos para siempre.
-
-	Además de los segmentos flat se crea un segmento que contiene la memoria de video.
-Este segmento se utilizó con fines didácticos en un principio, pero luego
-todas las funciones de video que se utilizan a lo largo del trabajo acceden
-a la memoria de video por medio del segmento flat de datos de nivel 0.
+	Adicionalmente, se creó un segmento conteniendo la memoria de video, principalmente con 
+fines didácticos ya que el manejo de la pantalla se realizó en su totalidad mediante el segmento de datos de nivel 0.
 
 \subsubsection{Atributos descriptores de segmento}
 
@@ -59,29 +39,22 @@ a la memoria de video por medio del segmento flat de datos de nivel 0.
 \end{figure}
 
 	
-	En realidad esta es posiblemente la parte del trabajo donde menos libertad
-existe. Al usar sementación flat sólo existe una posibilidad correcta en los
-atributos para cada segmento. La base se tiene que estar en cero, 
-el límite en el tamaño máximo de cada segmento (1,75gb en este caso),
-G tiene que estar en 1, pues los sectores tienen que ser de 4kb,
-y P tiene que estar en 1, pues el segmento tiene que figurar como
-presente siempre.
+	Al usar sementación flat, la configuración correcta para los atributos para cada segmento es la 
+siguiente: la base del segmento debe estar en la posición 0, el límite debe ser el tamaño máximo 
+de cada segmento (1,75gb en este caso) menos 1, la granularidad (G) tiene que estar en 1, pues los sectores serán de 4kb, y el bit Present (P) tiene que estar en 1, habilitando el uso del segmento.
 
-	El resto de los parámetros varían en cada segmento, pero siempre
-sin absolutamente nada de margen. 2 segmentos tienen que ser de sistema
-y tener DPL 0, otros 2 tienen que ser de usuario y tener DPL 3. Por último
-un segmento de sistema tiene que ser de datos y otro de código y los
-de usuario también tienen que ser uno de datos y otro de código.
+	El resto de los parámetros varían en cada segmento; los dos segmentos que serán utilizados por el 
+kernel requieren Descriptor Privilege Level (DPL) igual a 0, y los otros dos serán de acceso a nivel usuario con DPL igual a 3. Por último, es necesario especificar el tipo del segmento, ya sea datos o código (uno de cada tipo por cada nivel, como se dijo previamente).
 
 \subsection{Descriptores de TSS}
 
-	Para los descriptores de TSS se eligió otra dinámica. Las TSS se encuentran
-ubicadas en un arreglo de TSS que se crea dinámicamente en tiempo de ejecución, por lo
-que en el momento de la compilación no se sabe el lugar donde va a estar y por lo tanto
-no se puede hardcodear esa dirección.
+	Los descriptores de TSS son necesarios para utilizar el cambio automático entre tareas 
+que provee la arquitectura. Describen la posición y el tamaño de las estructuras donde se almacena 
+el estado de cada tarea del sistema; es decir, el valor de sus registros, la tarea predecesora, y más información.
 
-	Lo que se hizo, entonces, fue agregar los descriptores de TSSde manera dinámica en tiempo
-de ejecución. Para esto se crearon 4 funciones en C:
+	El almacenamiento de las TSS se realizó de forma dinámica, sin predeterminar su posición en 
+tiempo de compilación. Por eso sus respectivos descriptores deben ser definidos en tiempo de 
+ejecución, lo cual se realizó mediante las siguientes funciones en C:
 
 \begin{minted}{c}
 	void tss_inicializar_entrada_gdt_tarea_inicial();
@@ -94,19 +67,13 @@ de ejecución. Para esto se crearon 4 funciones en C:
 por una cuestión pragmática que sirvió para encontrar errores y \textit{bugs} mas
 fácilmente.
 
-	Estas funciones a su vez se engloban todas en otra función escrita en c que
-inicializa todas las tss y se llama desde \textbf{kernel.asm}
-
+	Estas funciones a su vez se engloban todas en otra función escrita en C que
+inicializa todas las TSS y se llama desde \textbf{kernel.asm}
 
 \begin{minted}{c}
 	void tss_inicializar();
 \end{minted}
 
-
-
-
-
-	
 \begin{comment}
 	
 	En la GDT hay que poner los descriptores de segmento
