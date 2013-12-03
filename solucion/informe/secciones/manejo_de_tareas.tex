@@ -1,28 +1,31 @@
-	El manejo de tareas tiene varias aristas. Por un lado está
-la gestión ``física'' de las tareas. Es decir como se cambia entre el contexto
-de una y el contexto de otra. Este punto se manejo mediante el mecanismo
-automático que provee la arquitectura intel.
+	El sistema implementado ejecuta un total de hasta 19 tareas en forma itinerante: 
+ocho navíos, ocho banderas y la tarea idle. Además, como se dijo previamente, 
+los navíos deben comenzar a ejecutarse siempre desde el punto donde fueron interrumpidos, 
+mientras que las banderas comienzan siempre desde el inicio de la función. Esto requiere 
+mantener registro del estado de los navíos (es decir, guardar todo su contexto para que 
+pueda retomar la ejecución sin ser alterada), y un método para intercambiar el contexto 
+de diferentes tareas.
 
-	Para esto hubo que crear tss para cada tarea. Además por cuestiones
-de facilitar la gestión la tareas se decidió crear una tss extra para cada
-bandera. De esta forma cada navio tiene 2 tss, una para correr su código
-de acción y otra para correr su código de bandera. Además hay 2 tss
-extra, una para la tarea idle y otra auxiliar (\emph{tarea inicial}), para poder realizar
-el primer salto sin inconvenientes.
+	Para resolver este requerimiento, se optó por el cambio automático 
+de tareas por hardware que provee la arquitectura Intel x86. Para utilizar este mecanismo, 
+es necesario mantener para cada tarea en ejecución una estructura llamada Task State 
+Segment (TSS), que consiste en un espacio de memoria donde se guarda (y de donde se 
+recupera) el contexto de la tarea de forma automática. Como se dijo en la sección sobre la GDT, 
+cada TSS requiere también un descriptor de TSS en la tabla GDT, de forma tal que se pueda 
+accionar el mecanismo mediante un \texttt{jmp far}, configurando el selector del salto 
+al descriptor TSS de la tarea a la que se desea comenzar a ejecutar.
 
-	Para poder realizar el primer cambio de contexto (\texttt{JMP FAR}) sobre esta
-tss auxiliar, previamente se setea el TR. Este seteo está hardcodeado
-porque el descriptor de la tss auxiliar siempre se guarda exactamente
-en el mismo índice de la gdt.
+	Cada vez que se realiza un salto a una nueva tarea, el contexto actual sobreescribe 
+la TSS apuntada por el registro Task Register (TR). Esta característica tuvo dos implicaciones 
+en la implementación realizada. En primer lugar, previo a la ejecución de la primer tarea 
+mediante este mecanismo, el contexto de ejecución no corresponde a ninguna tarea en particular, y 
+no tendría sentido que sobreescriba la TSS de ninguna tarea. Por esta razón, se genera una 
+TSS adicional para una \"tarea inicial\", cuyo único propósito es ser la TSS que se altera 
+al realizar el primer salto. En segundo lugar, como a priori no es necesario guardar el estado de las tareas que ejecutan funciones bandera, se podría prescindir de construir una TSS para cada 
+una de ellas. Sin embargo, para proveer un espacio de memoria donde escribir el contexto actual 
+cada vez que se interrumpe una tarea tipo bandera, se optó por brindar una TSS a cada una de ellas.
 
-	Todos los cambios de tarea se hacen mediante un \texttt{JMP FAR}. En ningún
-momento se usa ningún otro mecanismo. El problema que surge con
-esto es que las banderas no tienen un código cíclico. Es decir, las banderas
-ejecutan una porción de código que termina, al terminar su contexto queda
-estático en la posición en la que terminó, por lo tanto si se llama a esa bandera
-otra vez en ese mismo contexto sin hacer nada la bandera va a ejecutar 
-cosas indebidas. Para subsanar ese inconveniente siempre antes de saltar una
-bandera se vuelve a inicializar su tss, de esta forma nos aseguramos de que el contexto
-siempre sea el contexto inicial.
-
-	
+	Para mantener el comportamiento acíclico de las tareas bandera, en vez de recuperar el 
+contexto de su TSS asociada (allí se encuentra el estado de la última vez que se ejecutó), se
+reinicializa la TSS al igual que la primera vez que fue ejecutada, garantizando que siempre se
+procesa desde el comienzo.	
