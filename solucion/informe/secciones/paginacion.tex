@@ -49,7 +49,7 @@ de páginas compartidas y tablas de páginas privadas. Además se tuvo especial
 cuidado con los permisos otorgados a cada tabla para evitar accesos a memoria
 indeseados.
 
-\subsection{Implementación del mapa de memoria.}
+\subsection{Implementación del mapa de memoria}
 	El mapa de memoria se inmplementó tal cuál lo dice el enunciado. Hay
 identity mapping en los primeros 8mb y después cada tarea tiene
 los mapeos que necesita para acceder a su código y al ancla.
@@ -70,7 +70,7 @@ todo todo listo para el momento en que empicen a correr las tareas.
 
 	Todo explicado recién se hacer mediante una sola función escrita en c
 que luego se llama desde kernel. asm
-\newpage
+
 	Los page table compartidos tienen los mapeos de las direcciones del kernel.
 Esas direcciones estar mapeadas en todas las tareas y con los mismos atributos, motivo
 por le cuál decidimos hacerlos comunes. Esto significa todas las primeras entradas
