@@ -77,7 +77,7 @@ void mmu_inicializar_tarea(int nro_tarea) {
 	mmu_inicializar_dir_tarea(nro_tarea);
 }
 
-dword_t addr_task_code[] = {0x00100000, 0x00202000, 0x00304000, 0x00406000, 0x00508000, 0x0060A000, 0x0070C000, 0x0020F000};
+dword_t addr_task_code[] = {0x00100000, 0x00202000, 0x00304000, 0x00406000, 0x00508000, 0x0060A000, 0x0070C000, 0x0030F000};
 
 void mmu_copiar_codigo_tarea(int nro_tarea) {
 

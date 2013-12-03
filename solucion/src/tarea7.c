@@ -41,7 +41,7 @@ void task() {
       a=0;
       b=0;
       c=a/b;
-      a = c;
+      a=c;
     };
 }
 
