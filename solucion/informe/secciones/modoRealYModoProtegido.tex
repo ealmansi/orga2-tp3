@@ -1,59 +1,45 @@
-	La arquitectura intel posee varios modos de trabajo. A lo largo
-del tp sólo usamos 2 de ellos: El modo real y el modo protegido. Todo
-los procesadores con arquitectura intel x86 en el momento en que arrancan lo
-hacen en modo real. En modo real el procesador posee la misma interfaz
-que un intel 8086. Esto conlleva un tamaño de palabra de 16 bits,
-capacidad de dirección de 1mb, nula protección por hardware, etc, etc.
-
-	En modo protegido, por el contrario, el procesador puede hacer pleno
-uso de sus recursos. Una vez que se pasa a modo protegido el procesador
-puede hacer pleno uso de todo su set de instrucciones, direccionar a 4gb de RAM,
-utilizar potentes mecanismos de protección por hardware, etc.
+	En el sistema implementado se utilizaron dos modos de trabajo de los 
+múltiples que provee la arquitectura Intel x86: el modo real y el modo protegido. Todos 
+los procesadores de dicha arquitectura comienzan a operar en modo real; es decir, 
+funcionando similarmente al procesador Intel 8086. Esto conlleva un tamaño de palabra 
+de 16 bits, una capacidad de direccionamiento de 1MB, nula protección por hardware, 
+entre otras características. Por el contrario, en modo protegido el procesador puede hacer pleno
+uso de sus recursos; es decir, su completo set de instrucciones, direccionamiento a 4GB de 
+memoria, potentes mecanismos de protección por hardware, y otras ventajas.
 
 \subsection{Modo real}
 
-	Trabajando en modo real uno está realmente limitado, por lo que
-hicimos todo lo posible por salir lo mas rápido posible de el. Sin embarg
-algunas cosas se hacen en modo real para ahorrar inconvenientes luego. La
-mayoría de estas cosas, sin embargo, fueron implementadas por la cátedra.
+	Si bien es deseable trabajar en modo protegido por sobre modo real, existe una secuencia de 
+pasos que deben ser realizados previamente a realizar la transición. En primer lugar, es necesario 
+implementar un bootloader en modo real, el cual se encarga de cargar el código inicial del kernel.
 
-	La primera, por supuesto, es correr el bootloader. El bootloader se
-ejecuta por completo en modo real. Una vez que el bootloader termina lo siguiente
-que se hace es deshabilitar las instrucciones. Muy importante pues todavía
-no se definió como manejarlas, por lo que si esto no se hace
-en cuanto cae la primera interrupción de reloj se genera una excepción de
-la que no se puede salir, pues todavía no se declaró en ninguna parte
-que hacer con esa excepción. Luego hay que habilitar A20. Esto 
-es buena idea hacerlo antes de saltar a modo protegido, cuando de todas
-maneras el límite de direccionamiento es 1 mega. Lo último que se hace antes de pasar
-a modo protegido es habilitar los 16 colores de fondo de video. Por defecto
-el video está seteado para que el bit mas significativo de las casillas de formato
-represente "blink", es decir si el caracter parpadea o no. Lo que hicimos, entonces
-, fue setear el video para que ese bit se agruegue a la paleta de colores del fondo
-de pantalla. De esta manera se obtiene la posibilidad de crear una pantalla
-un poco mas expresiva. Esto decidimos hacerlo aún en modo real principalmente
-por el motivo de hacer todo lo relacionado a la comunicación con el hardware
-en la etapa mas temprana posible. Es decir "enlistar" el sistema antes de
-correrlo.
+	Una vez que el bootloader finaliza, es necesario deshabilitar las instrucciones. Este paso es 
+muy importante pues en esta instancia aún no fue definido el manejo de interrupciones, por lo que
+la primera interrupción de reloj generaría una excepción sin capacidad de ser manejada.
 
-	Una vez terminadas estas tareas se pasa a modo protegido.
+	Posteriormente, se requiere la habilitación del gate A20 para permitir direccionamiento a más 
+de 1MB. Es razonable hacerlo en modo real, cuando de todas maneras el límite de direccionamiento es 1MB.
+Finalmente, previo al paso a modo protegido se habilitó el uso de 16 colores de video. Por defecto
+el video está configurado para que el bit mas significativo de las casillas de formato
+represente la propiedad "blink", es decir si el caracter parpadea o no. Para lograr una pantalla más 
+expresiva, se reconfiguró el sistema para utilizar ese bit como parte del descriptor de color.
+
+	Estos pasos relacionados a la configuración del hardware fueron realizados en modo real principalmente 
+para alistar el sistema antes de comenzar la organización del kernel.
 
 \subsection{Pasaje a modo protegido}
 
-	El pasaje a modo protegido es una parte bastante delicada.
-En primer lugar es importante armar una gdt aunque sea minimal y setear
-el gdtr de manera adecuada. Sobre eso vamos a entrar en mas detalle
-en la sección correspondiente.
+	Previo al paso a modo protegido, se debe armar la primer estructura necesaria para 
+el funcionamiento del kernel; la Global Descriptor Table (GDT), la cual se discute en más 
+detalle en secciones subsiguientes.
 
-	Una vez que esto está asegurado se debe efectivamente pasar
-a modo protegido. Esto, en principio, no es mas que setear un bit en el
-registro de control CR0. Sin embargo en el momento en que se setea
-ese bit cambia la manera de interpretar a los registros de segmento, por lo que
-la siguiente instrucción es altamente probable que cause algún problema al
-respecto. Lo que se debe hacer entonces es setear los registros de segmento
-en valores empezando por el CS, que es el primero que puede producir algún tipo de problema.
-Para esto lo que se hace es un jmp far a la siguiente instrucción
-hardcodeando el valor adecuado del CS. 
+	Activar el modo protegido en principio consiste más que en activar el bit menos significativo del 
+registro de control CR0. Sin embargo, en el momento en que se setea ese bit, se altera la manera de 
+interpretar a los registros de segmento. Para el correcto funcionamiento del sistema en esta etapa, lo que se debe hacer entonces es setear los registros de segmento en valores válidos (según la GDT realizada), 
+empezando por el segmento de código (CS), que es el primero que puede producir errores. Para lograr esto,
+se realiza un jmp far a la siguiente instrucción, con un valor adecuado para el CS.
+
+	A continuación se incluye un extracto del código mostrando este proceso.
 
 \begin{minted}[tabsize=4, linenos=true, obeytabs=true]{nasm}
 	MOV		eax, cr0	; Se trae el contenido de cr0
@@ -72,12 +58,8 @@ mp:						; Esta etiqueta es el destino del JMP FAR, es
 
 \subsection{En modo protegido}
 
-	Ya en modo protegido es importante realizar 2 cosas
-antes que nada. Estas son acomodar el resto de los registros
-de segmento (el JMP FAR setea el CS, pero faltan todos los demás)
-y setear la pila como corresponde. Esto  último consiste sencillamente
-en darle a ESP y a EBP los valores adecuados para que la pila quede
-donde nosotros queremos (en nuestro caso eso es la posición de memoria 0x27000
-de manera tal que la pila viva entre 0x26000 y 0x26FFF.
+	Una vez en modo protegido, es importante realizar dos tareas en primera instancia: acomodar el 
+resto de los registros de segmento (el jmp far configura el CS, pero resta configurar todos los demás)
+y setear la pila correctamente; es decir, sencillamente asignar a ESP y a EBP los valores adecuados para que la pila quede donde se haya reservado espacio para ella (en el caso de este sistema, es la posición de memoria 0x27000, alojando la pila 0x26000 y 0x26FFF).
 
 
