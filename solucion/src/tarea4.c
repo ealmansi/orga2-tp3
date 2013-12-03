@@ -33,18 +33,14 @@ unsigned char * bandera();
 #define GLOBAL_START 0x40000000  
 #define var_B GLOBAL_START+0x2000-0x200
 
-// void task() {
-//     /* Tarea 4 */
-//     // MUERE, pisa su propio codigo
-//     int *i;
-//     while(1) {
-//        for(i=((int*)GLOBAL_START);i<((int*)GLOBAL_START+0x2000);i++)
-//           *i=0xFFFF;
-//     };
-// }
-
 void task() {
-    while(1) {}
+    /* Tarea 4 */
+    // MUERE, pisa su propio codigo
+    int *i;
+    while(1) {
+       for(i=((int*)GLOBAL_START);i<((int*)GLOBAL_START+0x2000);i++)
+          *i=0xFFFF;
+    };
 }
 
 unsigned char * bandera() {
