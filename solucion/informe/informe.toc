@@ -5,17 +5,16 @@
 \contentsline {subsection}{\numberline {2.2}Pasaje a modo protegido}{3}
 \contentsline {subsection}{\numberline {2.3}En modo protegido}{3}
 \contentsline {section}{\numberline {3}Global Descriptor Table (GDT)}{4}
-\contentsline {subsection}{\numberline {3.1}Segmentaci\IeC {\'o}n flat}{4}
-\contentsline {subsection}{\numberline {3.2}Descriptores de segmento}{4}
-\contentsline {subsubsection}{\numberline {3.2.1}Atributos descriptores de segmento}{4}
-\contentsline {subsection}{\numberline {3.3}Descriptores de TSS}{5}
+\contentsline {subsection}{\numberline {3.1}Descriptores de segmento y Segmentaci\IeC {\'o}n flat}{4}
+\contentsline {subsubsection}{\numberline {3.1.1}Atributos descriptores de segmento}{4}
+\contentsline {subsection}{\numberline {3.2}Descriptores de TSS}{5}
 \contentsline {section}{\numberline {4}Paginaci\IeC {\'o}n}{6}
-\contentsline {subsection}{\numberline {4.1}Implementaci\IeC {\'o}n del mapa de memoria.}{6}
-\contentsline {subsection}{\numberline {4.2}Activando la paginaci\IeC {\'o}n}{7}
-\contentsline {section}{\numberline {5}Interrupciones}{8}
-\contentsline {subsection}{\numberline {5.1}Interrupciones de control de flujo y administraci\IeC {\'o}n de sistema}{8}
-\contentsline {subsection}{\numberline {5.2}Interrupciones de seguridad}{8}
-\contentsline {section}{\numberline {6}Manejo de tareas}{9}
-\contentsline {section}{\numberline {7}Protecci\IeC {\'o}n}{10}
-\contentsline {section}{\numberline {8}Scheduler}{11}
-\contentsline {section}{\numberline {9}Conclusiones}{12}
+\contentsline {subsection}{\numberline {4.1}Implementaci\IeC {\'o}n del mapa de memoria}{6}
+\contentsline {subsection}{\numberline {4.2}Activando la paginaci\IeC {\'o}n}{8}
+\contentsline {section}{\numberline {5}Interrupciones}{9}
+\contentsline {subsection}{\numberline {5.1}Interrupciones de control de flujo y administraci\IeC {\'o}n de sistema}{9}
+\contentsline {subsection}{\numberline {5.2}Interrupciones de seguridad}{9}
+\contentsline {section}{\numberline {6}Manejo de tareas}{10}
+\contentsline {section}{\numberline {7}Protecci\IeC {\'o}n}{11}
+\contentsline {section}{\numberline {8}Scheduler}{12}
+\contentsline {section}{\numberline {9}Conclusiones}{13}

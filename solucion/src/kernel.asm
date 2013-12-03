@@ -78,29 +78,27 @@ start:
 
     %include "_kernel/05_pintar_pantalla.asm"
 
-    %include "_kernel/06_inicializar_el_manejador_de_memoria.asm"
+    %include "_kernel/06_inicializar_el_directorio_de_paginas.asm"
 
-    %include "_kernel/07_inicializar_el_directorio_de_paginas.asm"
+    %include "_kernel/07_inicializar_memoria_de_tareas.asm"
 
-    %include "_kernel/08_inicializar_memoria_de_tareas.asm"
+    %include "_kernel/08_habilitar_paginacion.asm"
 
-    %include "_kernel/09_habilitar_paginacion.asm"
+    %include "_kernel/09_inicializar_manejo_video.asm"
 
-    %include "_kernel/10_inicializar_manejo_video.asm"
+    %include "_kernel/10_inicializar_todas_las_tsss.asm"
 
-    %include "_kernel/11_inicializar_todas_las_tsss.asm"
+    %include "_kernel/11_inicializar_entradas_de_la_gdt_de_las_tsss.asm"
 
-    %include "_kernel/12_inicializar_entradas_de_la_gdt_de_las_tsss.asm"
+    %include "_kernel/12_inicializar_el_scheduler.asm"
 
-    %include "_kernel/13_inicializar_el_scheduler.asm"
+    %include "_kernel/13_inicializar_la_IDT.asm"
 
-    %include "_kernel/14_inicializar_la_IDT.asm"
+    %include "_kernel/14_configurar_controlador_de_interrupciones.asm"
 
-    %include "_kernel/15_configurar_controlador_de_interrupciones.asm"
+    %include "_kernel/15_cargar_la_tarea_inicial.asm"
 
-    %include "_kernel/16_cargar_la_tarea_inicial.asm"
-
-    %include "_kernel/17_saltar_a_la_primer_tarea.asm"
+    %include "_kernel/16_saltar_a_la_primer_tarea.asm"
 
     ; Ciclar infinitamente (por si algo sale mal...)
     jmp $

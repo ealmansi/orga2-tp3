@@ -14,18 +14,17 @@ KERNEL_PIECES = ./_kernel/00_cargar_la_GDT.asm 						\
 	./_kernel/03_acomodar_los_segmentos.asm 						\
 	./_kernel/04_setear_la_pila.asm 								\
 	./_kernel/05_pintar_pantalla.asm 								\
-	./_kernel/06_inicializar_el_manejador_de_memoria.asm 			\
-	./_kernel/07_inicializar_el_directorio_de_paginas.asm 			\
-	./_kernel/08_inicializar_memoria_de_tareas.asm 					\
-	./_kernel/09_habilitar_paginacion.asm 							\
-	./_kernel/10_inicializar_manejo_video.asm 						\
-	./_kernel/11_inicializar_todas_las_tsss.asm 					\
-	./_kernel/12_inicializar_entradas_de_la_gdt_de_las_tsss.asm 	\
-	./_kernel/13_inicializar_el_scheduler.asm 						\
-	./_kernel/14_inicializar_la_IDT.asm 							\
-	./_kernel/15_configurar_controlador_de_interrupciones.asm 		\
-	./_kernel/16_cargar_la_tarea_inicial.asm 						\
-	./_kernel/17_saltar_a_la_primer_tarea.asm 						\
+	./_kernel/06_inicializar_el_directorio_de_paginas.asm 			\
+	./_kernel/07_inicializar_memoria_de_tareas.asm 					\
+	./_kernel/08_habilitar_paginacion.asm 							\
+	./_kernel/09_inicializar_manejo_video.asm 						\
+	./_kernel/10_inicializar_todas_las_tsss.asm 					\
+	./_kernel/11_inicializar_entradas_de_la_gdt_de_las_tsss.asm 	\
+	./_kernel/12_inicializar_el_scheduler.asm 						\
+	./_kernel/13_inicializar_la_IDT.asm 							\
+	./_kernel/14_configurar_controlador_de_interrupciones.asm 		\
+	./_kernel/15_cargar_la_tarea_inicial.asm 						\
+	./_kernel/16_saltar_a_la_primer_tarea.asm 						\
 	habilitar_16colores.asm
 
 DEPEND = Makefile \
