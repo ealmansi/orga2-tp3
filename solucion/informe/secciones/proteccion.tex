@@ -1,8 +1,8 @@
 	A nivel de segmentación, el kernel se ejecuta en anillo de nivel 0 y las tareas 
-en anillo de nivel 3. A nivel paginación, las tareas son usuario y el kernel es supervisor.
+en anillo de nivel 3. A nivel paginación, las tareas son nivel usuario y el kernel es supervisor.
 
 	Por construcción del mapa de memoria, las tareas no pueden acceder a memoria del 
-kernel bajo ninguna circinstancia. Si bien el mapa incluye las tablas de memoria
+kernel bajo ninguna circunstancia. Si bien el mapa incluye las tablas de memoria
 del kernel, estas precisan un nivel de privilegios mayor (anillo 0); es decir, si una tarea intenta
 acceder a esas páginas, se genera una falta en la unidad de paginación.
 
