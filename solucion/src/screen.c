@@ -137,7 +137,7 @@ void dibujar_banderas() {
 
 void dibujar_panel_ultimo_error() {
 
-	dibujar_rectangulo(punto(1, 50), punto(2, VIDEO_COLS - 2), C_LIGHT_BLUE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_rectangulo(punto(1, 50), punto(2, VIDEO_COLS - 2), C_DARK_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dibujar_rectangulo(punto(2, 50), punto(15, VIDEO_COLS - 2), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
 	dibujar_texto("EAX", punto( 2, 51), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
@@ -167,7 +167,7 @@ void dibujar_panel_inferior() {
 	// fondos
 	dibujar_rectangulo(punto(16, 0), punto(24, 1), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dibujar_rectangulo(punto(16, 1), punto(24, 2), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
-	dibujar_rectangulo(punto(16, 2), punto(24, VIDEO_COLS - 1), C_LIGHT_BLUE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_rectangulo(punto(16, 2), punto(24, VIDEO_COLS - 1), C_LIGHT_GREEN, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dibujar_rectangulo(punto(16, VIDEO_COLS - 1), punto(24, VIDEO_COLS), C_BLACK, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	
 	// numeros de tarea
@@ -273,7 +273,7 @@ void actualizar_desalojo(int nro_tarea, char* msj_desalojo) {
 	// actualizo el panel del ultimo problema
 	char nombre_navio[] = "NAVIO x";
 	nombre_navio[6] = nro_tarea + 1 + '0';
-	dibujar_rectangulo(punto(1, 50), punto(2, VIDEO_COLS - 2), C_LIGHT_BLUE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
+	dibujar_rectangulo(punto(1, 50), punto(2, VIDEO_COLS - 2), C_DARK_GREY, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	//dibujar_texto(msj_desalojo, punto(1, 51), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 	dibujar_texto(nombre_navio, punto(1, 71), C_WHITE, (byte_t*) ADDR_BUFFER_VIDEO_ESTADO);
 
