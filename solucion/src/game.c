@@ -32,13 +32,13 @@ unsigned int game_navegar(unsigned int dir_primera_pag_fisica, unsigned int dir_
 
 		memcpy((char*) dir_primera_pag_fisica, (char*) dir_ult_p1, TAMANO_PAGINA);
 		memcpy((char*) dir_segunda_pag_fisica, (char*) dir_ult_p2, TAMANO_PAGINA);
+
 		
 		int cr3 = rcr3();
 		mmu_unmapear_pagina(ADDR_VIRTUAL_TASK_CODE, cr3);
 		mmu_unmapear_pagina(ADDR_VIRTUAL_TASK_AREA_BANDERA, cr3);
 		mmu_mapear_pagina(ADDR_VIRTUAL_TASK_CODE, cr3, dir_primera_pag_fisica, PAGE_DESC_ATTR_USR_RW_P);
 		mmu_mapear_pagina(ADDR_VIRTUAL_TASK_AREA_BANDERA, cr3, dir_segunda_pag_fisica, PAGE_DESC_ATTR_USR_RW_P);
-
 		return TRUE;
 	}
 	

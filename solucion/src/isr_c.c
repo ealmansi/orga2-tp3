@@ -19,9 +19,7 @@ void desalojar_tarea(int nro_tarea, char* msj_desalojo);
 #define BANDERA_BUFFER  0x40001000
 
 int _isr32_c() {
-
 	int ind_tarea = obtener_indice_tarea_en_ejecucion();
-
 	if(es_bandera(ind_tarea)) {
 		desalojar_tarea(numero_tarea(ind_tarea), "Bandera excedio tick");
 	}

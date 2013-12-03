@@ -25,7 +25,7 @@ void memclear(void* dst, int size){
 
 	int i;
 	for (i = 0; i < size; i++) {
-		dst_char[0]=0;
+		dst_char[i]=0;
 	}
 }
 

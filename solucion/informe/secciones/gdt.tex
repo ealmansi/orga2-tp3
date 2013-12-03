@@ -14,6 +14,7 @@ se utilizaron descriptores de TSS para realizar el salto automático de tareas
 (sobre esto vamos a hablar mas adelante con mayor profundidad, ahora sólo
 se explicará la parte que concierne específicamente a la GDT).
 
+
 \subsection{Segmentación flat}
 
 	Como indica el enunciado todo el trabajo funciona con segmentación flat.
@@ -45,6 +46,20 @@ hace falta modificar ni agregar nada. Quedan estáticos para siempre.
 Este segmento se utilizó con fines didácticos en un principio, pero luego
 todas las funciones de video que se utilizan a lo largo del trabajo acceden
 a la memoria de video por medio del segmento flat de datos de nivel 0.
+
+\subsubsection{Atributos descriptores de segmento}
+
+
+\begin{figure}[h]
+\begin{center}
+  \includegraphics[scale=0.3]{secciones/dibujitos/descriptorDeSegmento.png}
+\end{center}
+\caption{Descriptor de segmento}
+\label{fig:descriptorDeSegmento}
+\end{figure}
+
+
+	
 
 \subsection{Descriptores de TSS}
 

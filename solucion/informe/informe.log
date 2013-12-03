@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.28)  30 NOV 2013 16:06
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.28)  2 DEC 2013 22:03
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1223,6 +1223,16 @@ runsystem(rm informe.pyg)...executed.
 
 ]
 (./secciones/gdt.tex
+<secciones/dibujitos/descriptorDeSegmento.png, id=26, 1009.7725pt x 573.14125pt
+>
+File: secciones/dibujitos/descriptorDeSegmento.png Graphic file (type png)
+ <use secciones/dibujitos/descriptorDeSegmento.png>
+Package pdftex.def Info: secciones/dibujitos/descriptorDeSegmento.png used on i
+nput line 55.
+(pdftex.def)             Requested size: 302.93408pt x 171.9437pt.
+ [4
+
+ <./secciones/dibujitos/descriptorDeSegmento.png>]
 \openout3 = `informe.pyg'.
 
 runsystem(pygmentize -l c -f latex -F tokenmerge             -P "verboptions= "
@@ -1243,13 +1253,11 @@ runsystem(rm informe.out.pyg)...executed.
 
 runsystem(rm informe.pyg)...executed.
 
-) [4
+) [5]
+(./secciones/paginacion.tex [6
 
 ]
-(./secciones/paginacion.tex [5
-
-]
-<secciones/dibujitos/diagramapaginas.jpg, id=33, 1387.1825pt x 1134.2375pt>
+<secciones/dibujitos/diagramapaginas.jpg, id=37, 1387.1825pt x 1134.2375pt>
 File: secciones/dibujitos/diagramapaginas.jpg Graphic file (type jpg)
 
 <use secciones/dibujitos/diagramapaginas.jpg>
@@ -1266,49 +1274,52 @@ runsystem(rm informe.out.pyg)...executed.
 
 runsystem(rm informe.pyg)...executed.
 
-) [6 <./secciones/dibujitos/diagramapaginas.jpg>] (./secciones/interrupciones.t
-ex) [7
+) [7 <./secciones/dibujitos/diagramapaginas.jpg>] (./secciones/interrupciones.t
+ex) [8
 
 ]
-(./secciones/manejo_de_tareas.tex) [8
+(./secciones/manejo_de_tareas.tex) [9
 
-] (./secciones/proteccion.tex) [9
+] (./secciones/proteccion.tex) [10
 
 ]
-(./secciones/scheduler.tex) [10
+(./secciones/scheduler.tex) [11
 
-] (./secciones/conclusiones.tex) [11
+] (./secciones/conclusiones.tex) [12
 
 ]
 (./informe.aux
 LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
-) ) 
+)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 20986 strings out of 494969
- 399406 string characters out of 6179592
- 492819 words of memory out of 5000000
- 23702 multiletter control sequences out of 15000+600000
+ 20993 strings out of 494969
+ 399655 string characters out of 6179592
+ 492827 words of memory out of 5000000
+ 23707 multiletter control sequences out of 15000+600000
  10303 words of font info for 38 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  56i,8n,60p,840b,313s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on informe.pdf (11 pages, 479082 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on informe.pdf (12 pages, 524069 bytes).
 PDF statistics:
  100 PDF objects out of 1000 (max. 8388607)
- 71 compressed objects within 1 object stream
+ 70 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 18 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 23 words of extra memory for PDF output out of 10000 (max. 10000000)
 

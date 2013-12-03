@@ -19,7 +19,7 @@
 
 #define 	punto(x,y)		(x), (y)
 
-int pantalla_activa = 'e';
+int pantalla_activa = 'm';
 
 extern int _estado_eax;
 extern int _estado_ebx;

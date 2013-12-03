@@ -7,12 +7,15 @@
 \contentsline {section}{\numberline {3}Global Descriptor Table (GDT)}{4}
 \contentsline {subsection}{\numberline {3.1}Segmentaci\IeC {\'o}n flat}{4}
 \contentsline {subsection}{\numberline {3.2}Descriptores de segmento}{4}
-\contentsline {subsection}{\numberline {3.3}Descriptores de TSS}{4}
-\contentsline {section}{\numberline {4}Paginaci\IeC {\'o}n}{5}
-\contentsline {subsection}{\numberline {4.1}Implementaci\IeC {\'o}n del mapa de memoria.}{5}
-\contentsline {subsection}{\numberline {4.2}Activando la paginaci\IeC {\'o}n}{6}
-\contentsline {section}{\numberline {5}Interrupciones}{7}
-\contentsline {section}{\numberline {6}Manejo de tareas}{8}
-\contentsline {section}{\numberline {7}Protecci\IeC {\'o}n}{9}
-\contentsline {section}{\numberline {8}Scheduler}{10}
-\contentsline {section}{\numberline {9}Conclusiones}{11}
+\contentsline {subsubsection}{\numberline {3.2.1}Atributos descriptores de segmento}{4}
+\contentsline {subsection}{\numberline {3.3}Descriptores de TSS}{5}
+\contentsline {section}{\numberline {4}Paginaci\IeC {\'o}n}{6}
+\contentsline {subsection}{\numberline {4.1}Implementaci\IeC {\'o}n del mapa de memoria.}{6}
+\contentsline {subsection}{\numberline {4.2}Activando la paginaci\IeC {\'o}n}{7}
+\contentsline {section}{\numberline {5}Interrupciones}{8}
+\contentsline {subsection}{\numberline {5.1}Interrupciones de control de flujo y administraci\IeC {\'o}n de sistema}{8}
+\contentsline {subsection}{\numberline {5.2}Interrupciones de seguridad}{8}
+\contentsline {section}{\numberline {6}Manejo de tareas}{9}
+\contentsline {section}{\numberline {7}Protecci\IeC {\'o}n}{10}
+\contentsline {section}{\numberline {8}Scheduler}{11}
+\contentsline {section}{\numberline {9}Conclusiones}{12}
