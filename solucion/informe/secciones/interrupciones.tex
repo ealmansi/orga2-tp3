@@ -1,52 +1,43 @@
-	Las interrupciones y las excepciones son el método
-a través del cuál se logra administrar los recursos del sistema y asegurar
-la integridad del sistema. Todos los handlers de interrupción fueron
-pensados y escritos con esos objetivos en mente.
+	Las interrupciones y las excepciones son el método a través del cuál 
+se logra interactuar con agentes externos, asegurar la integridad del sistema 
+ante la ocurrencia de errores, o administrar los recursos del sistema. Para cada 
+posible interrupción que se desea atender es necesario definir un handler de 
+interrupción, o rutina de atención, y declararla a través de un descriptor
+en una estructura del sistema denominada Interrupt Descriptor Table (IDT).
 
-	De esta manera en cada handler se pueden notar esas dos aristas,
-en algunos handlers predomina la lógica con respecto al control de los
-recursos de sistema, como en la interrupción de reloj que se maneja codo
-a codo con el scheduller administrar el tiempo de ejecución entre
-las distintas tareas. En otras, por el contrario, lo que mas se aprecia
-es la lógica destinada a asegurar la integridad del sistema como puede
-ser el caso de una excepción generada por un page fault o un seg fault.
+	En el sistema implementado se realizaron esencialmente los siguientes tipos de 
+hanlders de interrupción: aquellos donde predomina la lógica con respecto 
+al control de los recursos de sistema, como la interrupción generada por el reloj 
+(que marca la unidad de tiempo sobre la que funciona el scheduler), la rutina de atención 
+que procesa los eventos generados por el teclado, los handlers de atención a las syscalls 
+(implementando servicios para las tareas del sistema), y las rutinas que proveen la lógica 
+destinada a asegurar la integridad del sistema como puede ante el caso de una excepción 
+como por ejemplo un Page Fault o un Segmentation Fault.
 
 \subsection{Interrupciones de control de flujo y administración de sistema}
 
 	
-	La principal encarga de esto es la int0x32, es decir la interrupción
-que produce el reloj. Esta interrupción funcina de manera muy cercana al scheduller
-y su función basicamente es saltar a la tarea a la que le toca ejecutar o
-bien, no hacer nada en caso de que la tarea que está corriendo deba continuar.
-Para tomar esta desición lo que hace es consultarle al scheduller que tarea
-debe seguir corriendo. Si el scheduller devuelve 0 significa que la tarea
-que corre actualmente debe seguir haciéndolo, si por el contrario
-devuelve cualquier otro número se lo interpreta como un índice en
-la gdt al que se debe realizar un \texttt{JMP FAR} para realizar un cambio
-de contexto automático.
+	La principal encargada de controlar el flujo de ejecución en el sistema es la int0x32: 
+la interrupción generada por el reloj. Esta interrupción funciona de manera muy cercana 
+al scheduler, consultándole cuál tarea es la próxima a ejecutar y realizando el cambio 
+de tarea de ser necesario. El scheduler implementado tiene un valor de retorno distinguido: 
+si retorna un valor igual a 0, significa que la tarea ejecutándose actualmente debe seguir haciéndolo, 
+si por el contrario devuelve cualquier otro número se lo interpreta como un índice en
+la GDT al que se debe realizar un \texttt{jmp far}, suscitando un cambio de contexto 
+automático.
 
-	Por otra parte antes de realizar el \texttt{JMP far} es importante
+	Por otra parte, antes de realizar el \texttt{jmp far} es importante
 verificar si la tarea a la que se va a saltar es una bandera o un
-navío. Antes de saltar a una bandera re inicializamos su TSS para
-que el EIP vuelva a apuntar a donde es debido, si esto no se hiciera
+navío. Antes de saltar a una bandera, se reinicializa su TSS para
+que el EIP vuelva a apuntar al comienzo de la función. Si esto no se hiciera, 
 la ejecución seguiría a partir de la interrupción de fin de bandera
-y ese no es el compartamiento esperado. En los navíos, por otra parte
-, no hace falta hacer nada en especial: basta realizar el salto
-para que las cosas funcionen.
+y ese no es el compartamiento esperado. En los navíos, en cambio, sí se espera
+que la ejecución continúe donde fue interrumpida.
 
-	Es importante que en el código de la interrupción se contemple
-que, cuando a la tarea le vuelva a tocar, su eip va a estar ubicado adentro
-de la interrupción, por lo tanto tiene que siempre haber un JMP al
-final de la interrupción, incluso luego de un \texttt{JMP FAR}.
+	Es importante contemplar el hecho de que cuando se retoma la ejecución de una tarea, 
+su EIP va a estar ubicado adentro de la interrupción donde se detuvo, por lo tanto tiene 
+que siempre haber un JMP al final del llamado, incluso luego de un \texttt{jmp far}.
 	
-	Otra interrupción que controla importantemente el control de
-flujo es la \emph{interrupción de teclado}. De hecho la misma no tiene
-ningún control de seguridad. Sencillamente es un gran switch
-donde se verifica que tecla se tocó y en caso de caer en alguna
-de las teclas contempladas (``e'',``m'',``0-9'') entonces
-se realiza el efecto esperado. Las teclas ``e'' y ``m'' se
-manejan mediante funciones escritas en C.
-
 	Por último todos los handlers referidos a las excepciones de
 sistema (page fault, etc) al final también cambian el flujo de ejecución
 pues luego de la lógica referida a la seguridad tienen que retomar
@@ -86,7 +77,7 @@ que si una tarea las produce esta sea desalojada. De esta manera se pudieron
 implementar mediante un macro sin mayores inconvenientes.
 
 	Por otro lado están las otras interrupciones: La de reloj, la de teclado
-y las syscalls. Estas si se tuvieorn que elaborarse de manera mas detenida.
+y las syscalls. Estas tuvieron que elaborarse de manera mas detenida.
 
 	La interrupción de teclado basicamente es un gran $switch$ que verifica si
 el contenido del código obtenido. Si este coincide con alguna de las teclas esperadas
@@ -100,8 +91,8 @@ Toda esta lógica se implementó medante una función escrita en C y llamada des
 	La interrupción de reloj terminó siendo la mas compleja. Para implementarla lo que se hizo, entonces,
 fue realizar una función en c que se llama desde la interrupción. Esta función verifica si quién
 se estaba ejecutando al memento de la interrupción de reloj era una bandera. En ese caso la desaloja.
-Luego le pide al scheduller el índice de la GDT que necesario pra realizar un JUMP far al contexto
+Luego le pide al scheduler el índice de la GDT que necesario pra realizar un JUMP far al contexto
 de la otra tarea. A continuación se fija si la próxima tarea a ejecutarse es una bandera. Si es una bandera
-entonces primero reinicia su tss y luego, si, realiza el JMP FAR.
+entonces primero reinicia su tss y luego, si, realiza el jmp far.
 \end{comment}
 	
