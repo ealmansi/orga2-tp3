@@ -5,6 +5,14 @@ posible interrupción que se desea atender es necesario definir un handler de
 interrupción, o rutina de atención, y declararla a través de un descriptor
 en una estructura del sistema denominada Interrupt Descriptor Table (IDT).
 
+	La IDT tiene espacio para hasta 1024 descriptores, donde cada uno está formado 
+por 64bits y consta principalmente de un selector de un segmento de código, el offset 
+dentro de ese segmento donde se encuentra la rutina de atención, y una serie de atributos 
+que modifican el proceso de llamado al handler. Los atributos más significativos son 
+el tipo de handler: trap gate, interrupt gate o task gate; el Descriptor Privilege Level,
+o DPL, que determina el mínimo privilegio que debe tener el que llama a la interrupción; y 
+el bit D que determina si son de 16bits o 32 bits.
+
 	En el sistema implementado se realizaron esencialmente los siguientes tipos de 
 hanlders de interrupción: aquellos donde predomina la lógica con respecto 
 al control de los recursos de sistema, como la interrupción generada por el reloj 
@@ -13,6 +21,9 @@ que procesa los eventos generados por el teclado, los handlers de atención a la
 (implementando servicios para las tareas del sistema), y las rutinas que proveen la lógica 
 destinada a asegurar la integridad del sistema como puede ante el caso de una excepción 
 como por ejemplo un Page Fault o un Segmentation Fault.
+	
+	Para todas las interrupciones se escogió el tipo de descriptor como trap gate de 32-bits. 
+La única variación se tomó en el DPL: los servicios del sistema o syscalls se configuraron con DPL igual a 3, y los demás handlers con DPL igual a 0, para que no se puedan acceder desde las tareas.
 
 \subsection{Interrupciones de control de flujo y administración de sistema}
 
@@ -50,14 +61,13 @@ el flujo de ejecución a algún lado, ya sea al lugar donde vino o
 	Las excepciones de sistema como \textit{General Protection}
 son el mejor ejemplo. El algoritmo de estas interrupciones es
 sencillo, lo que hace es verificar que quién produjo
-esa excepción sea efectivamente una tarea. Si fue una tarea la desaloja, 
-sino Interrumpe el sistema y avisa que hubo una excepción. Luego
-de desalojar la tarea sencillamente salta hacia la tarea idle. Además
-todas estas interrupciones tienen exactamente la misma lógica, por lo
+esa excepción sea efectivamente una tarea. Si fue una tarea, la desaloja; de lo 
+contrario, interrumpe al sistema y notifica que hubo una excepción. Luego
+de desalojar la tarea, sencillamente salta hacia la tarea idle. Además, 
+todas estas interrupciones tienen exactamente la misma lógica, por lo 
 que en principio se podrían implementar todas con un macro de nasm.
-El único código específico que implementamos para cada una es una funcion de C
-que actualiza la pantalla de manera adecuada. Sobre esto se hablará
-mas en detalla en la sección de pantalla.
+El único código específico que se implementó para cada una es una funcion de C
+que actualiza la pantalla de manera adecuada.
 
 	La syscalls también tienen que hacer algunas verificaciones de
 seguridad. Las banderas no pueden llamar a las funciones de los barcos
